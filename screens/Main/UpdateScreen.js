@@ -115,7 +115,6 @@ const UpdateScreen = () => {
                 <Button
                     title="Submit"
                     onPress={handleSubmit}
-                    // Optional: Add custom styles
                     style={{ marginBottom: 20 }}
                 />
             </ScrollView>
@@ -180,18 +179,6 @@ const styles = StyleSheet.create({
     },
     picker: {
         height: 50,
-    },
-    submitButton: {
-        backgroundColor: '#006D77',
-        padding: 15,
-        borderRadius: 25,
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    submitButtonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: 'bold',
     },
 });
 
