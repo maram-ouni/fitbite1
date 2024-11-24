@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { Svg, Circle, G, LinearGradient, Stop, Defs } from 'react-native-svg';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { LinearGradient as RNLinearGradient } from 'expo-linear-gradient';
@@ -96,56 +96,61 @@ const HomeScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <View style={styles.dateContainer}>
-                    <Ionicons name="calendar-outline" size={24} color="#006A6A" />
-                    <Text style={styles.dateText}>2 May, Monday</Text>
-                </View>
-                <TouchableOpacity>
-                    <Feather name="more-horizontal" size={24} color="#006A6A" />
-                </TouchableOpacity>
-            </View>
-
-            <CircularProgress percentage={75} />
-
-            <Text style={styles.goalText}>2181</Text>
-            <Text style={styles.goalLabel}>Kcal Goal</Text>
-
-            <View style={styles.mealsContainer}>
-                <View style={styles.mealsHeader}>
-                    <Text style={styles.mealsTitle}>Daily meals</Text>
-                    <View style={styles.expandButton}>
-                        <Feather name="chevron-down" size={24} color="#fff" />
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}
+            >
+                <View style={styles.header}>
+                    <View style={styles.dateContainer}>
+                        <Ionicons name="calendar-outline" size={24} color="#006A6A" />
+                        <Text style={styles.dateText}>2 May, Monday</Text>
                     </View>
+                    <TouchableOpacity>
+                        <Feather name="more-horizontal" size={24} color="#006A6A" />
+                    </TouchableOpacity>
                 </View>
 
-                <MealItem
-                    title="Breakfast"
-                    calories={306}
-                    recommended={447}
-                    items={breakfastItems}
-                    isExpanded={expandedMeal === 'Breakfast'}
-                    onToggle={() => setExpandedMeal(expandedMeal === 'Breakfast' ? null : 'Breakfast')}
-                />
-                <MealItem
-                    title="Lunch"
-                    recommended={547}
-                    isExpanded={expandedMeal === 'Lunch'}
-                    onToggle={() => setExpandedMeal(expandedMeal === 'Lunch' ? null : 'Lunch')}
-                />
-                <MealItem
-                    title="Dinner"
-                    recommended={547}
-                    isExpanded={expandedMeal === 'Dinner'}
-                    onToggle={() => setExpandedMeal(expandedMeal === 'Dinner' ? null : 'Dinner')}
-                />
-                <MealItem
-                    title="Snack"
-                    recommended={547}
-                    isExpanded={expandedMeal === 'Snack'}
-                    onToggle={() => setExpandedMeal(expandedMeal === 'Snack' ? null : 'Snack')}
-                />
-            </View>
+                <CircularProgress percentage={75} />
+
+                <Text style={styles.goalText}>2181</Text>
+                <Text style={styles.goalLabel}>Kcal Goal</Text>
+
+                <View style={styles.mealsContainer}>
+                    <View style={styles.mealsHeader}>
+                        <Text style={styles.mealsTitle}>Daily meals</Text>
+                        <View style={styles.expandButton}>
+                            <Feather name="chevron-down" size={24} color="#fff" />
+                        </View>
+                    </View>
+
+                    <MealItem
+                        title="Breakfast"
+                        calories={306}
+                        recommended={447}
+                        items={breakfastItems}
+                        isExpanded={expandedMeal === 'Breakfast'}
+                        onToggle={() => setExpandedMeal(expandedMeal === 'Breakfast' ? null : 'Breakfast')}
+                    />
+                    <MealItem
+                        title="Lunch"
+                        recommended={547}
+                        isExpanded={expandedMeal === 'Lunch'}
+                        onToggle={() => setExpandedMeal(expandedMeal === 'Lunch' ? null : 'Lunch')}
+                    />
+                    <MealItem
+                        title="Dinner"
+                        recommended={547}
+                        isExpanded={expandedMeal === 'Dinner'}
+                        onToggle={() => setExpandedMeal(expandedMeal === 'Dinner' ? null : 'Dinner')}
+                    />
+                    <MealItem
+                        title="Snack"
+                        recommended={547}
+                        isExpanded={expandedMeal === 'Snack'}
+                        onToggle={() => setExpandedMeal(expandedMeal === 'Snack' ? null : 'Snack')}
+                    />
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };
@@ -154,6 +159,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.ui.cardBackground,
+    },
+    scrollContent: {
+        flexGrow: 1,
     },
     header: {
         flexDirection: 'row',
@@ -216,7 +224,6 @@ const styles = StyleSheet.create({
     },
     mealsContainer: {
         marginTop: 20,
-        flex: 1,
         backgroundColor: COLORS.primary.light,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,

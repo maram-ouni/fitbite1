@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import Button from '../../components/Button';
 
 const UpdateScreen = () => {
     const [profileImage, setProfileImage] = useState(null);
@@ -10,102 +11,114 @@ const UpdateScreen = () => {
     const [activityLevel, setActivityLevel] = useState('');
     const [supplements, setSupplements] = useState('');
     const [doctorRemarks, setDoctorRemarks] = useState('');
+    const handleSubmit = () => {
+        // Handle your submit logic here
+        console.log('Submit pressed');
+    };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Your information</Text>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}
+            >
+                <Text style={styles.title}>Your information</Text>
 
-            <TouchableOpacity style={styles.profilePicContainer}>
-                <View style={styles.profilePicCircle}>
-                    {/* You can replace this with an actual image picker */}
-                    <Image
-                        source={require('../../assets/images/profile-placeholder.png')}
-                        style={styles.profileIcon}
+                <TouchableOpacity style={styles.profilePicContainer}>
+                    <View style={styles.profilePicCircle}>
+                        {/* You can replace this with an actual image picker */}
+                        <Image
+                            source={require('../../assets/images/profile-placeholder.png')}
+                            style={styles.profileIcon}
+                        />
+                    </View>
+                    <Text style={styles.addPhotoText}>Add Profile Picture</Text>
+                </TouchableOpacity>
+
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Height</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="in cm"
+                        value={height}
+                        onChangeText={setHeight}
+                        keyboardType="numeric"
                     />
                 </View>
-                <Text style={styles.addPhotoText}>Add Profile Picture</Text>
-            </TouchableOpacity>
 
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Height</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="in cm"
-                    value={height}
-                    onChangeText={setHeight}
-                    keyboardType="numeric"
-                />
-            </View>
-
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Weight</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="in Kg"
-                    value={weight}
-                    onChangeText={setWeight}
-                    keyboardType="numeric"
-                />
-            </View>
-
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Pregnancy trimester</Text>
-                <View style={styles.pickerContainer}>
-                    <Picker
-                        selectedValue={trimester}
-                        onValueChange={(itemValue) => setTrimester(itemValue)}
-                        style={styles.picker}
-                    >
-                        <Picker.Item label="Select trimester" value="" />
-                        <Picker.Item label="First trimester" value="1" />
-                        <Picker.Item label="Second trimester" value="2" />
-                        <Picker.Item label="Third trimester" value="3" />
-                    </Picker>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Weight</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="in Kg"
+                        value={weight}
+                        onChangeText={setWeight}
+                        keyboardType="numeric"
+                    />
                 </View>
-            </View>
 
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Regular physical activity level</Text>
-                <View style={styles.pickerContainer}>
-                    <Picker
-                        selectedValue={activityLevel}
-                        onValueChange={(itemValue) => setActivityLevel(itemValue)}
-                        style={styles.picker}
-                    >
-                        <Picker.Item label="Select activity level" value="" />
-                        <Picker.Item label="Sedentary" value="sedentary" />
-                        <Picker.Item label="Light" value="light" />
-                        <Picker.Item label="Moderate" value="moderate" />
-                        <Picker.Item label="Active" value="active" />
-                    </Picker>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Pregnancy trimester</Text>
+                    <View style={styles.pickerContainer}>
+                        <Picker
+                            selectedValue={trimester}
+                            onValueChange={(itemValue) => setTrimester(itemValue)}
+                            style={styles.picker}
+                        >
+                            <Picker.Item label="Select trimester" value="" />
+                            <Picker.Item label="First trimester" value="1" />
+                            <Picker.Item label="Second trimester" value="2" />
+                            <Picker.Item label="Third trimester" value="3" />
+                        </Picker>
+                    </View>
                 </View>
-            </View>
 
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Nutritional supplements taken</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter supplements"
-                    value={supplements}
-                    onChangeText={setSupplements}
-                    multiline
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Regular physical activity level</Text>
+                    <View style={styles.pickerContainer}>
+                        <Picker
+                            selectedValue={activityLevel}
+                            onValueChange={(itemValue) => setActivityLevel(itemValue)}
+                            style={styles.picker}
+                        >
+                            <Picker.Item label="Select activity level" value="" />
+                            <Picker.Item label="Sedentary" value="sedentary" />
+                            <Picker.Item label="Light" value="light" />
+                            <Picker.Item label="Moderate" value="moderate" />
+                            <Picker.Item label="Active" value="active" />
+                        </Picker>
+                    </View>
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Nutritional supplements taken</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter supplements"
+                        value={supplements}
+                        onChangeText={setSupplements}
+                        multiline
+                    />
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Doctor's Remarks</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter remarks"
+                        value={doctorRemarks}
+                        onChangeText={setDoctorRemarks}
+                        multiline
+                    />
+                </View>
+
+                <Button
+                    title="Submit"
+                    onPress={handleSubmit}
+                    // Optional: Add custom styles
+                    style={{ marginBottom: 20 }}
                 />
-            </View>
-
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Doctor's Remarks</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter remarks"
-                    value={doctorRemarks}
-                    onChangeText={setDoctorRemarks}
-                    multiline
-                />
-            </View>
-
-            <TouchableOpacity style={styles.submitButton}>
-                <Text style={styles.submitButtonText}>Submit</Text>
-            </TouchableOpacity>
+            </ScrollView>
         </View>
     );
 };
