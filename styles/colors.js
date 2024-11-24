@@ -67,3 +67,11 @@ export const getGradientColors = (type) => {
 export const getMealColor = (mealType) => {
     return COLORS.mealTypes[mealType.toLowerCase()] || COLORS.primary.dark;
 };
+
+export const colors = {
+    gradientStart: '#016D77', // Top color of the gradient
+    gradientEnd: '#83C4BE',   // Bottom color of the gradient
+    background: '#EDF6F9',
+    progress: ['#FFDDD2', '#E29578'],
+    backgroundColor: ['#FFFFFF', '#EDF6F9'],
+  };
