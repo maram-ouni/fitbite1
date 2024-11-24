@@ -21,7 +21,7 @@ export const COLORS = {
         },
         background: {
             colors: ['#FFFFFF', '#EDF6F9'],
-            locations: [0, 1]
+            locations: [0, 0.4]
         }
     },
 

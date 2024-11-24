@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Button from '../../components/Button';
+import { COLORS } from '../../styles/colors';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 const UpdateScreen = () => {
     const [profileImage, setProfileImage] = useState(null);
@@ -17,7 +20,14 @@ const UpdateScreen = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <LinearGradient
+            colors={COLORS.gradients.background.colors}
+            locations={COLORS.gradients.background.locations}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={styles.container}
+        >
+
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
@@ -26,7 +36,6 @@ const UpdateScreen = () => {
 
                 <TouchableOpacity style={styles.profilePicContainer}>
                     <View style={styles.profilePicCircle}>
-                        {/* You can replace this with an actual image picker */}
                         <Image
                             source={require('../../assets/images/profile-placeholder.png')}
                             style={styles.profileIcon}
@@ -118,7 +127,9 @@ const UpdateScreen = () => {
                     style={{ marginBottom: 20 }}
                 />
             </ScrollView>
-        </View>
+
+
+        </LinearGradient>
     );
 };
 
@@ -126,13 +137,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#F5F8FF',
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#006D77',
+        color: COLORS.primary.dark,
         marginBottom: 20,
+        textAlign: 'center',
     },
     profilePicContainer: {
         alignItems: 'center',
@@ -150,10 +161,10 @@ const styles = StyleSheet.create({
     profileIcon: {
         width: 40,
         height: 40,
-        tintColor: '#006D77',
+        tintColor: COLORS.primary.dark,
     },
     addPhotoText: {
-        color: '#006D77',
+        color: COLORS.primary.dark,
         fontSize: 16,
     },
     inputContainer: {
