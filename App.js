@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import Navigation from './navigation/Navigation'; 
+import Navigation from './navigation/Navigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import OnboardingScreen from './screens/onboarding/OnboardingScreen';
 import { Text } from 'react-native';
