@@ -6,7 +6,7 @@ import RecipesScreen from '../screens/Main/RecipesScreen';
 import UpdateScreen from '../screens/Main/UpdateScreen';
 import FavoriteScreen from '../screens/Main/FavoriteScreen';
 import Icon from 'react-native-vector-icons/Feather';
-
+import { Image } from 'react-native';
 const Tab = createBottomTabNavigator();
 
 const MainStackNavigator = () => {
@@ -24,8 +24,11 @@ const MainStackNavigator = () => {
                 name="Home"
                 component={HomeScreen}
                 options={{
-                    tabBarIcon: ({ color }) => (
-                        <Icon name="grid" size={22} color={color} />
+                    tabBarIcon: ({ focused, color }) => (
+                        <Image
+                            source={focused ? require('../assets/images/home.png') : require('../assets/images/home1.png')}
+                            style={{ width: 25, height: 25, tintColor: color }} 
+                        />
                     ),
                 }}
             />
@@ -33,17 +36,23 @@ const MainStackNavigator = () => {
                 name="Recipes"
                 component={RecipesScreen}
                 options={{
-                    tabBarIcon: ({ color }) => (
-                        <Icon name="book" size={22} color={color} />
+                    tabBarIcon: ({ focused, color }) => (
+                    <Image
+                        source={focused ? require('../assets/images/cuisine.png') : require('../assets/images/cuisine1.png')}
+                        style={{ width: 30, height: 30, tintColor: color }} 
+                    />
                     ),
                 }}
-            />
+                />
             <Tab.Screen
                 name="Update"
                 component={UpdateScreen}
                 options={{
-                    tabBarIcon: ({ color }) => (
-                        <Icon name="edit-2" size={22} color={color} />
+                    tabBarIcon: ({ focused, color }) => (
+                        <Image
+                            source={focused ? require('../assets/images/editer.png') : require('../assets/images/editer1.png')}
+                            style={{ width: 27, height: 27, tintColor: color }} 
+                        />
                     ),
                 }}
             />
@@ -51,10 +60,13 @@ const MainStackNavigator = () => {
                 name="Favorite"
                 component={FavoriteScreen}
                 options={{
-                    tabBarIcon: ({ color }) => (
-                        <Icon name="heart" size={22} color={color} />
-                    ),
-                }}
+                    tabBarIcon: ({ focused, color }) => (
+                        <Image
+                            source={focused ? require('../assets/images/favorite.png') : require('../assets/images/favorite1.png')}
+                            style={{ width: 33, height: 35, tintColor: color }} 
+                        />
+                        ),
+                    }}
             />
         </Tab.Navigator>
     );
