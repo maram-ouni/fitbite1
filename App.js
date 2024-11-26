@@ -1,35 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import Navigation from './navigation/Navigation'; 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import OnboardingScreen from './screens/onboarding/OnboardingScreen';
 import { Text } from 'react-native';
 
 export default function App() {
-  const [isFirstLaunch, setIsFirstLaunch] = useState(null);  // Initially null for the first check
-  const [loading, setLoading] = useState(true);  // Loading state to indicate the async check is happening
+  const [isFirstLaunch, setIsFirstLaunch] = useState(true);  // Always true as we don't need first launch logic anymore
+  const [loading, setLoading] = useState(false);  // No need for async loading
 
   useEffect(() => {
-    const checkFirstLaunch = async () => {
-      try {
-        const firstLaunch = await AsyncStorage.getItem('hasLaunched');
-        console.log("First Launch Check:", firstLaunch); // Log the result
-        if (firstLaunch === null) {
-          // First launch: set the state to true and store it in AsyncStorage
-          setIsFirstLaunch(true);
-          await AsyncStorage.setItem('hasLaunched', 'true');
-        } else {
-          // Not the first launch: set the state to false
-          setIsFirstLaunch(false);
-        }
-      } catch (error) {
-        console.error('Error checking first launch:', error);
-      } finally {
-        setLoading(false);  // Once check is done, set loading to false
-      }
-    };
-
-    checkFirstLaunch();
+    // Just simulate that onboarding is shown once, then you can switch to main navigation
+    setLoading(false);  // No async check needed
   }, []);
 
   // If loading, show a loading indicator or placeholder
@@ -37,14 +17,10 @@ export default function App() {
     return <Text>Loading...</Text>;  // Or any other loading indicator you prefer
   }
 
-  // After loading is complete, decide which screen to show
   return (
     <NavigationContainer>
-      {isFirstLaunch === false ? (
-        <OnboardingScreen />  // Show Onboarding if it's the first launch
-      ) : (
-        <Navigation />  // Show the main navigation if not the first launch
-      )}
+      {/* Always show Onboarding once */}
+      <Navigation isFirstLaunch={isFirstLaunch} />
     </NavigationContainer>
   );
 }

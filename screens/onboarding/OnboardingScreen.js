@@ -4,11 +4,11 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'rea
 // Replace this with your actual logo path
 import logo from '../../assets/images/logo1.png'; // Assuming logo is in the assets folder
 
-const OnboardingScreen = () => {
+const OnboardingScreen = ({ navigation }) => {
   const handleSkip = () => {
     console.log("Onboarding Skipped");
     // Add your navigation logic here to move to the main app
-    navigation.navigate('HomeScreen');
+    navigation.navigate('Auth');
   };
 
   const handleDiscover = () => {

@@ -4,59 +4,65 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'rea
 // Replace this with your actual logo path
 import logo from '../../assets/images/satisfaction.png'; // Assuming logo is in the assets folder
 
-const OnboardingScreen5 = () => {
+const OnboardingScreen5 = ({ navigation }) => {
   const handleSkip = () => {
     console.log("Onboarding Skipped");
-    // Add your navigation logic here to move to the main app
+    navigation.navigate('Auth');
   };
 
   const handleDiscover = () => {
     console.log("Onboarding Completed");
-    // Add your navigation logic here to move to the main app
-    navigation.navigate('HomeScreen');
+    navigation.navigate('Auth');
   };
 
   return (
-    <View style={styles.container}> {/* Use View instead of ScrollView to control footer positioning */}
-    <ScrollView contentContainerStyle={[styles.content, { paddingTop: 50 }]}> {/* Ajout de paddingTop pour espacer les éléments vers le bas */}
-    <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>Why Choose FitBite?</Text>
-    <Image source={logo} style={[styles.logo, { marginTop: 8 }]} /> {/* Optionnel : ajoute un léger espacement au logo */}
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={[styles.content, { paddingTop: 50 }]}>
+        {/* Welcome Text */}
+        <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>Why Choose FitBite?</Text>
+        
+        {/* Logo Image */}
+        <Image source={logo} style={[styles.logo, { marginTop: 8 }]} />
 
-  {/* Yellow container for the description */}
-  <View style={[styles.descriptionContainer, { marginTop: 20 }]}> {/* Ajout de marginTop pour pousser vers le bas */}
-    <Text style={styles.appDescription}>
-    Our mission is to empower and support pregnant women with a one-stop solution for all their nutritional and health needs. {"\n"}
-    With Pregnancy Companion, you can:
-      {"\n"}
-      <Text style={{ paddingLeft: 10 }}>• Save time with ready-to-use tools.</Text>
-      {"\n"} 
-      <Text style={{ paddingLeft: 10 }}>• Stay organized with detailed shopping lists and meal plans.</Text>
-      {"\n"}
-      <Text style={{ paddingLeft: 10 }}>• Focus on your well-being with accurate health insights.</Text>
-      {"\n"}
-      Let’s make your pregnancy journey as smooth and enjoyable as possible!
-    </Text>
-  </View>
-</ScrollView>
+        {/* Description Container */}
+        <View style={[styles.descriptionContainer, { marginTop: 20 }]}>
+          <Text style={styles.appDescription}>
+            Our mission is to empower and support pregnant women with a one-stop solution for all their nutritional and health needs. {"\n"}
+            With Pregnancy Companion, you can:
+          </Text>
 
+          {/* List of Features */}
+          <View style={{ paddingLeft: 10 }}>
+            <Text style={styles.appDescription}>• Save time with ready-to-use tools.</Text>
+            <Text style={styles.appDescription}>• Stay organized with detailed shopping lists and meal plans.</Text>
+            <Text style={styles.appDescription}>• Focus on your well-being with accurate health insights.</Text>
+          </View>
 
-      {/* Footer container will always stick to the bottom */}
+          {/* Final Line */}
+          <Text style={styles.appDescription}>
+            Let’s make your pregnancy journey as smooth and enjoyable as possible!
+          </Text>
+        </View>
+      </ScrollView>
+
+      {/* Footer Container */}
       <View style={styles.footerContainer}>
         <View style={styles.buttonContainer}>
+          {/* Skip Button */}
           <TouchableOpacity onPress={handleSkip} style={styles.button}>
             <Text style={[styles.buttonText, { color: '#3aafa9' }]}>Skip</Text>
           </TouchableOpacity>
 
-          {/* Pagination (Dots) */}
+          {/* Pagination Dots */}
           <View style={styles.pagination}>
             <Text style={styles.paginationDot}>•</Text> {/* First dot matching welcome color */}
             <Text style={styles.paginationDot}>•</Text>
             <Text style={styles.paginationDot}>•</Text>
             <Text style={styles.paginationDot}>•</Text>
-            <Text style={[styles.paginationDot, { color: '#006D77' }]} >•</Text>
-
+            <Text style={[styles.paginationDot, { color: '#006D77' }]}>•</Text>
           </View>
 
+          {/* Next Button */}
           <TouchableOpacity onPress={handleDiscover} style={styles.button}>
             <Text style={[styles.buttonText, { color: '#3aafa9' }]}>Next</Text>
           </TouchableOpacity>
@@ -68,11 +74,11 @@ const OnboardingScreen5 = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // This ensures the entire screen is used, allowing footer to stay at the bottom
+    flex: 1, // Ensures the entire screen is used, allowing footer to stay at the bottom
     backgroundColor: '#e8f6f6',
   },
   content: {
-    flexGrow: 1, // Allow scroll content to take as much space as it needs
+    flexGrow: 1, // Allows scroll content to take as much space as it needs
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -110,13 +116,13 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     marginTop: 'auto', 
-    marginBottom: '5%'// Ensures footer is pushed to the bottom of the screen
+    marginBottom: '5%', // Ensures footer is pushed to the bottom of the screen
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    alignItems: 'center', // Center vertically the buttons and dots
+    alignItems: 'center', // Centers buttons and dots vertically
   },
   button: {
     flex: 1,
@@ -129,7 +135,7 @@ const styles = StyleSheet.create({
   },
   pagination: {
     flexDirection: 'row',
-    alignItems: 'center', // This ensures that dots are vertically aligned with buttons
+    alignItems: 'center', // Ensures that dots are vertically aligned with buttons
   },
   paginationDot: {
     fontSize: 25,
