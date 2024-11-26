@@ -1,25 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import Navigation from './navigation/Navigation'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text } from 'react-native';
 
 export default function App() {
-  const [isFirstLaunch, setIsFirstLaunch] = useState(true);  // Always true as we don't need first launch logic anymore
-  const [loading, setLoading] = useState(false);  // No need for async loading
+  const [isFirstLaunch, setIsFirstLaunch] = useState(null);  // null initially to determine if first launch
+  const [loading, setLoading] = useState(true);  // Loading state to handle async check
 
   useEffect(() => {
-    // Just simulate that onboarding is shown once, then you can switch to main navigation
-    setLoading(false);  // No async check needed
+    const checkFirstLaunch = async () => {
+      try {
+        const firstLaunch = await AsyncStorage.getItem('hasLaunched');
+        if (firstLaunch === null) {
+          // First launch, show onboarding and set the flag
+          setIsFirstLaunch(true);
+          await AsyncStorage.setItem('hasLaunched', 'true');
+        } else {
+          // Not first launch, skip onboarding
+          setIsFirstLaunch(false);
+        }
+      } catch (error) {
+        console.error('Error checking first launch:', error);
+      } finally {
+        setLoading(false);  // Set loading to false once check is complete
+      }
+    };
+
+    checkFirstLaunch();
   }, []);
 
-  // If loading, show a loading indicator or placeholder
+  // Show loading until the first launch check is complete
   if (loading) {
-    return <Text>Loading...</Text>;  // Or any other loading indicator you prefer
+    return <Text>Loading...</Text>;
   }
 
   return (
     <NavigationContainer>
-      {/* Always show Onboarding once */}
       <Navigation isFirstLaunch={isFirstLaunch} />
     </NavigationContainer>
   );

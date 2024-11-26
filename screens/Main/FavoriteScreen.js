@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { COLORS } from '../../styles/colors';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const FavoriteScreen = () => {
     const recipes = [
@@ -24,7 +26,11 @@ const FavoriteScreen = () => {
     ];
 
     return (
-        <View style={styles.container}>
+        <LinearGradient
+            colors={COLORS.gradients.background.colors}
+            locations={COLORS.gradients.background.locations}
+            style={styles.container}
+        >
             <View style={styles.searchContainer}>
                 <TextInput
                     style={styles.searchInput}
@@ -61,14 +67,13 @@ const FavoriteScreen = () => {
                     </TouchableOpacity>
                 ))}
             </ScrollView>
-        </View>
+        </LinearGradient>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5F8FF',
     },
     searchContainer: {
         padding: 20,
