@@ -42,8 +42,8 @@ const Navigation = () => {
         component={OnboardingStack}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Auth" component={AuthStack} />
-      <Stack.Screen name="Main" component={MainStack} />
+      <Stack.Screen name="Auth" component={AuthStack} options={{ headerShown: false }} />
+      <Stack.Screen name="Main" component={MainStack} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
