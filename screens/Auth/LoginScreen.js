@@ -1,15 +1,53 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, Image, KeyboardAvoidingView, Keyboard } from 'react-native';
 import Button from '../../components/Button'; // Importez le bouton personnalisé
 import Button2 from '../../components/Button2'; // Importez le bouton personnalisé
 
 const LoginScreen = ({ navigation }) => {
+    const [logoSize, setLogoSize] = useState(250); // Taille par défaut du logo
+    const [logoPosition, setLogoPosition] = useState(0); // Position par défaut du logo
+    const [titlePosition, setTitlePosition] = useState(0); // Position par défaut du titre
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+            setLogoSize(150); // Réduire la taille du logo
+            setLogoPosition(40); // Descendre le logo
+            setTitlePosition(25); // Descendre le titre
+        });
+
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setLogoSize(250); // Restaurer la taille du logo
+            setLogoPosition(0); // Restaurer la position du logo
+            setTitlePosition(0); // Restaurer la position du titre
+        });
+
+        // Nettoyer les listeners à la fin du cycle de vie
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
             {/* Logo */}
-            <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
+            <Image 
+                source={require('../../assets/images/logo.png')} 
+                style={[
+                    styles.logo, 
+                    { width: logoSize, height: logoSize, transform: [{ translateY: logoPosition }] }
+                ]} 
+            />
             
-            <Text style={styles.title}>Welcome to FitBite</Text>
+            {/* Title */}
+            <Text 
+                style={[
+                    styles.title, 
+                    { transform: [{ translateY: titlePosition }] }
+                ]}
+            >
+                Welcome to FitBite
+            </Text>
 
             {/* Email input */}
             <TextInput 
@@ -24,18 +62,18 @@ const LoginScreen = ({ navigation }) => {
                 style={styles.input} 
             />
 
-            {/* Login button (utilisation du bouton personnalisé Button2) */}
+            {/* Login button */}
             <Button 
                 title="Log in" 
                 onPress={() => navigation.navigate('Main')} 
                 style={styles.button} 
             />
             <Button2 
-                title="Sign up" 
-                onPress={() => navigation.navigate('signup')} 
+                title="SignUp" 
+                onPress={() => navigation.navigate('SignUp')} 
                 style={styles.button} 
             />
-        </View>
+        </KeyboardAvoidingView>
     );
 };
 
@@ -48,8 +86,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     logo: {
-        width: 250,
-        height: 250,
         marginBottom: 30,
     },
     title: {
@@ -63,43 +99,13 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 16,
         marginBottom: 20,
-        borderBottomWidth: 1, // Ajout de la ligne sous le champ
-        borderColor: '#006D77', // Couleur de la ligne sous le champ
-        backgroundColor: 'transparent', // Pour ne pas avoir de fond sur le champ
+        borderBottomWidth: 1,
+        borderColor: '#006D77',
+        backgroundColor: 'transparent',
     },
     button: {
         marginBottom: 10,
-        marginTop:15,
-    },
-    buttonSecondary: {
-        backgroundColor: '#ffccbc',
-        paddingVertical: 12,
-        width: '100%',
-        borderRadius: 8,
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    buttonText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#fff',
-    },
-    socialContainer: {
-        width: '100%',
-        marginTop: 20,
-    },
-    socialButton: {
-        backgroundColor: '#fff',
-        paddingVertical: 12,
-        borderWidth: 1,
-        borderRadius: 8,
-        borderColor: '#ccc',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    socialText: {
-        fontSize: 16,
-        color: '#83C5BE',
+        marginTop: 15,
     },
 });
 
