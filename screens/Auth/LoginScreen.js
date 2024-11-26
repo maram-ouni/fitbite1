@@ -11,8 +11,8 @@ const LoginScreen = ({ navigation }) => {
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setLogoSize(150); // Réduire la taille du logo
-            setLogoPosition(40); // Descendre le logo
-            setTitlePosition(25); // Descendre le titre
+            setLogoPosition(45); // Descendre le logo
+            setTitlePosition(23); // Descendre le titre
         });
 
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
@@ -69,7 +69,7 @@ const LoginScreen = ({ navigation }) => {
                 style={styles.button} 
             />
             <Button2 
-                title="SignUp" 
+                title="Sign Up" 
                 onPress={() => navigation.navigate('SignUp')} 
                 style={styles.button} 
             />

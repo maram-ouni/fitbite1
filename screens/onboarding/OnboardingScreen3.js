@@ -6,13 +6,11 @@ import logo from '../../assets/images/BMI.png'; // Assuming logo is in the asset
 
 const OnboardingScreen3 = ({ navigation }) => {
   const handleSkip = () => {
-    console.log("Onboarding Skipped");
     // Add your navigation logic here to move to the main app
     navigation.navigate('Auth');
   };
 
   const handleDiscover = () => {
-    console.log("Onboarding Completed");
     // Add your navigation logic here to move to the main app
     navigation.navigate('OnboardingScreen4');
   };

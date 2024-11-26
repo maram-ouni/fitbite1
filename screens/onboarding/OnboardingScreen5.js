@@ -6,12 +6,10 @@ import logo from '../../assets/images/satisfaction.png'; // Assuming logo is in 
 
 const OnboardingScreen5 = ({ navigation }) => {
   const handleSkip = () => {
-    console.log("Onboarding Skipped");
     navigation.navigate('Auth');
   };
 
   const handleDiscover = () => {
-    console.log("Onboarding Completed");
     navigation.navigate('Auth');
   };
 

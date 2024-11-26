@@ -6,13 +6,11 @@ import logo from '../../assets/images/book.png'; // Assuming logo is in the asse
 
 const OnboardingScreen4 = ({ navigation }) => {
   const handleSkip = () => {
-    console.log("Onboarding Skipped");
     // Add your navigation logic here to move to the main app
     navigation.navigate('Auth');
   };
 
   const handleDiscover = () => {
-    console.log("Onboarding Completed");
     // Add your navigation logic here to move to the main app
     navigation.navigate('OnboardingScreen5');
   };
