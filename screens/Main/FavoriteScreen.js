@@ -4,7 +4,7 @@ import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import Header from './Header';
 
-const FavoriteScreen = () => {
+const FavoriteScreen = (navigation) => {
     const recipes = [
         {
             id: 1,
@@ -33,6 +33,11 @@ const FavoriteScreen = () => {
             style={styles.container}
         >
             <View style={styles.searchContainer}>
+                <Header
+                    date="2 May, Monday"
+                    onMorePress={() => console.log('More button pressed')}
+                    navigation={navigation} // Pass navigation prop
+                />
                 <TextInput
                     style={styles.searchInput}
                     placeholder="Looking for something?"

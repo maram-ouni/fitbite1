@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
 import Header from './Header';
 
-const AddRecipeScreen = () => {
+const AddRecipeScreen = (navigation) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
@@ -15,6 +15,11 @@ const AddRecipeScreen = () => {
 
     return (
         <View style={styles.container}>
+            <Header
+                date="2 May, Monday"
+                onMorePress={() => console.log('More button pressed')}
+                navigation={navigation} // Pass navigation prop
+            />
             <Text style={styles.heading}>Add a New Recipe</Text>
             <TextInput
                 placeholder="Recipe Title"

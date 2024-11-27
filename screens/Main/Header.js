@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 16,
         paddingVertical: 10,
-        backgroundColor: '#FFFFFF',
+        paddingBottom: 20,
     },
     iconWrapper: {
         width: 36,

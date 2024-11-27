@@ -6,7 +6,7 @@ import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import Header from './Header';
 
-const UpdateScreen = () => {
+const UpdateScreen = (navigation) => {
     const [profileImage, setProfileImage] = useState(null);
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
@@ -32,6 +32,11 @@ const UpdateScreen = () => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
             >
+                <Header
+                    date="2 May, Monday"
+                    onMorePress={() => console.log('More button pressed')}
+                    navigation={navigation} // Pass navigation prop
+                />
                 <Text style={styles.title}>Your information</Text>
 
                 <TouchableOpacity style={styles.profilePicContainer}>

@@ -2,9 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Header from './Header';
 
-const GroceryListScreen = () => {
+const GroceryListScreen = (navigation) => {
     return (
         <View style={styles.container}>
+            <Header
+                date="2 May, Monday"
+                onMorePress={() => console.log('More button pressed')}
+                navigation={navigation} // Pass navigation prop
+            />
             <Text style={styles.text}>Your Grocery List</Text>
             <Text>- Bread</Text>
             <Text>- Cheese</Text>
