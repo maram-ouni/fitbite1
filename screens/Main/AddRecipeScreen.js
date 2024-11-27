@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import Header from './Header';
 
 const AddRecipeScreen = () => {
     const [title, setTitle] = useState('');

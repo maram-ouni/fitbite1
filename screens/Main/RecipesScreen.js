@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import Card from '../../components/Card';
+import Header from './Header';
 
 const RecipesScreen = () => {
     const recipes = [

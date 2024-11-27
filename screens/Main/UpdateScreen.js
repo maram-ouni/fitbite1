@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import Button from '../../components/Button';
 import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import Header from './Header';
 
 const UpdateScreen = () => {
     const [profileImage, setProfileImage] = useState(null);

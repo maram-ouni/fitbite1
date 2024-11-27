@@ -4,6 +4,7 @@ import { Svg, Circle, G, LinearGradient, Stop, Defs } from 'react-native-svg';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { LinearGradient as RNLinearGradient } from 'expo-linear-gradient';
 import { COLORS, getGradientColors, getMealColor } from '../../styles/colors';
+import Header from './Header';
 
 const CircularProgress = ({ percentage }) => {
     const size = 200;
@@ -85,7 +86,7 @@ const MealItem = ({ title, calories, recommended, items, isExpanded, onToggle })
     </View>
 );
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     const [expandedMeal, setExpandedMeal] = useState('Breakfast');
 
     const breakfastItems = [
@@ -101,13 +102,11 @@ const HomeScreen = () => {
                 contentContainerStyle={styles.scrollContent}
             >
                 <View style={styles.header}>
-                    <View style={styles.dateContainer}>
-                        <Ionicons name="calendar-outline" size={24} color="#006A6A" />
-                        <Text style={styles.dateText}>2 May, Monday</Text>
-                    </View>
-                    <TouchableOpacity>
-                        <Feather name="more-horizontal" size={24} color="#006A6A" />
-                    </TouchableOpacity>
+                    <Header
+                        date="2 May, Monday"
+                        onMorePress={() => console.log('More button pressed')}
+                        navigation={navigation} // Pass navigation prop
+                    />
                 </View>
 
                 <CircularProgress percentage={75} />
@@ -231,12 +230,12 @@ const styles = StyleSheet.create({
     },
     mealItem: {
         backgroundColor: COLORS.ui.cardBackground,
-        borderRadius: 16,  // Increased for more rounded corners
+        borderRadius: 16,
         marginBottom: 15,
         borderLeftWidth: 4,
         overflow: 'hidden',
-        elevation: 2,  // Add shadow for Android
-        shadowColor: '#000',  // Add shadow for iOS
+        elevation: 2,
+        shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 2,
