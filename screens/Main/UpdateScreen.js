@@ -14,10 +14,16 @@ const UpdateScreen = ({ navigation }) => {
     const [activityLevel, setActivityLevel] = useState('');
     const [supplements, setSupplements] = useState('');
     const [doctorRemarks, setDoctorRemarks] = useState('');
-    const handleSubmit = () => {
-        // Handle your submit logic here
-        console.log('Submit pressed');
-    };
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    
+     const handleSubmit = () => {
+    console.log({ title, description });
+    alert('Information updated successfully!');
+    setTitle('');
+    setDescription('');
+  };
+
 
     return (
         <LinearGradient
@@ -122,11 +128,7 @@ const UpdateScreen = ({ navigation }) => {
                     />
                 </View>
 
-                <Button
-                    title="Submit"
-                    onPress={handleSubmit}
-                    style={{ marginBottom: 20 }}
-                />
+                <Button title="Submit" onPress={handleSubmit} style={styles.submitButton} />
             </ScrollView>
 
 
