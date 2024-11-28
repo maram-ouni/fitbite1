@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import Header from './Header';
 
 const FavoriteScreen = (navigation) => {
     const recipes = [
@@ -33,7 +33,13 @@ const FavoriteScreen = (navigation) => {
             style={styles.container}
         >
             <View style={styles.searchContainer}>
-                
+                <View style={styles.header}>
+                    <Header
+                        date="2 May, Monday"
+                        onMorePress={() => console.log('More button pressed')}
+                        navigation={navigation} // Pass navigation prop
+                    />
+                </View>
                 <TextInput
                     style={styles.searchInput}
                     placeholder="Looking for something?"
@@ -42,7 +48,7 @@ const FavoriteScreen = (navigation) => {
             </View>
 
             <View style={styles.filterContainer}>
-            <View style={styles.scrollBox}>
+                <View style={styles.scrollBox}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         <TouchableOpacity style={[styles.filterButton, styles.filterButtonActive]}>
                             <Text style={[styles.filterText, styles.filterTextActive]}>Breakfast</Text>
