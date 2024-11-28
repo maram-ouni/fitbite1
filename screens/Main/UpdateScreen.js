@@ -4,6 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import Button from '../../components/Button';
 import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import Header from './Header';
 
 
 const UpdateScreen = ({ navigation }) => {
@@ -38,7 +39,13 @@ const UpdateScreen = ({ navigation }) => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
             >
-                
+                <View style={styles.header}>
+                    <Header
+                        date="2 May, Monday"
+                        onMorePress={() => console.log('More button pressed')}
+                        navigation={navigation} // Pass navigation prop
+                    />
+                </View>
                 <Text style={styles.title}>Your information</Text>
 
                 <TouchableOpacity style={styles.profilePicContainer}>
