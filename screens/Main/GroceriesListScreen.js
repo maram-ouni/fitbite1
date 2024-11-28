@@ -1,8 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import Button from '../../components/Button';
+import { COLORS } from '../../styles/colors';
+import { LinearGradient } from 'expo-linear-gradient';
 import Header from './Header';
 
-const GroceryListScreen = (navigation) => {
+const GroceriesListScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Header
@@ -32,4 +36,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GroceryListScreen;
+export default GroceriesListScreen;

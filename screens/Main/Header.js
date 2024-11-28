@@ -12,8 +12,8 @@ const Header = ({ date, onMorePress, navigation }) => {
     });
 
     const handleCalendarPress = () => {
-        // Navigate to GroceryListScreen when calendar icon is pressed
-        navigation.navigate('GroceryList');
+        // Navigate to Planning when calendar icon is pressed
+        navigation.navigate('PlanningMeals');
     };
 
     return (

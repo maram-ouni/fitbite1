@@ -3,6 +3,7 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import Button from '../../components/Button'; // Import du composant Button
 
 
 const RecipesScreen = ({ navigation }) => {
@@ -34,12 +35,15 @@ const RecipesScreen = ({ navigation }) => {
             style={styles.container}
         >
             {/* Utilisation du Header réutilisable */}
+            
             <View style={styles.headerContainer}>
-                    <Header
-                        date="2 May, Monday"
-                        
-                    />
+                <Header
+                    date="2 May, Monday"
+                    onMorePress={() => console.log('More button pressed')}
+                    navigation={navigation} // Pass navigation prop
+                />
             </View>
+
             
             {/* Reste du code */}
             <View style={styles.filterContainer}>
@@ -60,8 +64,12 @@ const RecipesScreen = ({ navigation }) => {
                     </ScrollView>
                 </View>
             </View>
+            
 
             <ScrollView style={styles.recipesContainer}>
+                <Button  title="Add you own recepie" 
+                onPress={() => navigation.navigate('AddRecipe')} 
+                style={styles.button}  />
                 {recipes.map((recipe) => (
                     <TouchableOpacity key={recipe.id} style={styles.recipeCard}>
                         <Image source={recipe.image} style={styles.recipeImage} />
@@ -97,8 +105,8 @@ const styles = StyleSheet.create({
         color: COLORS.text.dark,
     },
     filterContainer: {
-        paddingHorizontal: 20,
-        marginBottom: 20,
+        paddingHorizontal: 10,
+   
     },
     filterButton: {
         paddingHorizontal: 20,
