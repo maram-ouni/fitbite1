@@ -6,7 +6,7 @@ import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 
 
-const UpdateScreen = () => {
+const UpdateScreen = ({ navigation }) => {
     const [profileImage, setProfileImage] = useState(null);
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
@@ -32,6 +32,7 @@ const UpdateScreen = () => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
             >
+                
                 <Text style={styles.title}>Your information</Text>
 
                 <TouchableOpacity style={styles.profilePicContainer}>

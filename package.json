@@ -15,10 +15,14 @@
     "@react-native-async-storage/async-storage": "^2.1.0",
     "@react-native-picker/picker": "^2.9.0",
     "@react-navigation/bottom-tabs": "^7.0.7",
-    "@react-navigation/native": "^7.0.6",
+    "@react-navigation/native": "^7.0.7",
     "@react-navigation/native-stack": "^7.1.7",
+<<<<<<< HEAD
     "@react-navigation/stack": "^7.0.6",
     "@xmldom/xmldom": "^0.9.5",
+=======
+    "@react-navigation/stack": "^7.0.12",
+>>>>>>> a3a8ef7ac9f434ffed6a455dbaec69652bced908
     "expo": "~52.0.11",
     "expo-linear-gradient": "~14.0.1",
     "expo-status-bar": "~2.0.0",
@@ -26,6 +30,7 @@
     "glob": "^11.0.0",
     "react": "18.3.1",
     "react-native": "0.76.3",
+    "react-native-calendars": "^1.1307.0",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-get-random-values": "^1.11.0",
     "react-native-linear-gradient": "^2.8.3",
