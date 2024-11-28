@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/Auth/LoginScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen'; // Correct import
 import VerifyScreen from '../screens/Auth/VerifyScreen';
-import SignupFormScreen from '../screens/Auth/SignupFormScreen';
+import SignupFormScreen from 'C:\Users\eyaba\FitBite\screens\Auth\SignupFormScreen.js';
 
 
 const AuthStack = createNativeStackNavigator();
