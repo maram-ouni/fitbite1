@@ -19,7 +19,7 @@ const GroceriesListScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     console.log({ title, description });
-    alert('Recipe added successfully!');
+    alert('Groceries added successfully!');
     setTitle('');
     setDescription('');
   };

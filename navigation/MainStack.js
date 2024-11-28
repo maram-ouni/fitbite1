@@ -7,6 +7,10 @@ import UpdateScreen from '../screens/Main/UpdateScreen';
 import FavoriteScreen from '../screens/Main/FavoriteScreen';
 import Icon from 'react-native-vector-icons/Feather';
 import { Image } from 'react-native';
+
+
+
+
 const Tab = createBottomTabNavigator();
 
 const MainStackNavigator = () => {
