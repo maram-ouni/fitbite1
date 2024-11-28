@@ -1,119 +1,114 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,FlatList, Image, ScrollView } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient'; // Import du LinearGradient
 import Button from '../../components/Button';
 import { COLORS } from '../../styles/colors';
-import { LinearGradient } from 'expo-linear-gradient';
 import Header from './Header';
-import { Ionicons, Feather } from '@expo/vector-icons';
 
 const GroceriesListScreen = ({ navigation }) => {
-
   const [groceries, setGroceries] = useState([
     { id: '1', name: 'Bread', quantity: '2' },
     { id: '2', name: 'Tomato', quantity: '1 Kg' },
     { id: '3', name: 'Cheese', quantity: '200g' },
     { id: '4', name: 'Pepper', quantity: '5' },
   ]);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const handleSubmit = () => {
+
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+
+  const handleSubmit = () => {
     console.log({ title, description });
     alert('Recipe added successfully!');
     setTitle('');
     setDescription('');
-};
-const handleUpdateGrocery = (id, field, value) => {
+  };
+
+  const handleUpdateGrocery = (id, field, value) => {
     setGroceries((prevGroceries) =>
       prevGroceries.map((grocery) =>
         grocery.id === id ? { ...grocery, [field]: value } : grocery
       )
     );
   };
+
   const handleAddGrocery = () => {
     const newItem = {
-      id: (groceries.length + 1).toString(), // ID unique basé sur la longueur de la liste
+      id: (groceries.length + 1).toString(),
       name: 'New Item',
       quantity: '1',
     };
     setGroceries((prevGroceries) => [...prevGroceries, newItem]);
   };
 
-
   return (
-    <View style={styles.container}>
+    <LinearGradient
+    colors={COLORS.gradients.background.colors}
+    locations={COLORS.gradients.background.locations}
+    start={{ x: 0, y: 0 }}
+    end={{ x: 0, y: 1 }}
+    style={styles.container}
+>
       {/* Header */}
       <View style={styles.headerContainer}>
-                <Header
-                    date="2 May, Monday"
-                    onMorePress={() => console.log('More button pressed')}
-                    navigation={navigation} // Pass navigation prop
-                />
-        </View>
-
+        <Header
+          date="2 May, Monday"
+          onMorePress={() => console.log('More button pressed')}
+          navigation={navigation} // Pass navigation prop
+        />
+      </View>
 
       {/* Title */}
       <Text style={styles.title}>Your Groceries List</Text>
 
       {/* Grocery List */}
-
-
       <FlatList
-  data={groceries}
-  keyExtractor={(item) => item.id}
-  renderItem={({ item }) => (
-    <View style={styles.groceryItem}>
-      <Feather name="grid" size={20} color={COLORS.text.secondary} style={styles.dragIcon} />
-      <TextInput
-        style={styles.groceryInput}
-        value={item.name}
-        onChangeText={(text) => handleUpdateGrocery(item.id, 'name', text)} // Met à jour le nom
+        data={groceries}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.groceryItem}>
+            <Feather name="grid" size={20} color={COLORS.text.secondary} style={styles.dragIcon} />
+            <TextInput
+              style={styles.groceryInput}
+              value={item.name}
+              onChangeText={(text) => handleUpdateGrocery(item.id, 'name', text)} // Met à jour le nom
+            />
+            <TextInput
+              style={styles.quantityInput}
+              value={item.quantity}
+              onChangeText={(text) => handleUpdateGrocery(item.id, 'quantity', text)} // Met à jour la quantité
+            />
+          </View>
+        )}
       />
-      <TextInput
-        style={styles.quantityInput}
-        value={item.quantity}
-        onChangeText={(text) => handleUpdateGrocery(item.id, 'quantity', text)} // Met à jour la quantité
-      />
-    </View>
-  )}
-/>
 
       {/* Save Button */}
-    <View style={styles.buttonContainer}>
-  {/* Submit Button */}
-  <Button title="Submit" onPress={handleSubmit} style={styles.submitButton} />
+      <View style={styles.buttonContainer}>
+        <Button title="Submit" onPress={handleSubmit} style={styles.submitButton} />
 
-  {/* Add Button */}
-  <TouchableOpacity style={styles.addButton} onPress={handleAddGrocery}>
-  <Feather name="plus" size={24} color="#fff" />
-</TouchableOpacity>
-</View>
-    </View>
+        {/* Add Button */}
+        <TouchableOpacity style={styles.addButton} onPress={handleAddGrocery}>
+          <Feather name="plus" size={24} color="#fff" />
+        </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.primary.light,
     padding: 20,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  headerContainer: {
     marginBottom: 20,
-  },
-  headerText: {
-    fontSize: 16,
-    color: COLORS.text.primary,
-    fontWeight: 'bold',
   },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
     color: COLORS.text.primary,
     marginBottom: 20,
+    textAlign: 'center',
   },
   groceryItem: {
     flexDirection: 'row',
@@ -136,10 +131,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.text.secondary,
   },
-  saveButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
+  buttonContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
   },
   addButton: {
     position: 'absolute',
@@ -158,16 +154,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginBottom: 50,
   },
-  buttonContainer: {
-    flexDirection: 'column', // Place les boutons côte à côte
-    justifyContent: 'space-between', // Espace entre les boutons
-    alignItems: 'center',
-    marginTop: 20,
-  },
-
 });
-
-
-
 
 export default GroceriesListScreen;
