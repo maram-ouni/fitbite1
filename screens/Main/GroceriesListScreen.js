@@ -41,14 +41,20 @@ const GroceriesListScreen = ({ navigation }) => {
     setGroceries((prevGroceries) => [...prevGroceries, newItem]);
   };
 
+  const handleDeleteGrocery = (id) => {
+    setGroceries((prevGroceries) =>
+      prevGroceries.filter((grocery) => grocery.id !== id) // Supprime l'élément par ID
+    );
+  };
+
   return (
     <LinearGradient
-    colors={COLORS.gradients.background.colors}
-    locations={COLORS.gradients.background.locations}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 0, y: 1 }}
-    style={styles.container}
->
+      colors={COLORS.gradients.background.colors}
+      locations={COLORS.gradients.background.locations}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      style={styles.container}
+    >
       {/* Header */}
       <View style={styles.headerContainer}>
         <Header
@@ -78,8 +84,13 @@ const GroceriesListScreen = ({ navigation }) => {
               value={item.quantity}
               onChangeText={(text) => handleUpdateGrocery(item.id, 'quantity', text)} // Met à jour la quantité
             />
+            {/* Bouton de suppression */}
+            <TouchableOpacity onPress={() => handleDeleteGrocery(item.id)} style={styles.deleteButton}>
+              <Feather name="trash-2" size={24} color={COLORS.ui.danger} />
+            </TouchableOpacity>
           </View>
         )}
+        contentContainerStyle={{ padding: 16 }}
       />
 
       {/* Save Button */}
@@ -98,10 +109,9 @@ const GroceriesListScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   headerContainer: {
-    marginBottom: 20,
+    marginTop: 15,
   },
   title: {
     fontSize: 22,
@@ -153,6 +163,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     marginBottom: 50,
+  },
+  deleteButton: {
+    marginLeft: 10,
   },
 });
 

@@ -97,17 +97,18 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.scrollContent}
-            >
-                <View style={styles.header}>
+            
+            <View style={styles.header}>
                     <Header
                         date="2 May, Monday"
                         onMorePress={() => console.log('More button pressed')}
                         navigation={navigation} // Pass navigation prop
                     />
                 </View>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}
+            >
 
                 <CircularProgress percentage={75} />
 
@@ -163,11 +164,9 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 20,
-    },
+        marginTop:15,
+        
+      },
     dateContainer: {
         flexDirection: 'row',
         alignItems: 'center',

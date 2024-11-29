@@ -6,54 +6,58 @@ import logo from '../../assets/images/book.png'; // Assuming logo is in the asse
 
 const OnboardingScreen4 = ({ navigation }) => {
   const handleSkip = () => {
-    // Add your navigation logic here to move to the main app
     navigation.navigate('Auth');
   };
 
   const handleDiscover = () => {
-    // Add your navigation logic here to move to the main app
     navigation.navigate('OnboardingScreen5');
   };
 
   return (
-    <View style={styles.container}> {/* Use View instead of ScrollView to control footer positioning */}
-    <ScrollView contentContainerStyle={[styles.content, { paddingTop: 50 }]}> {/* Ajout de paddingTop pour espacer les éléments vers le bas */}
-    <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>Add Your Own Recipes</Text>
-    <Image source={logo} style={[styles.logo, { marginTop: 8 }]} /> {/* Optionnel : ajoute un léger espacement au logo */}
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={[styles.content, { paddingTop: 50 }]}>
+        {/* Welcome Text */}
+        <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>Add Your Own Recipes</Text>
 
-  {/* Yellow container for the description */}
-  <View style={[styles.descriptionContainer, { marginTop: 20 }]}> {/* Ajout de marginTop pour pousser vers le bas */}
-    <Text style={styles.appDescription}>
-    Have a favorite family recipe or a craving-specific dish? Add it to your app!
-      {"\n"}
-      <Text style={{ paddingLeft: 10 }}>• Create custom recipes with nutritional breakdowns.</Text>
-      {"\n"} 
-      <Text style={{ paddingLeft: 10 }}>• Save your go-to meals for easy access.</Text>
-      {"\n"}
-      <Text style={{ paddingLeft: 10 }}>• Share your recipes with other moms in the community.</Text>
-      {"\n"}
-      Your pregnancy cravings, your way!
-    </Text>
-  </View>
-</ScrollView>
+        {/* Logo Image */}
+        <Image source={logo} style={[styles.logo, { marginTop: 8 }]} />
 
+        {/* Yellow Container for Description */}
+        <View style={[styles.descriptionContainer, { marginTop: 20 }]}>
+          <Text style={styles.appDescription}>
+            Have a favorite family recipe or a craving-specific dish? Add it to your app!
+            {"\n"}
+            <Text style={{ paddingLeft: 10 }}>• Create custom recipes with nutritional breakdowns.</Text>
+            {"\n"}
+            <Text style={{ paddingLeft: 10 }}>• Save your go-to meals for easy access.</Text>
+            {"\n"}
+            <Text style={{ paddingLeft: 10 }}>• Share your recipes with other moms in the community.</Text>
+            {"\n"}
+            Your pregnancy cravings, your way!
+          </Text>
+        </View>
+      </ScrollView>
 
-      {/* Footer container will always stick to the bottom */}
+      {/* Footer Container */}
       <View style={styles.footerContainer}>
         <View style={styles.buttonContainer}>
+          {/* Skip Button */}
           <TouchableOpacity onPress={handleSkip} style={styles.button}>
             <Text style={[styles.buttonText, { color: '#3aafa9' }]}>Skip</Text>
           </TouchableOpacity>
 
-          {/* Pagination (Dots) */}
+          {/* Pagination Dots */}
           <View style={styles.pagination}>
-            <Text style={styles.paginationDot}>•</Text> {/* First dot matching welcome color */}
-            <Text style={styles.paginationDot}>•</Text>
-            <Text style={styles.paginationDot}>•</Text>
-            <Text style={[styles.paginationDot, { color: '#006D77' }]} >•</Text>
-            <Text style={styles.paginationDot}>•</Text>
+            <Text>
+              <Text style={styles.paginationDot}>•</Text>
+              <Text style={styles.paginationDot}>•</Text>
+              <Text style={styles.paginationDot}>•</Text>
+              <Text style={[styles.paginationDot, { color: '#006D77' }]}>•</Text>
+              <Text style={styles.paginationDot}>•</Text>
+            </Text>
           </View>
 
+          {/* Next Button */}
           <TouchableOpacity onPress={handleDiscover} style={styles.button}>
             <Text style={[styles.buttonText, { color: '#3aafa9' }]}>Next</Text>
           </TouchableOpacity>
@@ -65,11 +69,11 @@ const OnboardingScreen4 = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // This ensures the entire screen is used, allowing footer to stay at the bottom
+    flex: 1,
     backgroundColor: '#e8f6f6',
   },
   content: {
-    flexGrow: 1, // Allow scroll content to take as much space as it needs
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -82,7 +86,7 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: '#006D77', // Color for the first pagination dot
+    color: '#006D77',
     marginBottom: 20,
   },
   descriptionContainer: {
@@ -106,14 +110,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    marginTop: 'auto', 
-    marginBottom: '5%'// Ensures footer is pushed to the bottom of the screen
+    marginTop: 'auto',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    alignItems: 'center', // Center vertically the buttons and dots
+    alignItems: 'center',
   },
   button: {
     flex: 1,
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
   },
   pagination: {
     flexDirection: 'row',
-    alignItems: 'center', // This ensures that dots are vertically aligned with buttons
+    alignItems: 'center',
   },
   paginationDot: {
     fontSize: 25,

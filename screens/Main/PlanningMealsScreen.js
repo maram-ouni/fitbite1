@@ -14,31 +14,34 @@ const PlanningMealsScreen = ({ navigation }) => {
     { type: 'DINNER', icon: require('../../assets/images/dinner.png') },
     { type: 'SNACKS', icon: require('../../assets/images/snacks.png') },
   ];
+  const handlePress = () => {
+    navigation.navigate('RecipiesScreen');  // Modifier avec le nom de l'écran de destination
+  };
 
   return (
  
-    <View style={styles.container}>
-      {/* Header */}
-                
-
-
-      <View style={styles.headerContainer}>
-                <Header
-                    date="2 May, Monday"
-                    onMorePress={() => console.log('More button pressed')}
-                    navigation={navigation} // Pass navigation prop
-                />
-        </View>
+    <LinearGradient
+    colors={COLORS.gradients.background.colors}
+    locations={COLORS.gradients.background.locations}
+    style={styles.container}
+  >
+    {/* Header */}
+    <View style={styles.header}>
+      <Header
+        date="2 May, Monday"
+        onMorePress={() => console.log('More button pressed')}
+        navigation={navigation}
+      />
+    </View>
+      {/* Meal Cards */}
 
       
-
-      {/* Meal Cards */}
       <ScrollView style={styles.mealContainer}>
         {meals.map((meal, index) => (
           <View key={index} style={styles.mealCard}>
             <Image source={meal.icon} style={styles.mealIcon} />
             <Text style={styles.mealText}>{meal.type}</Text>
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity style={styles.addButton} onPress={handlePress}>
                 <Feather name="plus" size={24} color="#006A6A" />
             </TouchableOpacity>
           </View>
@@ -51,14 +54,18 @@ const PlanningMealsScreen = ({ navigation }) => {
 
       {/* Bottom Navigation */}
      
-    </View>
+  
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+   container: {
     flex: 1,
-    backgroundColor: COLORS.primary.light,
+  },
+  header: {
+    marginTop:15,
+    
   },
   week: {
     alignItems: 'center', // Center the header text horizontally
@@ -71,7 +78,7 @@ const styles = StyleSheet.create({
   },
  
   mealContainer: {
-    flex: 1,
+   
     padding: 20,
   },
   mealCard: {

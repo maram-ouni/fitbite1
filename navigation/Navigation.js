@@ -7,6 +7,7 @@ import OnboardingStack from './OnboardingStack';
 import PlanningMealsScreen from '../screens/Main/PlanningMealsScreen';
 import AddRecipeScreen from '../screens/Main/AddRecipeScreen'
 import GroceriesListScreen from '../screens/Main/GroceriesListScreen';
+import RecipesScreen from '../screens/Main/RecipesScreen';
 
 
 
@@ -53,6 +54,7 @@ const Navigation = () => {
       <Stack.Screen name="PlanningMeals" component={PlanningMealsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="AddRecipe" component={AddRecipeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="GroceriesList" component={GroceriesListScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="RecipiesScreen" component={RecipesScreen} options={{ headerShown: false }} />
       
       
       

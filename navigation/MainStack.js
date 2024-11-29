@@ -5,7 +5,6 @@ import HomeScreen from '../screens/Main/HomeScreen';
 import RecipesScreen from '../screens/Main/RecipesScreen';
 import UpdateScreen from '../screens/Main/UpdateScreen';
 import FavoriteScreen from '../screens/Main/FavoriteScreen';
-import Icon from 'react-native-vector-icons/Feather';
 import { Image } from 'react-native';
 
 
