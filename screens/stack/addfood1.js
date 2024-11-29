@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'reac
 import { Slider } from '@react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const AddRecipeScreen = () => {
+const AddRecipeScreen = ({ navigation }) => {
   const [foodName, setFoodName] = useState('');
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState(30); // Par défaut 30 minutes
