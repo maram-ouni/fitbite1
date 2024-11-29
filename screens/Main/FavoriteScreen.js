@@ -1,34 +1,71 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import Header from './Header';
+import { Ionicons } from '@expo/vector-icons';
 
-const RecipesScreen = ({ navigation }) => {
+const FavoriteRecipesScreen = ({ navigation }) => {
   const [activeFilter, setActiveFilter] = useState('Breakfast'); // Gérer l'état actif des filtres
+  const [searchText, setSearchText] = useState('');
 
-  const filters = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+  // Recettes classées par catégorie
+  const recipesByCategory = {
+    Breakfast: [
+      {
+        id: 1,
+        title: 'cake',
+        duration: '15 min.',
+        image: require('../../assets/images/cake.png'),
+      },
+      {
+        id: 2,
+        title: 'breakfast',
+        duration: '10 min.',
+        image: require('../../assets/images/breakfast.png'),
+      },
+    ],
+    Lunch: [
+      {
+        id: 3,
+        title: 'Grilled Chicken Salad',
+        duration: '20 min.',
+        image: require('../../assets/images/salad.png'),
+      },
+      {
+        id: 4,
+        title: 'pumpkin-soup',
+        duration: '25 min.',
+        image: require('../../assets/images/pumkin-soup.jpg'),
+      },
+    ],
+    Dinner: [
+      {
+        id: 5,
+        title: 'Steak and Vegetables',
+        duration: '30 min.',
+        image: require('../../assets/images/salad.png'),
+      },
+      {
+        id: 6,
+        title: 'Pumpkin Soup',
+        duration: '15 min.',
+        image: require('../../assets/images/pumkin-soup.jpg'),
+      },
+    ],
+    Snacks: [
+      {
+        id: 7,
+        title: 'cake',
+        duration: '5 min.',
+        image: require('../../assets/images/cake.png'),
+      },
+      
+    ],
+  };
 
-  const recipes = [
-    {
-      id: 1,
-      title: 'Cake',
-      duration: '20 min.',
-      image: require('../../assets/images/cake.png'),
-    },
-    {
-      id: 2,
-      title: 'Salad',
-      duration: '10 min.',
-      image: require('../../assets/images/salad.png'),
-    },
-    {
-      id: 3,
-      title: 'Pumpkin Soup',
-      duration: '15 min.',
-      image: require('../../assets/images/pumkin-soup.jpg'),
-    },
-  ];
+  // Obtenez les recettes pour le filtre actif
+  const filteredRecipes = recipesByCategory[activeFilter] || [];
 
   return (
     <LinearGradient
@@ -45,15 +82,25 @@ const RecipesScreen = ({ navigation }) => {
         />
       </View>
 
-      {/* Filtres avec LinearGradient */}
+      {/* Barre de recherche */}
+      <View style={styles.searchBar}>
+        <Ionicons name="search-outline" size={20} color="#aaa" />
+        <TextInput
+          style={styles.searchInput}
+          placeholder={`Search ${activeFilter.toLowerCase()} recipes...`}
+          value={searchText}
+          onChangeText={setSearchText}
+        />
+      </View>
+
+      {/* Filtres */}
       <View style={styles.filterContainer}>
-      
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.scrollBox}
         >
-          {filters.map((filter) => (
+          {Object.keys(recipesByCategory).map((filter) => (
             <TouchableOpacity
               key={filter}
               onPress={() => setActiveFilter(filter)}
@@ -80,10 +127,7 @@ const RecipesScreen = ({ navigation }) => {
 
       {/* Liste des recettes */}
       <ScrollView style={styles.scrollView}>
-        {/* Bouton "Add your own recipe" */}
-        
-
-        {recipes.map((recipe) => (
+        {filteredRecipes.map((recipe) => (
           <TouchableOpacity
             key={recipe.id}
             style={styles.recipeCard}
@@ -106,30 +150,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
-    marginTop:15,
-    
+    marginTop: 15,
   },
   scrollView: {
     flex: 1,
   },
-  button: {
-    borderRadius: 10,
-    height: 45,
-  },
   filterContainer: {
     backgroundColor: '#F2F5FC',
-        borderRadius: 20,
-        paddingVertical: 10,
-        paddingHorizontal: 5,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 5,
-        elevation: 3,
-        marginBottom: 10,
-    marginLeft:10,
-    marginRight:10,
-},
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+    elevation: 3,
+    marginBottom: 10,
+    marginHorizontal: 10,
+  },
   scrollBox: {
     flexDirection: 'row',
   },
@@ -145,7 +183,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inactiveButton: {
-    
     borderRadius: 25,
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -159,10 +196,6 @@ const styles = StyleSheet.create({
   activeText: {
     color: '#fff',
     fontWeight: 'bold',
-  },
-  addButtonContainer: {
-    marginHorizontal: 20,
-    marginBottom: 20,
   },
   recipeCard: {
     backgroundColor: 'white',
@@ -187,6 +220,21 @@ const styles = StyleSheet.create({
   recipeDuration: {
     color: '#666',
   },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 25,
+    height: 40,
+    marginBottom: 15,
+    marginHorizontal: 10,
+  },
+  searchInput: {
+    marginLeft: 10,
+    flex: 1,
+    color: '#555',
+    fontSize: 15,
+  },
 });
 
-export default RecipesScreen;
+export default FavoriteRecipesScreen;

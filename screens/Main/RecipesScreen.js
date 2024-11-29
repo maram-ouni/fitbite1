@@ -6,30 +6,33 @@ import Button from '../../components/Button'; // Import du composant Button
 import Header from './Header';
 
 const RecipesScreen = ({ navigation }) => {
-  const [activeFilter, setActiveFilter] = useState('Breakfast'); // Gérer l'état actif des filtres
+  const [activeFilter, setActiveFilter] = useState('Breakfast'); // Suivre l'état actif des filtres
 
+  // Liste des filtres horizontaux
   const filters = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
 
-  const recipes = [
-    {
-      id: 1,
-      title: 'Cake',
-      duration: '20 min.',
-      image: require('../../assets/images/cake.png'),
-    },
-    {
-      id: 2,
-      title: 'Salad',
-      duration: '10 min.',
-      image: require('../../assets/images/salad.png'),
-    },
-    {
-      id: 3,
-      title: 'Pumpkin Soup',
-      duration: '15 min.',
-      image: require('../../assets/images/pumkin-soup.jpg'),
-    },
-  ];
+  // Données des recettes pour chaque filtre
+  const recipes = {
+    Breakfast: [
+      { id: 1, title: 'cake', duration: '15 min.', image: require('../../assets/images/cake.png') },
+      { id: 2, title: 'cake', duration: '10 min.', image: require('../../assets/images/cake.png') },
+    ],
+    Lunch: [
+      { id: 3, title: 'Salad', duration: '10 min.', image: require('../../assets/images/salad.png') },
+      { id: 4, title: 'Salad', duration: '20 min.', image: require('../../assets/images/salad.png') },
+    ],
+    Dinner: [
+      { id: 5, title: 'Pumpkin Soup', duration: '15 min.', image: require('../../assets/images/pumkin-soup.jpg') },
+      { id: 6, title: 'Pumpkin Soup', duration: '25 min.', image: require('../../assets/images/pumkin-soup.jpg') },
+    ],
+    Snacks: [
+      { id: 7, title: 'Salad', duration: '10 min.', image: require('../../assets/images/salad.png') },
+      { id: 8, title: 'Salad', duration: '5 min.', image: require('../../assets/images/salad.png') },
+    ],
+  };
+
+  // Récupérer les recettes pour le filtre actif
+  const selectedRecipes = recipes[activeFilter];
 
   return (
     <LinearGradient
@@ -46,9 +49,8 @@ const RecipesScreen = ({ navigation }) => {
         />
       </View>
 
-      {/* Filtres avec LinearGradient */}
+      {/* Filtres horizontaux */}
       <View style={styles.filterContainer}>
-      
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -57,7 +59,7 @@ const RecipesScreen = ({ navigation }) => {
           {filters.map((filter) => (
             <TouchableOpacity
               key={filter}
-              onPress={() => setActiveFilter(filter)}
+              onPress={() => setActiveFilter(filter)} // Mettre à jour le filtre actif
               style={styles.filterButton}
             >
               {activeFilter === filter ? (
@@ -79,7 +81,6 @@ const RecipesScreen = ({ navigation }) => {
         </ScrollView>
       </View>
 
-
       {/* Liste des recettes */}
       <ScrollView style={styles.scrollView}>
         {/* Bouton "Add your own recipe" */}
@@ -91,7 +92,8 @@ const RecipesScreen = ({ navigation }) => {
           />
         </View>
 
-        {recipes.map((recipe) => (
+        {/* Cartes des recettes */}
+        {selectedRecipes.map((recipe) => (
           <TouchableOpacity
             key={recipe.id}
             style={styles.recipeCard}
@@ -107,23 +109,6 @@ const RecipesScreen = ({ navigation }) => {
       </ScrollView>
     </LinearGradient>
   );
-
-            <ScrollView style={styles.recipesContainer}>
-                <Button  title="Add you own receipe" 
-                onPress={() => navigation.navigate('addfood')} 
-                style={styles.button}  />
-                {recipes.map((recipe) => (
-                    <TouchableOpacity key={recipe.id} style={styles.recipeCard}>
-                        <Image source={recipe.image} style={styles.recipeImage} />
-                        <View style={styles.recipeInfo}>
-                            <Text style={styles.recipeTitle}>{recipe.title}</Text>
-                            <Text style={styles.recipeDuration}>{recipe.duration}</Text>
-                        </View>
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
-      
-  
 };
 
 const styles = StyleSheet.create({
@@ -131,8 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
-    marginTop:15,
-    
+    marginTop: 15,
   },
   scrollView: {
     flex: 1,
@@ -143,18 +127,18 @@ const styles = StyleSheet.create({
   },
   filterContainer: {
     backgroundColor: '#F2F5FC',
-        borderRadius: 20,
-        paddingVertical: 10,
-        paddingHorizontal: 5,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 5,
-        elevation: 3,
-        marginBottom: 10,
-    marginLeft:10,
-    marginRight:10,
-},
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+    elevation: 3,
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+  },
   scrollBox: {
     flexDirection: 'row',
   },
@@ -170,7 +154,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inactiveButton: {
-    
     borderRadius: 25,
     paddingHorizontal: 20,
     paddingVertical: 10,

@@ -6,7 +6,6 @@ import Button from '../../components/Button'; // Import du composant Button
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-
 const PlanningMealsScreen = ({ navigation }) => {
   const meals = [
     { type: 'BREAKFAST', icon: require('../../assets/images/breakfast.png') },
@@ -14,71 +13,66 @@ const PlanningMealsScreen = ({ navigation }) => {
     { type: 'DINNER', icon: require('../../assets/images/dinner.png') },
     { type: 'SNACKS', icon: require('../../assets/images/snacks.png') },
   ];
+
   const handlePress = () => {
     navigation.navigate('RecipiesScreen');  // Modifier avec le nom de l'écran de destination
   };
 
-  return (
- 
-    <LinearGradient
-    colors={COLORS.gradients.background.colors}
-    locations={COLORS.gradients.background.locations}
-    style={styles.container}
-  >
-    {/* Header */}
-    <View style={styles.header}>
-      <Header
-        date="2 May, Monday"
-        onMorePress={() => console.log('More button pressed')}
-        navigation={navigation}
-      />
-    </View>
-      {/* Meal Cards */}
+  // Fonction pour revenir à l'écran précédent
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
 
-      
+
+  return (
+    <LinearGradient
+      colors={COLORS.gradients.background.colors}
+      locations={COLORS.gradients.background.locations}
+      style={styles.container}
+    >
+      {/* Header */}
+      <View style={styles.header}>
+        <Header
+          date="2 May, Monday"
+          onMorePress={() => console.log('More button pressed')}
+          navigation={navigation}
+        />
+      </View>
+
+      <View style={styles.bbb}>
+   <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+        <Feather name="arrow-left" size={24} color={COLORS.primary.dark} />
+      </TouchableOpacity>
+</View>
+      {/* Meal Cards */}
       <ScrollView style={styles.mealContainer}>
         {meals.map((meal, index) => (
           <View key={index} style={styles.mealCard}>
             <Image source={meal.icon} style={styles.mealIcon} />
             <Text style={styles.mealText}>{meal.type}</Text>
             <TouchableOpacity style={styles.addButton} onPress={handlePress}>
-                <Feather name="plus" size={24} color="#006A6A" />
+              <Feather name="plus" size={24} color="#006A6A" />
             </TouchableOpacity>
           </View>
         ))}
-         <Button  title="Create shopping list" 
-                onPress={() => navigation.navigate('GroceriesList')} 
-                style={styles.button}  />
+        <Button 
+          title="Create shopping list" 
+          onPress={() => navigation.navigate('GroceriesList')} 
+          style={styles.button}  
+        />
       </ScrollView>
-
-
-      {/* Bottom Navigation */}
-     
-  
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-   container: {
+  container: {
     flex: 1,
   },
   header: {
-    marginTop:15,
-    
+    marginTop: 15,
   },
-  week: {
-    alignItems: 'center', // Center the header text horizontally
-    marginVertical: 10,
-  },
-  weekText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.primary.dark,
-  },
- 
   mealContainer: {
-   
     padding: 20,
   },
   mealCard: {
@@ -90,21 +84,37 @@ const styles = StyleSheet.create({
     padding: 15,
     borderWidth: 1,
     borderColor: COLORS.secondary.dark,
-    justifyContent: 'space-between',  // Ensures the text is centered and space is properly distributed
-    borderBottomWidth: 1,             // Adds a bottom border for the horizontal line
-    borderBottomColor: COLORS.secondary.dark,  // Color of the line
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.secondary.dark,
   },
   mealIcon: {
     width: 40,
     height: 40,
     marginRight: 10,
   },
+  backButton: {
+   
+    width: 40,
+    height: 40,
+    borderRadius: 25, 
+    backgroundColor: COLORS.primary.light,
+    alignItems: 'center',
+    justifyContent: 'center',
+    
+  },
+  bbb : {
+    paddingBottom:15,
+    paddingTop:5,
+    paddingLeft:10,
+  },
+
   mealText: {
     flex: 1,
     fontSize: 16,
     color: COLORS.primary.dark,
     fontWeight: 'bold',
-    textAlign: 'center',  // Centers the text horizontally
+    textAlign: 'center',
   },
   addButton: {
     backgroundColor: COLORS.ui.addButton,
@@ -114,17 +124,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  addButtonText: {
-    fontSize: 18,
-    color: COLORS.primary.dark,
-    fontWeight: 'bold',
+  button: {
+    marginTop: 20,
   },
-  headerContainer: {
-    padding: 20, // Identique à celui dans FavoriteScreen
-   
-},
-
+  // Style pour le bouton circulaire de retour
+ 
 });
 
 export default PlanningMealsScreen;
-

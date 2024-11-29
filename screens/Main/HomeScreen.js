@@ -57,7 +57,7 @@ const CircularProgress = ({ percentage }) => {
     );
 };
 
-const MealItem = ({ title, calories, recommended, items, isExpanded, onToggle }) => (
+const MealItem = ({ title, calories, recommended, items, isExpanded, onToggle , navigation}) => (
     <View style={[styles.mealItem, { borderLeftColor: title === 'Breakfast' || title === 'Dinner' ? '#006A6A' : '#FF8E6E' }]}>
         <TouchableOpacity style={styles.mealHeader} onPress={onToggle}>
             <View style={styles.mealContent}>
@@ -69,7 +69,7 @@ const MealItem = ({ title, calories, recommended, items, isExpanded, onToggle })
                 </View>
                 <Text style={styles.recommendedText}>Recommended {recommended} Kcal</Text>
             </View>
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('Ingredients')}>
                 <Feather name="plus" size={24} color="#006A6A" />
             </TouchableOpacity>
         </TouchableOpacity>
@@ -130,6 +130,7 @@ const HomeScreen = ({ navigation }) => {
                         items={breakfastItems}
                         isExpanded={expandedMeal === 'Breakfast'}
                         onToggle={() => setExpandedMeal(expandedMeal === 'Breakfast' ? null : 'Breakfast')}
+                        navigation={navigation}
                     />
                     <MealItem
                         title="Lunch"

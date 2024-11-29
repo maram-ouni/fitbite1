@@ -46,7 +46,10 @@ const GroceriesListScreen = ({ navigation }) => {
       prevGroceries.filter((grocery) => grocery.id !== id) // Supprime l'élément par ID
     );
   };
-
+// Fonction pour revenir à l'écran précédent
+const handleGoBack = () => {
+  navigation.goBack();
+};
   return (
     <LinearGradient
       colors={COLORS.gradients.background.colors}
@@ -56,13 +59,19 @@ const GroceriesListScreen = ({ navigation }) => {
       style={styles.container}
     >
       {/* Header */}
-      <View style={styles.headerContainer}>
+      <View style={styles.header}>
         <Header
           date="2 May, Monday"
           onMorePress={() => console.log('More button pressed')}
           navigation={navigation} // Pass navigation prop
         />
       </View>
+
+      <View style={styles.bbb}>
+   <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+        <Feather name="arrow-left" size={24} color={COLORS.primary.dark} />
+      </TouchableOpacity>
+</View>
 
       {/* Title */}
       <Text style={styles.title}>Your Groceries List</Text>
@@ -109,9 +118,11 @@ const GroceriesListScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+   
   },
-  headerContainer: {
+  header: {
     marginTop: 15,
+
   },
   title: {
     fontSize: 22,
@@ -166,6 +177,21 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     marginLeft: 10,
+  },
+  backButton: {
+   
+    width: 40,
+    height: 40,
+    borderRadius: 25, 
+    backgroundColor: COLORS.primary.light,
+    alignItems: 'center',
+    justifyContent: 'center',
+    
+  },
+  bbb : {
+    paddingBottom:15,
+    paddingTop:5,
+    paddingLeft:10,
   },
 });
 
