@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Slider } from '@react-native-elements';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import { Slider } from "@react-native-elements";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const AddRecipeScreen = () => {
-  const [foodName, setFoodName] = useState('');
-  const [description, setDescription] = useState('');
+  const [foodName, setFoodName] = useState("");
+  const [description, setDescription] = useState("");
   const [duration, setDuration] = useState(30); // Par défaut 30 minutes
 
   return (
@@ -57,13 +64,16 @@ const AddRecipeScreen = () => {
         maximumTrackTintColor="#ddd"
       />
       <View style={styles.sliderLabels}>
-        <Text>{'<10'}</Text>
+        <Text>{"<10"}</Text>
         <Text>{duration}</Text>
-        <Text>{'>60'}</Text>
+        <Text>{">60"}</Text>
       </View>
 
       {/* Bouton Suivant */}
-      <TouchableOpacity style={styles.nextButton}>
+      <TouchableOpacity
+        style={styles.nextButton}
+        onPress={() => navigation.navigate("AddFood2")} // Navigation vers la deuxième page
+      >
         <Text style={styles.nextButtonText}>Next</Text>
       </TouchableOpacity>
 
@@ -81,83 +91,83 @@ const AddRecipeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FCFF',
+    backgroundColor: "#F9FCFF",
     paddingHorizontal: 20,
     paddingTop: 50,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   cancelText: {
-    color: '#FF6B6B',
+    color: "#FF6B6B",
     fontSize: 16,
   },
   stepText: {
-    color: '#aaa',
+    color: "#aaa",
     fontSize: 16,
   },
   imageUpload: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 20,
     padding: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#fff',
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
   },
   uploadText: {
     fontSize: 16,
-    color: '#555',
+    color: "#555",
     marginTop: 10,
   },
   uploadSubtext: {
     fontSize: 12,
-    color: '#aaa',
+    color: "#aaa",
   },
   label: {
     fontSize: 14,
-    color: '#555',
+    color: "#555",
     marginBottom: 5,
     marginTop: 10,
   },
   input: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     padding: 10,
     fontSize: 16,
   },
   textArea: {
     height: 80,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
   },
   sliderLabels: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   nextButton: {
-    backgroundColor: '#6EC1E4',
+    backgroundColor: "#6EC1E4",
     borderRadius: 10,
     paddingVertical: 15,
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 20,
   },
   nextButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   navbar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     paddingVertical: 15,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
   },
 });
 
