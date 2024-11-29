@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import Button2 from '../../components/Button2';
+import Button from '../../components/Button2';
 
 const VerifyScreen = ({ navigation }) => {
   const [code, setCode] = useState(['', '', '', '']);
@@ -87,9 +87,9 @@ const VerifyScreen = ({ navigation }) => {
 
       <Text style={styles.timer}>Code expires in: {Math.floor(timer / 60)}:{timer % 60}</Text>
 
-      <Button2 
-        title="verify" 
-        onPress={() => navigation.navigate('Main')} 
+      <Button 
+        title="Confirm" 
+        onPress={() => navigation.navigate('SignupForm')} 
         style={styles.button} 
       />
 

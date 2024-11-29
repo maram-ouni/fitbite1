@@ -6,6 +6,10 @@ import RecipesScreen from '../screens/Main/RecipesScreen';
 import UpdateScreen from '../screens/Main/UpdateScreen';
 import FavoriteScreen from '../screens/Main/FavoriteScreen';
 import { Image } from 'react-native';
+
+
+
+
 const Tab = createBottomTabNavigator();
 
 const MainStackNavigator = () => {

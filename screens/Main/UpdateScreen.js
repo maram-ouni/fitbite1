@@ -4,9 +4,10 @@ import { Picker } from '@react-native-picker/picker';
 import Button from '../../components/Button';
 import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import Header from './Header';
 
 
-const UpdateScreen = () => {
+const UpdateScreen = ({ navigation }) => {
     const [profileImage, setProfileImage] = useState(null);
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
@@ -14,10 +15,16 @@ const UpdateScreen = () => {
     const [activityLevel, setActivityLevel] = useState('');
     const [supplements, setSupplements] = useState('');
     const [doctorRemarks, setDoctorRemarks] = useState('');
-    const handleSubmit = () => {
-        // Handle your submit logic here
-        console.log('Submit pressed');
-    };
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    
+     const handleSubmit = () => {
+    console.log({ title, description });
+    alert('Information updated successfully!');
+    setTitle('');
+    setDescription('');
+  };
+
 
     return (
         <LinearGradient
@@ -32,6 +39,13 @@ const UpdateScreen = () => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
             >
+                <View style={styles.header}>
+                    <Header
+                        date="2 May, Monday"
+                        onMorePress={() => console.log('More button pressed')}
+                        navigation={navigation} // Pass navigation prop
+                    />
+                </View>
                 <Text style={styles.title}>Your information</Text>
 
                 <TouchableOpacity style={styles.profilePicContainer}>
@@ -121,11 +135,7 @@ const UpdateScreen = () => {
                     />
                 </View>
 
-                <Button
-                    title="Submit"
-                    onPress={handleSubmit}
-                    style={{ marginBottom: 20 }}
-                />
+                <Button title="Submit" onPress={handleSubmit} style={styles.submitButton} />
             </ScrollView>
 
 

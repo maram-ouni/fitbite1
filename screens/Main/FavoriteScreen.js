@@ -2,8 +2,9 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import Header from './Header';
 
-const FavoriteScreen = () => {
+const FavoriteScreen = (navigation) => {
     const recipes = [
         {
             id: 1,
@@ -32,6 +33,13 @@ const FavoriteScreen = () => {
             style={styles.container}
         >
             <View style={styles.searchContainer}>
+                <View style={styles.header}>
+                    <Header
+                        date="2 May, Monday"
+                        onMorePress={() => console.log('More button pressed')}
+                        navigation={navigation} // Pass navigation prop
+                    />
+                </View>
                 <TextInput
                     style={styles.searchInput}
                     placeholder="Looking for something?"
@@ -40,20 +48,23 @@ const FavoriteScreen = () => {
             </View>
 
             <View style={styles.filterContainer}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    <TouchableOpacity style={[styles.filterButton, styles.filterButtonActive]}>
-                        <Text style={[styles.filterText, styles.filterTextActive]}>Breakfast</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.filterButton}>
-                        <Text style={styles.filterText}>Lunch</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.filterButton}>
-                        <Text style={styles.filterText}>Dinner</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.filterButton}>
-                        <Text style={styles.filterText}>Snacks</Text>
-                    </TouchableOpacity>
-                </ScrollView>
+                <View style={styles.scrollBox}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <TouchableOpacity style={[styles.filterButton, styles.filterButtonActive]}>
+                            <Text style={[styles.filterText, styles.filterTextActive]}>Breakfast</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.filterButton}>
+                            <Text style={styles.filterText}>Lunch</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.filterButton}>
+                            <Text style={styles.filterText}>Dinner</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.filterButton}>
+                            <Text style={styles.filterText}>Snacks</Text>
+                        </TouchableOpacity>
+                    </ScrollView>
+                </View>
+
             </View>
 
             <ScrollView style={styles.recipesContainer}>
@@ -85,8 +96,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     filterContainer: {
-        paddingHorizontal: 20,
-        marginBottom: 20,
+        paddingHorizontal: 10,
+
     },
     filterButton: {
         paddingHorizontal: 20,
@@ -129,6 +140,19 @@ const styles = StyleSheet.create({
     recipeDuration: {
         color: '#666',
     },
+    scrollBox: {
+        backgroundColor: '#F2F5FC',
+        borderRadius: 20,
+        paddingVertical: 10,
+        paddingHorizontal: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 5,
+        elevation: 3,
+        marginBottom: 10,
+    },
+
 });
 
 export default FavoriteScreen;
