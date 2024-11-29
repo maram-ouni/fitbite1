@@ -67,8 +67,8 @@ const RecipesScreen = ({ navigation }) => {
             
 
             <ScrollView style={styles.recipesContainer}>
-                <Button  title="Add you own recepie" 
-                onPress={() => navigation.navigate('AddRecipe')} 
+                <Button  title="Add you own receipe" 
+                onPress={() => navigation.navigate('addfood')} 
                 style={styles.button}  />
                 {recipes.map((recipe) => (
                     <TouchableOpacity key={recipe.id} style={styles.recipeCard}>
