@@ -6,39 +6,42 @@ import logo from '../../assets/images/logo1.png'; // Assuming logo is in the ass
 
 const OnboardingScreen = ({ navigation }) => {
   const handleSkip = () => {
-    // Add your navigation logic here to move to the main app
+    // Navigate to authentication screen
     navigation.navigate('Auth');
   };
 
   const handleDiscover = () => {
-    // Add your navigation logic here to move to the main app
+    // Navigate to the next onboarding screen
     navigation.navigate('OnboardingScreen2');
   };
 
   return (
-    <View style={styles.container}> {/* Use View instead of ScrollView to control footer positioning */}
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.welcomeText}>Welcome</Text>
         <Image source={logo} style={styles.logo} />
 
-        {/* Yellow container for the description */}
+        {/* Description container */}
         <View style={styles.descriptionContainer}>
           <Text style={styles.appDescription}>
-            Welcome to FitBite, the app designed to support you during your beautiful journey of motherhood! From nutrition guidance to personalized tracking tools, we’re here to make your pregnancy healthier and happier. Explore tailored features to meet the unique needs of you and your baby.
+            Welcome to <Text style={styles.highlight}>FitBite</Text>, the app designed to support you during your
+            beautiful journey of motherhood! From nutrition guidance to personalized tracking tools, we’re here to make
+            your pregnancy healthier and happier. Explore tailored features to meet the unique needs of you and your
+            baby.
           </Text>
         </View>
       </ScrollView>
 
-      {/* Footer container will always stick to the bottom */}
+      {/* Footer */}
       <View style={styles.footerContainer}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={handleSkip} style={styles.button}>
             <Text style={[styles.buttonText, { color: '#3aafa9' }]}>Skip</Text>
           </TouchableOpacity>
 
-          {/* Pagination (Dots) */}
+          {/* Pagination Dots */}
           <View style={styles.pagination}>
-            <Text style={[styles.paginationDot, { color: '#006D77' }]}>•</Text> {/* First dot matching welcome color */}
+            <Text style={[styles.paginationDot, { color: '#006D77' }]}>•</Text>
             <Text style={styles.paginationDot}>•</Text>
             <Text style={styles.paginationDot}>•</Text>
             <Text style={styles.paginationDot}>•</Text>
@@ -56,11 +59,11 @@ const OnboardingScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // This ensures the entire screen is used, allowing footer to stay at the bottom
+    flex: 1,
     backgroundColor: '#e8f6f6',
   },
   content: {
-    flexGrow: 1, // Allow scroll content to take as much space as it needs
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -73,9 +76,9 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#006D77', // Color for the first pagination dot
+    color: '#006D77',
     marginBottom: 10,
-    marginTop:'20%'
+    marginTop: '20%',
   },
   descriptionContainer: {
     backgroundColor: '#F9F7EB',
@@ -90,6 +93,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     color: '#444',
+    lineHeight: 22,
+  },
+  highlight: {
+    color: '#E29579',
+    fontWeight: 'bold',
   },
   footerContainer: {
     width: '100%',
@@ -98,14 +106,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    marginTop: 'auto', 
-    marginBottom: '5%'// Ensures footer is pushed to the bottom of the screen
+    marginTop: 'auto',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    alignItems: 'center', // Center vertically the buttons and dots
+    alignItems: 'center',
   },
   button: {
     flex: 1,
@@ -118,7 +125,7 @@ const styles = StyleSheet.create({
   },
   pagination: {
     flexDirection: 'row',
-    alignItems: 'center', // This ensures that dots are vertically aligned with buttons
+    alignItems: 'center',
   },
   paginationDot: {
     fontSize: 25,

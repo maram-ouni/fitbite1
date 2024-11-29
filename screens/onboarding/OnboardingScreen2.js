@@ -6,39 +6,36 @@ import logo from '../../assets/images/welcome2.png'; // Assuming logo is in the 
 
 const OnboardingScreen2 = ({ navigation }) => {
   const handleSkip = () => {
-    // Add your navigation logic here to move to the main app
     navigation.navigate('Auth');
   };
 
   const handleDiscover = () => {
-    // Add your navigation logic here to move to the main app
     navigation.navigate('OnboardingScreen3');
   };
 
   return (
-    <View style={styles.container}> {/* Use View instead of ScrollView to control footer positioning */}
-    <ScrollView contentContainerStyle={[styles.content, { paddingTop: 50 }]}> {/* Ajout de paddingTop pour espacer les éléments vers le bas */}
-  <Text style={styles.welcomeText}>Nutrition Made Simple</Text>
-  <Image source={logo} style={[styles.logo, { marginTop: 8 }]} /> {/* Optionnel : ajoute un léger espacement au logo */}
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={[styles.content, { paddingTop: 50 }]}>
+        <Text style={styles.welcomeText}>Nutrition Made Simple</Text>
+        <Image source={logo} style={[styles.logo, { marginTop: 8 }]} />
 
-  {/* Yellow container for the description */}
-  <View style={[styles.descriptionContainer, { marginTop: 20 }]}> {/* Ajout de marginTop pour pousser vers le bas */}
-    <Text style={styles.appDescription}>
-      Good nutrition is key for a healthy pregnancy! Our app offers:
-      {"\n"}
-      <Text style={{ paddingLeft: 10 }}>• Personalized Meal Plans: Tailored to your trimester and dietary preferences.</Text>
-      {"\n"} 
-      <Text style={{ paddingLeft: 10 }}>• Shopping Lists: Automatically generated based on your meal plan.</Text>
-      {"\n"}
-      <Text style={{ paddingLeft: 10 }}>• Healthy Recipes: Easy-to-cook, nutritious recipes that benefit both you and your baby.</Text>
-      {"\n"}
-      Say goodbye to meal-planning stress and hello to wholesome eating!
-    </Text>
-  </View>
-</ScrollView>
+        {/* Yellow container for the description */}
+        <View style={[styles.descriptionContainer, { marginTop: 20 }]}>
+          <Text style={styles.appDescription}>
+            Good nutrition is key for a healthy pregnancy! Our app offers:
+            {"\n"}
+            <Text style={{ paddingLeft: 10 }}>• Personalized Meal Plans: Tailored to your trimester and dietary preferences.</Text>
+            {"\n"}
+            <Text style={{ paddingLeft: 10 }}>• Shopping Lists: Automatically generated based on your meal plan.</Text>
+            {"\n"}
+            <Text style={{ paddingLeft: 10 }}>• Healthy Recipes: Easy-to-cook, nutritious recipes that benefit both you and your baby.</Text>
+            {"\n"}
+            Say goodbye to meal-planning stress and hello to wholesome eating!
+          </Text>
+        </View>
+      </ScrollView>
 
-
-      {/* Footer container will always stick to the bottom */}
+      {/* Footer container */}
       <View style={styles.footerContainer}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={handleSkip} style={styles.button}>
@@ -47,8 +44,8 @@ const OnboardingScreen2 = ({ navigation }) => {
 
           {/* Pagination (Dots) */}
           <View style={styles.pagination}>
-            <Text style={styles.paginationDot}>•</Text> {/* First dot matching welcome color */}
-            <Text style={[styles.paginationDot , { color: '#006D77' }]}>•</Text>
+            <Text style={styles.paginationDot}>•</Text>
+            <Text style={[styles.paginationDot, { color: '#006D77' }]}>•</Text>
             <Text style={styles.paginationDot}>•</Text>
             <Text style={styles.paginationDot}>•</Text>
             <Text style={styles.paginationDot}>•</Text>
@@ -65,11 +62,11 @@ const OnboardingScreen2 = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // This ensures the entire screen is used, allowing footer to stay at the bottom
+    flex: 1,
     backgroundColor: '#e8f6f6',
   },
   content: {
-    flexGrow: 1, // Allow scroll content to take as much space as it needs
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -82,7 +79,7 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: '#006D77', // Color for the first pagination dot
+    color: '#006D77',
     marginBottom: 20,
   },
   descriptionContainer: {
@@ -106,14 +103,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    marginTop: 'auto', 
-    marginBottom: '5%'// Ensures footer is pushed to the bottom of the screen
+    marginTop: 'auto',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    alignItems: 'center', // Center vertically the buttons and dots
+    alignItems: 'center',
   },
   button: {
     flex: 1,
@@ -126,7 +122,7 @@ const styles = StyleSheet.create({
   },
   pagination: {
     flexDirection: 'row',
-    alignItems: 'center', // This ensures that dots are vertically aligned with buttons
+    alignItems: 'center',
   },
   paginationDot: {
     fontSize: 25,

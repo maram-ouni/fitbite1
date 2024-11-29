@@ -53,11 +53,13 @@ const OnboardingScreen5 = ({ navigation }) => {
 
           {/* Pagination Dots */}
           <View style={styles.pagination}>
-            <Text style={styles.paginationDot}>•</Text> {/* First dot matching welcome color */}
-            <Text style={styles.paginationDot}>•</Text>
-            <Text style={styles.paginationDot}>•</Text>
-            <Text style={styles.paginationDot}>•</Text>
-            <Text style={[styles.paginationDot, { color: '#006D77' }]}>•</Text>
+            <Text>
+              <Text style={styles.paginationDot}>•</Text>
+              <Text style={styles.paginationDot}>•</Text>
+              <Text style={styles.paginationDot}>•</Text>
+              <Text style={styles.paginationDot}>•</Text>
+              <Text style={[styles.paginationDot, { color: '#006D77' }]}>•</Text>
+            </Text>
           </View>
 
           {/* Next Button */}
@@ -113,8 +115,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    marginTop: 'auto', 
-    marginBottom: '5%', // Ensures footer is pushed to the bottom of the screen
+    marginTop: 'auto',  // Ensures footer is pushed to the bottom of the screen
   },
   buttonContainer: {
     flexDirection: 'row',
