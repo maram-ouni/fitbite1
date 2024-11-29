@@ -9,7 +9,6 @@ import { Image } from 'react-native';
 
 
 
-
 const Tab = createBottomTabNavigator();
 
 const MainStackNavigator = () => {

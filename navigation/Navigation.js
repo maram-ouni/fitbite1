@@ -5,9 +5,14 @@ import AuthStack from './AuthStack';
 import MainStack from './MainStack';
 import OnboardingStack from './OnboardingStack';
 import PlanningMealsScreen from '../screens/Main/PlanningMealsScreen';
-import AddRecipeScreen from '../screens/Main/AddRecipeScreen'
 import GroceriesListScreen from '../screens/Main/GroceriesListScreen';
+
 import RecipesScreen from '../screens/Main/RecipesScreen';
+
+import AddFoodScreen from '../screens/addfood/addfood1';
+import AddFoodScreen2 from '../screens/addfood/addfood2';
+import AddFoodScreen3 from '../screens/addfood/addfood3';
+
 
 
 
@@ -52,9 +57,16 @@ const Navigation = () => {
       <Stack.Screen name="Auth" component={AuthStack} options={{ headerShown: false }} />
       <Stack.Screen name="Main" component={MainStack} options={{ headerShown: false }} />
       <Stack.Screen name="PlanningMeals" component={PlanningMealsScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="AddRecipe" component={AddRecipeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="GroceriesList" component={GroceriesListScreen} options={{ headerShown: false }} />
+
       <Stack.Screen name="RecipiesScreen" component={RecipesScreen} options={{ headerShown: false }} />
+
+      <Stack.Screen name="addfood" component={AddFoodScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="addfood2" component={AddFoodScreen2} options={{ headerShown: false }} />
+      <Stack.Screen name="addfood3" component={AddFoodScreen3} options={{ headerShown: false }} />
+
+
+
       
       
       

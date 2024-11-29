@@ -79,6 +79,7 @@ const RecipesScreen = ({ navigation }) => {
         </ScrollView>
       </View>
 
+
       {/* Liste des recettes */}
       <ScrollView style={styles.scrollView}>
         {/* Bouton "Add your own recipe" */}
@@ -106,6 +107,23 @@ const RecipesScreen = ({ navigation }) => {
       </ScrollView>
     </LinearGradient>
   );
+
+            <ScrollView style={styles.recipesContainer}>
+                <Button  title="Add you own receipe" 
+                onPress={() => navigation.navigate('addfood')} 
+                style={styles.button}  />
+                {recipes.map((recipe) => (
+                    <TouchableOpacity key={recipe.id} style={styles.recipeCard}>
+                        <Image source={recipe.image} style={styles.recipeImage} />
+                        <View style={styles.recipeInfo}>
+                            <Text style={styles.recipeTitle}>{recipe.title}</Text>
+                            <Text style={styles.recipeDuration}>{recipe.duration}</Text>
+                        </View>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+      
+  
 };
 
 const styles = StyleSheet.create({
