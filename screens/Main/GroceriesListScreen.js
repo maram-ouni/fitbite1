@@ -8,10 +8,10 @@ import Header from './Header';
 
 const GroceriesListScreen = ({ navigation }) => {
   const [groceries, setGroceries] = useState([
-    { id: '1', name: 'Bread', quantity: '2' },
-    { id: '2', name: 'Tomato', quantity: '1 Kg' },
-    { id: '3', name: 'Cheese', quantity: '200g' },
-    { id: '4', name: 'Pepper', quantity: '5' },
+    { name: 'Bread', quantity: '2' },
+    { name: 'Tomato', quantity: '1 Kg' },
+    { name: 'Cheese', quantity: '200g' },
+    { name: 'Pepper', quantity: '5' },
   ]);
 
   const [title, setTitle] = useState('');
@@ -24,32 +24,31 @@ const GroceriesListScreen = ({ navigation }) => {
     setDescription('');
   };
 
-  const handleUpdateGrocery = (id, field, value) => {
+  const handleUpdateGrocery = (index, field, value) => {
     setGroceries((prevGroceries) =>
-      prevGroceries.map((grocery) =>
-        grocery.id === id ? { ...grocery, [field]: value } : grocery
+      prevGroceries.map((grocery, idx) =>
+        idx === index ? { ...grocery, [field]: value } : grocery
       )
     );
   };
 
   const handleAddGrocery = () => {
     const newItem = {
-      id: (groceries.length + 1).toString(),
       name: 'New Item',
       quantity: '1',
     };
     setGroceries((prevGroceries) => [...prevGroceries, newItem]);
   };
 
-  const handleDeleteGrocery = (id) => {
-    setGroceries((prevGroceries) =>
-      prevGroceries.filter((grocery) => grocery.id !== id) // Supprime l'élément par ID
-    );
+  const handleDeleteGrocery = (index) => {
+    setGroceries((prevGroceries) => prevGroceries.filter((_, idx) => idx !== index));
   };
-// Fonction pour revenir à l'écran précédent
-const handleGoBack = () => {
-  navigation.goBack();
-};
+
+  // Fonction pour revenir à l'écran précédent
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <LinearGradient
       colors={COLORS.gradients.background.colors}
@@ -68,10 +67,10 @@ const handleGoBack = () => {
       </View>
 
       <View style={styles.bbb}>
-   <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
-        <Feather name="arrow-left" size={24} color={COLORS.primary.dark} />
-      </TouchableOpacity>
-</View>
+        <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+          <Feather name="arrow-left" size={24} color={COLORS.primary.dark} />
+        </TouchableOpacity>
+      </View>
 
       {/* Title */}
       <Text style={styles.title}>Your Groceries List</Text>
@@ -79,22 +78,22 @@ const handleGoBack = () => {
       {/* Grocery List */}
       <FlatList
         data={groceries}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
+        keyExtractor={(_, index) => index.toString()} // Utilisation de l'index comme clé
+        renderItem={({ item, index }) => (
           <View style={styles.groceryItem}>
             <Feather name="grid" size={20} color={COLORS.text.secondary} style={styles.dragIcon} />
             <TextInput
               style={styles.groceryInput}
               value={item.name}
-              onChangeText={(text) => handleUpdateGrocery(item.id, 'name', text)} // Met à jour le nom
+              onChangeText={(text) => handleUpdateGrocery(index, 'name', text)} // Met à jour le nom
             />
             <TextInput
               style={styles.quantityInput}
               value={item.quantity}
-              onChangeText={(text) => handleUpdateGrocery(item.id, 'quantity', text)} // Met à jour la quantité
+              onChangeText={(text) => handleUpdateGrocery(index, 'quantity', text)} // Met à jour la quantité
             />
             {/* Bouton de suppression */}
-            <TouchableOpacity onPress={() => handleDeleteGrocery(item.id)} style={styles.deleteButton}>
+            <TouchableOpacity onPress={() => handleDeleteGrocery(index)} style={styles.deleteButton}>
               <Feather name="trash-2" size={24} color={COLORS.ui.danger} />
             </TouchableOpacity>
           </View>
@@ -118,11 +117,9 @@ const handleGoBack = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-   
   },
   header: {
     marginTop: 15,
-
   },
   title: {
     fontSize: 22,
@@ -179,19 +176,17 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   backButton: {
-   
     width: 40,
     height: 40,
-    borderRadius: 25, 
+    borderRadius: 25,
     backgroundColor: COLORS.primary.light,
     alignItems: 'center',
     justifyContent: 'center',
-    
   },
-  bbb : {
-    paddingBottom:15,
-    paddingTop:5,
-    paddingLeft:10,
+  bbb: {
+    paddingBottom: 15,
+    paddingTop: 5,
+    paddingLeft: 10,
   },
 });
 
