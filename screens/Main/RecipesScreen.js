@@ -13,7 +13,7 @@ import Button from "../../components/Button"; // Import du composant Button
 import Header from "./Header";
 
 const RecipesScreen = ({ navigation }) => {
-  const [activeFilter, setActiveFilter] = useState("Breakfast"); // Suivre l'état actif des filtres
+  const [activeFilter, setActiveFilter] = useState("Breakfast");
 
   // Liste des filtres horizontaux
   const filters = ["Breakfast", "Lunch", "Dinner", "Snacks"];
@@ -23,13 +23,13 @@ const RecipesScreen = ({ navigation }) => {
     Breakfast: [
       {
         id: 1,
-        title: "cake",
+        title: "Cake",
         duration: "15 min.",
         image: require("../../assets/images/cake.png"),
       },
       {
         id: 2,
-        title: "cake",
+        title: "Cake",
         duration: "10 min.",
         image: require("../../assets/images/cake.png"),
       },
@@ -89,11 +89,7 @@ const RecipesScreen = ({ navigation }) => {
     >
       {/* Header */}
       <View style={styles.headerContainer}>
-        <Header
-          date="2 May, Monday"
-          onMorePress={() => console.log("More button pressed")}
-          navigation={navigation}
-        />
+        <Header date="2 May, Monday" navigation={navigation} />
       </View>
 
       {/* Filtres horizontaux */}
@@ -106,7 +102,7 @@ const RecipesScreen = ({ navigation }) => {
           {filters.map((filter) => (
             <TouchableOpacity
               key={filter}
-              onPress={() => setActiveFilter(filter)} // Mettre à jour le filtre actif
+              onPress={() => setActiveFilter(filter)}
               style={styles.filterButton}
             >
               {activeFilter === filter ? (
@@ -132,14 +128,10 @@ const RecipesScreen = ({ navigation }) => {
 
       {/* Liste des recettes */}
       <ScrollView style={styles.scrollView}>
-        {/* Bouton "Add your own recipe" */}
         <View style={styles.addButtonContainer}>
           <Button
             title="Add Your Own Recipe"
-            onPress={() => {
-              console.log("Button pressed!"); // Ajoutez ce log pour tester
-              navigation.navigate("addfood2");
-            }}
+            onPress={() => navigation.navigate("addfood2")}
           />
         </View>
 
@@ -149,7 +141,7 @@ const RecipesScreen = ({ navigation }) => {
             key={recipe.id}
             style={styles.recipeCard}
             onPress={() =>
-              navigation.navigate("RecipeDetails", { recipeId: recipe.id })
+              navigation.navigate("ParentComponent", { recipeId: recipe.id })
             }
           >
             <Image source={recipe.image} style={styles.recipeImage} />
@@ -165,19 +157,9 @@ const RecipesScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  headerContainer: {
-    marginTop: 15,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  button: {
-    borderRadius: 10,
-    height: 45,
-  },
+  container: { flex: 1 },
+  headerContainer: { marginTop: 15 },
+  scrollView: { flex: 1 },
   filterContainer: {
     backgroundColor: "#F2F5FC",
     borderRadius: 20,
@@ -192,39 +174,21 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
-  scrollBox: {
-    flexDirection: "row",
-  },
-  filterButton: {
-    marginRight: 10,
-    borderRadius: 25,
-  },
+  scrollBox: { flexDirection: "row" },
+  filterButton: { marginRight: 10, borderRadius: 25 },
   activeGradient: {
     borderRadius: 25,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    justifyContent: "center",
-    alignItems: "center",
   },
   inactiveButton: {
     borderRadius: 25,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    justifyContent: "center",
-    alignItems: "center",
   },
-  filterText: {
-    fontSize: 14,
-    color: "#666",
-  },
-  activeText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  addButtonContainer: {
-    marginHorizontal: 20,
-    marginBottom: 20,
-  },
+  filterText: { fontSize: 14, color: "#666" },
+  activeText: { color: "#fff", fontWeight: "bold" },
+  addButtonContainer: { marginHorizontal: 20, marginBottom: 20 },
   recipeCard: {
     backgroundColor: "white",
     borderRadius: 15,
@@ -232,22 +196,10 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginHorizontal: 20,
   },
-  recipeImage: {
-    width: "100%",
-    height: 200,
-    resizeMode: "cover",
-  },
-  recipeInfo: {
-    padding: 15,
-  },
-  recipeTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  recipeDuration: {
-    color: "#666",
-  },
+  recipeImage: { width: "100%", height: 200, resizeMode: "cover" },
+  recipeInfo: { padding: 15 },
+  recipeTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 5 },
+  recipeDuration: { color: "#666" },
 });
 
 export default RecipesScreen;
