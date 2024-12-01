@@ -1,33 +1,80 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { COLORS } from '../../styles/colors';
-import { LinearGradient } from 'expo-linear-gradient';
-import Button from '../../components/Button'; // Import du composant Button
-import Header from './Header';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import { COLORS } from "../../styles/colors";
+import { LinearGradient } from "expo-linear-gradient";
+import Button from "../../components/Button"; // Import du composant Button
+import Header from "./Header";
 
 const RecipesScreen = ({ navigation }) => {
-  const [activeFilter, setActiveFilter] = useState('Breakfast'); // Suivre l'état actif des filtres
+  const [activeFilter, setActiveFilter] = useState("Breakfast"); // Suivre l'état actif des filtres
 
   // Liste des filtres horizontaux
-  const filters = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+  const filters = ["Breakfast", "Lunch", "Dinner", "Snacks"];
 
   // Données des recettes pour chaque filtre
   const recipes = {
     Breakfast: [
-      { id: 1, title: 'cake', duration: '15 min.', image: require('../../assets/images/cake.png') },
-      { id: 2, title: 'cake', duration: '10 min.', image: require('../../assets/images/cake.png') },
+      {
+        id: 1,
+        title: "cake",
+        duration: "15 min.",
+        image: require("../../assets/images/cake.png"),
+      },
+      {
+        id: 2,
+        title: "cake",
+        duration: "10 min.",
+        image: require("../../assets/images/cake.png"),
+      },
     ],
     Lunch: [
-      { id: 3, title: 'Salad', duration: '10 min.', image: require('../../assets/images/salad.png') },
-      { id: 4, title: 'Salad', duration: '20 min.', image: require('../../assets/images/salad.png') },
+      {
+        id: 3,
+        title: "Salad",
+        duration: "10 min.",
+        image: require("../../assets/images/salad.png"),
+      },
+      {
+        id: 4,
+        title: "Salad",
+        duration: "20 min.",
+        image: require("../../assets/images/salad.png"),
+      },
     ],
     Dinner: [
-      { id: 5, title: 'Pumpkin Soup', duration: '15 min.', image: require('../../assets/images/pumkin-soup.jpg') },
-      { id: 6, title: 'Pumpkin Soup', duration: '25 min.', image: require('../../assets/images/pumkin-soup.jpg') },
+      {
+        id: 5,
+        title: "Pumpkin Soup",
+        duration: "15 min.",
+        image: require("../../assets/images/pumkin-soup.jpg"),
+      },
+      {
+        id: 6,
+        title: "Pumpkin Soup",
+        duration: "25 min.",
+        image: require("../../assets/images/pumkin-soup.jpg"),
+      },
     ],
     Snacks: [
-      { id: 7, title: 'Salad', duration: '10 min.', image: require('../../assets/images/salad.png') },
-      { id: 8, title: 'Salad', duration: '5 min.', image: require('../../assets/images/salad.png') },
+      {
+        id: 7,
+        title: "Salad",
+        duration: "10 min.",
+        image: require("../../assets/images/salad.png"),
+      },
+      {
+        id: 8,
+        title: "Salad",
+        duration: "5 min.",
+        image: require("../../assets/images/salad.png"),
+      },
     ],
   };
 
@@ -44,7 +91,7 @@ const RecipesScreen = ({ navigation }) => {
       <View style={styles.headerContainer}>
         <Header
           date="2 May, Monday"
-          onMorePress={() => console.log('More button pressed')}
+          onMorePress={() => console.log("More button pressed")}
           navigation={navigation}
         />
       </View>
@@ -69,7 +116,9 @@ const RecipesScreen = ({ navigation }) => {
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                 >
-                  <Text style={[styles.filterText, styles.activeText]}>{filter}</Text>
+                  <Text style={[styles.filterText, styles.activeText]}>
+                    {filter}
+                  </Text>
                 </LinearGradient>
               ) : (
                 <View style={styles.inactiveButton}>
@@ -86,9 +135,11 @@ const RecipesScreen = ({ navigation }) => {
         {/* Bouton "Add your own recipe" */}
         <View style={styles.addButtonContainer}>
           <Button
-            title="Add your own recipe"
-            onPress={() => navigation.navigate('AddRecipe')}
-            style={styles.button}
+            title="Add Your Own Recipe"
+            onPress={() => {
+              console.log("Button pressed!"); // Ajoutez ce log pour tester
+              navigation.navigate("addfood2");
+            }}
           />
         </View>
 
@@ -97,7 +148,9 @@ const RecipesScreen = ({ navigation }) => {
           <TouchableOpacity
             key={recipe.id}
             style={styles.recipeCard}
-            onPress={() => navigation.navigate('RecipeDetails', { recipeId: recipe.id })}
+            onPress={() =>
+              navigation.navigate("RecipeDetails", { recipeId: recipe.id })
+            }
           >
             <Image source={recipe.image} style={styles.recipeImage} />
             <View style={styles.recipeInfo}>
@@ -126,11 +179,11 @@ const styles = StyleSheet.create({
     height: 45,
   },
   filterContainer: {
-    backgroundColor: '#F2F5FC',
+    backgroundColor: "#F2F5FC",
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 5,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 5,
@@ -140,7 +193,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   scrollBox: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   filterButton: {
     marginRight: 10,
@@ -150,50 +203,50 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   inactiveButton: {
     borderRadius: 25,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   filterText: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
   },
   activeText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
   },
   addButtonContainer: {
     marginHorizontal: 20,
     marginBottom: 20,
   },
   recipeCard: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 15,
     marginBottom: 20,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginHorizontal: 20,
   },
   recipeImage: {
-    width: '100%',
+    width: "100%",
     height: 200,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   recipeInfo: {
     padding: 15,
   },
   recipeTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
   },
   recipeDuration: {
-    color: '#666',
+    color: "#666",
   },
 });
 

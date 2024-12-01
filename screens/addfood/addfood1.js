@@ -1,210 +1,167 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import Slider from '@react-native-community/slider';
-import { LinearGradient } from 'expo-linear-gradient';
-import { COLORS } from '../../styles/colors';
-import Button from '../../components/Button'; // Bouton personnalisé
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import Slider from "@react-native-community/slider";
+import Icon from "react-native-vector-icons/Ionicons";
 
-const AddFoodScreen = ({ navigation }) => {
-  const [sliderValue, setSliderValue] = useState(2); // Index initial correspondant à 30
-  const [isFoodNameFocused, setFoodNameFocused] = useState(false);
-  const [isDescriptionFocused, setDescriptionFocused] = useState(false);
-
-  const durationValues = ['>10', '10', '30', '60', '<60']; // Les valeurs textuelles
+const addfood1 = ({ navigation }) => {
+  const [foodName, setFoodName] = useState("");
+  const [description, setDescription] = useState("");
+  const [duration, setDuration] = useState(30); // Par défaut 30 minutes
 
   return (
-    <LinearGradient
-      colors={COLORS.gradients.background.colors}
-      locations={COLORS.gradients.background.locations}
-      style={styles.container}
-    >
-      {/* Cancel and Step Tracker */}
+    <View style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.cancelButton}>Cancel</Text>
+          <Text style={styles.cancelText}>Annuler</Text>
         </TouchableOpacity>
-        <Text style={styles.stepTracker}>1/3</Text>
+        <Text style={styles.stepText}>1/3</Text>
       </View>
 
-      {/* Add Cover Photo */}
-      <View style={styles.addPhotoContainer}>
-        <TouchableOpacity style={styles.photoBox}>
-          <Image source={require('../../assets/images/addimage.png')} style={styles.photoIcon} />
-          <Text style={styles.photoText}>Add Cover Photo</Text>
-          <Text style={styles.photoSubtext}>(up to 12 MB)</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Section Image */}
+      <TouchableOpacity style={styles.imageUpload}>
+        <Icon name="image-outline" size={50} color="#B6B6B6" />
+        <Text style={styles.uploadText}>Ajouter une photo</Text>
+        <Text style={styles.uploadSubtext}>(jusqu'à 12 Mo)</Text>
+      </TouchableOpacity>
 
-      {/* Food Name Input */}
-      <Text style={styles.label}>Food Name</Text>
+      {/* Food Name */}
+      <Text style={styles.label}>Nom du plat</Text>
       <TextInput
-        placeholder="Enter food name"
-        style={[styles.input, isFoodNameFocused && styles.inputFocused]}
-        onFocus={() => setFoodNameFocused(true)}
-        onBlur={() => setFoodNameFocused(false)}
+        style={styles.input}
+        placeholder="Entrez le nom du plat"
+        value={foodName}
+        onChangeText={(text) => setFoodName(text)}
       />
 
-      {/* Description Input */}
+      {/* Description */}
       <Text style={styles.label}>Description</Text>
       <TextInput
-        placeholder="Tell a little about your food"
-        style={[styles.input, styles.descriptionInput, isDescriptionFocused && styles.inputFocused]}
+        style={[styles.input, styles.textArea]}
+        placeholder="Parlez un peu de votre plat"
         multiline
-        onFocus={() => setDescriptionFocused(true)}
-        onBlur={() => setDescriptionFocused(false)}
+        value={description}
+        onChangeText={(text) => setDescription(text)}
       />
 
       {/* Cooking Duration */}
-      <View style={styles.cookingDurationContainer}>
-        <Text style={[styles.label, styles.durationLabel]}>
-          Cooking Duration <Text style={styles.minutesText}>( in minutes )</Text>
-        </Text>
-
-        {/* Slider */}
-        <Slider
-          style={styles.slider}
-          minimumValue={0}
-          maximumValue={4} // 5 valeurs : index de 0 à 4
-          step={1} // Étapes fixes pour correspondre aux index
-          onValueChange={(value) => setSliderValue(value)}
-          value={sliderValue}
-          minimumTrackTintColor="#FFDDD2"
-          maximumTrackTintColor="#d3d3d3"
-          thumbTintColor="#FFDDD2"
-        />
-
-        {/* Custom Labels */}
-        <View style={styles.sliderLabelsContainer}>
-          {durationValues.map((label, index) => (
-            <Text key={index} style={styles.sliderLabel}>
-              {label}
-            </Text>
-          ))}
-        </View>
+      <Text style={styles.label}>Durée de cuisson (en minutes)</Text>
+      <Slider
+        value={duration}
+        onValueChange={(value) => setDuration(value)}
+        minimumValue={10}
+        maximumValue={60}
+        step={1}
+        minimumTrackTintColor="#6EC1E4"
+        maximumTrackTintColor="#E3E3E3"
+        thumbTintColor="#6EC1E4"
+      />
+      <View style={styles.sliderLabels}>
+        <Text style={styles.sliderText}>10</Text>
+        <Text style={styles.sliderValue}>{duration}</Text>
+        <Text style={styles.sliderText}>60</Text>
       </View>
 
       {/* Next Button */}
-      <Button 
-        title="Next" 
-        onPress={() => navigation.navigate('addfood2')} 
-        style={styles.button} 
-      />
-    </LinearGradient>
+      <TouchableOpacity
+        style={styles.nextButton}
+        onPress={() => navigation.navigate("addfood2")} // Navigation à la page suivante
+      >
+        <Text style={styles.nextButtonText}>Suivant</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#F9FCFF",
     paddingHorizontal: 20,
-    paddingTop: 40,
-    paddingBottom: 70, // Added space to avoid overlap with bottom navbar
+    paddingTop: 50,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 20,
+  },
+  cancelText: {
+    color: "#FF6B6B",
+    fontSize: 16,
+  },
+  stepText: {
+    color: "#AAAAAA",
+    fontSize: 16,
+  },
+  imageUpload: {
+    alignItems: "center",
+    marginBottom: 20,
+    padding: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#B6B6B6",
+    backgroundColor: "#FFFFFF",
+  },
+  uploadText: {
+    fontSize: 16,
+    color: "#4A4A4A",
     marginTop: 10,
   },
-  cancelButton: {
-    color: '#e29579',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  stepTracker: {
-    color: '#444',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  addPhotoContainer: {
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  photoBox: {
-    width: 200,
-    height: 150,
-    borderWidth: 2,
-    borderColor: '#a9a9a9',
-    borderRadius: 15,
-    borderStyle: 'dashed',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  photoIcon: {
-    width: 40,
-    height: 40,
-    marginBottom: 10,
-  },
-  photoText: {
-    color: '#444',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  photoSubtext: {
-    color: '#a9a9a9',
+  uploadSubtext: {
     fontSize: 12,
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#d3d3d3',
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 15,
-    fontSize: 16,
-  },
-  inputFocused: {
-    borderColor: '#006D77',
-    borderWidth: 2,
-  },
-  descriptionInput: {
-    height: 80,
-    textAlignVertical: 'top',
-  },
-  cookingDurationContainer: {
-    marginBottom: 20,
+    color: "#AAAAAA",
   },
   label: {
-    color: '#006D77',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  durationLabel: {
-    flexDirection: 'row',
-  },
-  minutesText: {
-    color: '#444',
-    fontWeight: 'normal',
-  },
-  slider: {
-    width: '100%',
-    height: 40,
-  },
-  sliderLabelsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 0,
-    marginBottom: 10,
-  },
-  sliderLabel: {
     fontSize: 14,
-    color: '#444',
-    textAlign: 'center',
+    color: "#4A4A4A",
+    marginBottom: 5,
+    marginTop: 10,
+  },
+  input: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#B6B6B6",
+    padding: 10,
+    fontSize: 16,
+  },
+  textArea: {
+    height: 80,
+    textAlignVertical: "top",
+  },
+  sliderLabels: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  sliderText: {
+    fontSize: 14,
+    color: "#AAAAAA",
+  },
+  sliderValue: {
+    fontSize: 16,
+    color: "#4A4A4A",
+    fontWeight: "bold",
   },
   nextButton: {
-    backgroundColor: '#3aafa9',
+    backgroundColor: "#6EC1E4",
     borderRadius: 10,
     paddingVertical: 15,
-    alignItems: 'center',
-    marginTop: 20,
+    alignItems: "center",
+    marginVertical: 20,
   },
   nextButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
-export default AddFoodScreen;
+export default addfood1;
