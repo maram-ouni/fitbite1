@@ -53,9 +53,8 @@ const Navigation = () => {
       <Stack.Screen name="PlanningMeals" component={PlanningMealsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="AddRecipe" component={AddRecipeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="GroceriesList" component={GroceriesListScreen} options={{ headerShown: false }} />
-      
-      
-      
+
+
 
 
 
