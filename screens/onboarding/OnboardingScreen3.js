@@ -6,50 +6,49 @@ import logo from '../../assets/images/BMI.png'; // Assuming logo is in the asset
 
 const OnboardingScreen3 = ({ navigation }) => {
   const handleSkip = () => {
-    // Add your navigation logic here to move to the main app
+    // Navigate to the Auth screen
     navigation.navigate('Auth');
   };
 
   const handleDiscover = () => {
-    // Add your navigation logic here to move to the main app
+    // Navigate to the next onboarding screen
     navigation.navigate('OnboardingScreen4');
   };
 
   return (
-    <View style={styles.container}> {/* Use View instead of ScrollView to control footer positioning */}
-    <ScrollView contentContainerStyle={[styles.content, { paddingTop: 50 }]}> {/* Ajout de paddingTop pour espacer les éléments vers le bas */}
-  <Text style={styles.welcomeText}>Track and Calculate</Text>
-  <Image source={logo} style={[styles.logo, { marginTop: 8 }]} /> {/* Optionnel : ajoute un léger espacement au logo */}
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={styles.welcomeText}>Track and Calculate</Text>
+        <Image source={logo} style={styles.logo} />
 
-  {/* Yellow container for the description */}
-  <View style={[styles.descriptionContainer, { marginTop: 20 }]}> {/* Ajout de marginTop pour pousser vers le bas */}
-    <Text style={styles.appDescription}>
-    Keep track of your health and progress with our smart tools:
-      {"\n"}
-      <Text style={{ paddingLeft: 10 }}>• BMI Calculator: Understand your ideal pregnancy weight range.</Text>
-      {"\n"} 
-      <Text style={{ paddingLeft: 10 }}>• Calorie Needs Calculator: Find out the calories you and your baby need daily.</Text>
-      {"\n"}
-      <Text style={{ paddingLeft: 10 }}>• Weight Tracker: Monitor your weight gain across trimesters.</Text>
-      {"\n"}
-      Stay informed and in control every step of the way!
-    </Text>
-  </View>
-</ScrollView>
+        {/* Yellow description container */}
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.appDescription}>
+            Keep track of your health and progress with our smart tools:
+            {"\n"}
+            <Text>• BMI Calculator: Understand your ideal pregnancy weight range.</Text>
+            {"\n"}
+            <Text>• Calorie Needs Calculator: Find out the calories you and your baby need daily.</Text>
+            {"\n"}
+            <Text>• Weight Tracker: Monitor your weight gain across trimesters.</Text>
+            {"\n"}
+            Stay informed and in control every step of the way!
+          </Text>
+        </View>
+      </ScrollView>
 
-
-      {/* Footer container will always stick to the bottom */}
+      {/* Footer container */}
       <View style={styles.footerContainer}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={handleSkip} style={styles.button}>
             <Text style={[styles.buttonText, { color: '#3aafa9' }]}>Skip</Text>
           </TouchableOpacity>
 
-          {/* Pagination (Dots) */}
+          {/* Pagination Dots */}
           <View style={styles.pagination}>
-            <Text style={styles.paginationDot}>•</Text> {/* First dot matching welcome color */}
             <Text style={styles.paginationDot}>•</Text>
-            <Text style={[styles.paginationDot, { color: '#006D77' }]} >•</Text>
+            <Text style={styles.paginationDot}>•</Text>
+            <Text style={[styles.paginationDot, { color: '#006D77' }]}>•</Text>
             <Text style={styles.paginationDot}>•</Text>
             <Text style={styles.paginationDot}>•</Text>
           </View>
@@ -65,24 +64,24 @@ const OnboardingScreen3 = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // This ensures the entire screen is used, allowing footer to stay at the bottom
+    flex: 1,
     backgroundColor: '#e8f6f6',
   },
   content: {
-    flexGrow: 1, // Allow scroll content to take as much space as it needs
-    justifyContent: 'center',
+    flexGrow: 1,
     alignItems: 'center',
-    padding: 20,
+    paddingVertical: 50,
+    paddingHorizontal: 20,
   },
   logo: {
     width: 150,
     height: 150,
-    marginBottom: 15,
+    marginVertical: 15,
   },
   welcomeText: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: '#006D77', // Color for the first pagination dot
+    color: '#006D77',
     marginBottom: 20,
   },
   descriptionContainer: {
@@ -91,33 +90,31 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: '#E29579',
     borderWidth: 1,
-    marginBottom: 0,
     width: '90%',
+    marginBottom: 30,
   },
   appDescription: {
     fontSize: 16,
-    textAlign: 'left',
     color: '#444',
+    textAlign: 'left',
   },
   footerContainer: {
     width: '100%',
     backgroundColor: '#fff',
     paddingVertical: 15,
-    alignItems: 'center',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    marginTop: 'auto', 
-    marginBottom: '5%'// Ensures footer is pushed to the bottom of the screen
+    alignItems: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    alignItems: 'center', // Center vertically the buttons and dots
+    paddingHorizontal: 10,
   },
   button: {
     flex: 1,
-    marginHorizontal: 10,
     alignItems: 'center',
   },
   buttonText: {
@@ -126,7 +123,7 @@ const styles = StyleSheet.create({
   },
   pagination: {
     flexDirection: 'row',
-    alignItems: 'center', // This ensures that dots are vertically aligned with buttons
+    alignItems: 'center',
   },
   paginationDot: {
     fontSize: 25,

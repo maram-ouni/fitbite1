@@ -5,38 +5,37 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Image,
 } from "react-native";
-import { Slider } from "@react-native-elements";
+import Slider from "@react-native-community/slider";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const AddRecipeScreen = () => {
+const addfood1 = ({ navigation }) => {
   const [foodName, setFoodName] = useState("");
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState(30); // Par défaut 30 minutes
 
   return (
     <View style={styles.container}>
-      {/* Bouton "Cancel" */}
+      {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity>
-          <Text style={styles.cancelText}>Cancel</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.cancelText}>Annuler</Text>
         </TouchableOpacity>
         <Text style={styles.stepText}>1/3</Text>
       </View>
 
       {/* Section Image */}
       <TouchableOpacity style={styles.imageUpload}>
-        <Icon name="person-outline" size={50} color="#aaa" />
-        <Text style={styles.uploadText}>Add Cover Photo</Text>
-        <Text style={styles.uploadSubtext}>(up to 12 Mb)</Text>
+        <Icon name="image-outline" size={50} color="#B6B6B6" />
+        <Text style={styles.uploadText}>Ajouter une photo</Text>
+        <Text style={styles.uploadSubtext}>(jusqu'à 12 Mo)</Text>
       </TouchableOpacity>
 
-      {/* Nom du Plat */}
-      <Text style={styles.label}>Food Name</Text>
+      {/* Food Name */}
+      <Text style={styles.label}>Nom du plat</Text>
       <TextInput
         style={styles.input}
-        placeholder="Enter food name"
+        placeholder="Entrez le nom du plat"
         value={foodName}
         onChangeText={(text) => setFoodName(text)}
       />
@@ -45,45 +44,37 @@ const AddRecipeScreen = () => {
       <Text style={styles.label}>Description</Text>
       <TextInput
         style={[styles.input, styles.textArea]}
-        placeholder="Tell a little about your food"
+        placeholder="Parlez un peu de votre plat"
         multiline
         value={description}
         onChangeText={(text) => setDescription(text)}
       />
 
-      {/* Durée de cuisson */}
-      <Text style={styles.label}>Cooking Duration (in minutes)</Text>
+      {/* Cooking Duration */}
+      <Text style={styles.label}>Durée de cuisson (en minutes)</Text>
       <Slider
         value={duration}
         onValueChange={(value) => setDuration(value)}
         minimumValue={10}
         maximumValue={60}
         step={1}
-        thumbTintColor="#6EC1E4"
         minimumTrackTintColor="#6EC1E4"
-        maximumTrackTintColor="#ddd"
+        maximumTrackTintColor="#E3E3E3"
+        thumbTintColor="#6EC1E4"
       />
       <View style={styles.sliderLabels}>
-        <Text>{"<10"}</Text>
-        <Text>{duration}</Text>
-        <Text>{">60"}</Text>
+        <Text style={styles.sliderText}>10</Text>
+        <Text style={styles.sliderValue}>{duration}</Text>
+        <Text style={styles.sliderText}>60</Text>
       </View>
 
-      {/* Bouton Suivant */}
+      {/* Next Button */}
       <TouchableOpacity
         style={styles.nextButton}
-        onPress={() => navigation.navigate("AddFood2")} // Navigation vers la deuxième page
+        onPress={() => navigation.navigate("addfood2")} // Navigation à la page suivante
       >
-        <Text style={styles.nextButtonText}>Next</Text>
+        <Text style={styles.nextButtonText}>Suivant</Text>
       </TouchableOpacity>
-
-      {/* Barre de navigation */}
-      <View style={styles.navbar}>
-        <Icon name="grid-outline" size={25} color="#aaa" />
-        <Icon name="book-outline" size={25} color="#6EC1E4" />
-        <Icon name="create-outline" size={25} color="#aaa" />
-        <Icon name="heart-outline" size={25} color="#aaa" />
-      </View>
     </View>
   );
 };
@@ -98,6 +89,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 20,
   },
   cancelText: {
@@ -105,7 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   stepText: {
-    color: "#aaa",
+    color: "#AAAAAA",
     fontSize: 16,
   },
   imageUpload: {
@@ -114,29 +106,29 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ddd",
-    backgroundColor: "#fff",
+    borderColor: "#B6B6B6",
+    backgroundColor: "#FFFFFF",
   },
   uploadText: {
     fontSize: 16,
-    color: "#555",
+    color: "#4A4A4A",
     marginTop: 10,
   },
   uploadSubtext: {
     fontSize: 12,
-    color: "#aaa",
+    color: "#AAAAAA",
   },
   label: {
     fontSize: 14,
-    color: "#555",
+    color: "#4A4A4A",
     marginBottom: 5,
     marginTop: 10,
   },
   input: {
-    backgroundColor: "#fff",
+    backgroundColor: "#FFFFFF",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#B6B6B6",
     padding: 10,
     fontSize: 16,
   },
@@ -149,6 +141,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 20,
   },
+  sliderText: {
+    fontSize: 14,
+    color: "#AAAAAA",
+  },
+  sliderValue: {
+    fontSize: 16,
+    color: "#4A4A4A",
+    fontWeight: "bold",
+  },
   nextButton: {
     backgroundColor: "#6EC1E4",
     borderRadius: 10,
@@ -157,18 +158,10 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   nextButtonText: {
-    color: "#fff",
+    color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "bold",
   },
-  navbar: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    paddingVertical: 15,
-    backgroundColor: "#fff",
-    borderTopWidth: 1,
-    borderColor: "#ddd",
-  },
 });
 
-export default AddRecipeScreen;
+export default addfood1;

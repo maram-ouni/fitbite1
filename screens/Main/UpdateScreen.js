@@ -27,6 +27,7 @@ const UpdateScreen = ({ navigation }) => {
 
 
     return (
+        
         <LinearGradient
             colors={COLORS.gradients.background.colors}
             locations={COLORS.gradients.background.locations}
@@ -34,18 +35,18 @@ const UpdateScreen = ({ navigation }) => {
             end={{ x: 0, y: 1 }}
             style={styles.container}
         >
-
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.scrollContent}
-            >
-                <View style={styles.header}>
+                  <View style={styles.header}>
                     <Header
                         date="2 May, Monday"
                         onMorePress={() => console.log('More button pressed')}
                         navigation={navigation} // Pass navigation prop
                     />
                 </View>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}
+            >
+              <View style={styles.filterContainer}>
                 <Text style={styles.title}>Your information</Text>
 
                 <TouchableOpacity style={styles.profilePicContainer}>
@@ -136,8 +137,9 @@ const UpdateScreen = ({ navigation }) => {
                 </View>
 
                 <Button title="Submit" onPress={handleSubmit} style={styles.submitButton} />
+                </View>
             </ScrollView>
-
+        
 
         </LinearGradient>
     );
@@ -146,7 +148,7 @@ const UpdateScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        
     },
     title: {
         fontSize: 24,
@@ -154,6 +156,13 @@ const styles = StyleSheet.create({
         color: COLORS.primary.dark,
         marginBottom: 20,
         textAlign: 'center',
+    },
+    header: {
+        marginTop:15,
+        
+    },
+    filterContainer: {
+        padding:20,
     },
     profilePicContainer: {
         alignItems: 'center',
