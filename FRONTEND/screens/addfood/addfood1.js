@@ -9,7 +9,7 @@ import {
 import Slider from "@react-native-community/slider";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const addfood1 = ({ navigation }) => {
+const Addfood1 = ({ navigation }) => {
   const [foodName, setFoodName] = useState("");
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState(30); // Par défaut 30 minutes
@@ -164,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default addfood1;
+export default Addfood1;

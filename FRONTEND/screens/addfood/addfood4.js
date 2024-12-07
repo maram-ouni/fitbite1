@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 
-const addfood4 = ({ navigation }) => {
+const Addfood4 = ({ navigation }) => {
   const [steps, setSteps] = useState(["", "", ""]);
 
   const addStep = () => {
@@ -177,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default addfood4;
+export default Addfood4;

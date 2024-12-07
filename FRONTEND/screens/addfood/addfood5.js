@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const addfood5 = ({ navigation }) => {
+const Addfood5 = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
@@ -59,4 +59,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default addfood5;
+export default Addfood5;

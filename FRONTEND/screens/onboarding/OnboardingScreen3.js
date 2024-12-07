@@ -77,12 +77,14 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     marginVertical: 15,
+    marginBottom:50,
   },
   welcomeText: {
+    paddingTop:15,
     fontSize: 30,
     fontWeight: 'bold',
     color: '#006D77',
-    marginBottom: 20,
+    marginBottom: 30,
   },
   descriptionContainer: {
     backgroundColor: '#F9F7EB',

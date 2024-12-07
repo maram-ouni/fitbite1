@@ -8,7 +8,7 @@ import {
   SafeAreaView,
 } from "react-native";
 
-const addfood3 = ({ navigation }) => {
+const Addfood3 = ({ navigation }) => {
   const [ingredients, setIngredients] = useState(["", ""]);
 
   const addIngredient = () => {
@@ -144,4 +144,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default addfood3;
+export default Addfood3;

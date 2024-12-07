@@ -10,7 +10,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import Slider from "@react-native-community/slider";
 
-const addfood2 = ({ navigation }) => {
+const Addfood2 = ({ navigation }) => {
   const [formData, setFormData] = useState({
     foodName: "",
     description: "",
@@ -232,4 +232,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default addfood2;
+export default Addfood2;

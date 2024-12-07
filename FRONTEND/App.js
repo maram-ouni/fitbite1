@@ -1,17 +1,8 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import Navigation from './navigation/Navigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text } from 'react-native';
-=======
-import React, { useEffect, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import Navigation from "./navigation/Navigation";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Text } from "react-native";
->>>>>>> 71919ab4f96f201a08fe7a564e022c46d2484c3d
-
 export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null); // null initially to determine if first launch
   const [loading, setLoading] = useState(true); // Loading state to handle async check
