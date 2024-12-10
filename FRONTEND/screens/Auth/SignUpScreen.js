@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button'; // Import du composant Button
+import { signUpUser } from '../../services/apiService'; // Importer la fonction d'inscription
 
 const SignUpScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -23,19 +24,37 @@ const SignUpScreen = ({ navigation }) => {
         setIsPasswordContainsNumber(/\d/.test(text)); // Vérifie si le mot de passe contient un chiffre
     };
 
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
         if (!isValidEmail(email)) {
             Alert.alert('Error', 'Please enter a valid email address!');
             return;
         }
-
+    
         if (!isPasswordValid || !isPasswordContainsNumber) {
             Alert.alert('Error', 'Password does not meet requirements!');
             return;
         }
-
-        navigation.navigate('Login');
+    
+        const userData = {
+            email,
+            password,
+        };
+    
+        try {
+            const result = await signUpUser(userData);
+            if (result.success) {
+                Alert.alert('Success', 'Account created successfully!');
+                navigation.navigate('Verify'); // Navigate to verification page after successful sign-up
+            } else {
+                // Ensure result.message is a string before passing to Alert
+                Alert.alert('Error', String(result.message) || 'An error occurred');
+            }
+        } catch (error) {
+            // Ensure error is a string before passing to Alert
+            Alert.alert('Error', String(error) || 'An unexpected error occurred');
+        }
     };
+    
 
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(!isPasswordVisible); // Bascule la visibilité du mot de passe
@@ -117,9 +136,11 @@ const SignUpScreen = ({ navigation }) => {
                 </View>
 
                 {/* Bouton Sign Up */}
-                <Button  title="Continue" 
-                onPress={() => navigation.navigate('Verify')} 
-                style={styles.button}  />
+                <Button
+                    title="Continue"
+                    onPress={handleSignUp} // Appelle la fonction handleSignUp lors du clic
+                    style={styles.button}
+                />
             </ScrollView>
         </KeyboardAvoidingView>
     );

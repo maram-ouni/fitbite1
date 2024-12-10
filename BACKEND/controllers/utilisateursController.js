@@ -1,11 +1,11 @@
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Utilisateur = require('../models/utilisateurs');
+const Utilisateur = require('../models/User');
 
 // Inscription
 exports.inscrireUtilisateur = async (req, res) => {
-    const { nom, prenom, email, motDePasse, age, sexe } = req.body;
+    const {  email, motDePasse} = req.body;
 
     try {
         const utilisateurExistant = await Utilisateur.findOne({ email });
@@ -15,12 +15,10 @@ exports.inscrireUtilisateur = async (req, res) => {
 
         const hash = await bcrypt.hash(motDePasse, 10);
         const nouvelUtilisateur = new Utilisateur({ 
-            nom, 
-            prenom, 
+            
             email, 
             motDePasse: hash, 
-            age, 
-            sexe 
+            
         });
 
         await nouvelUtilisateur.save();

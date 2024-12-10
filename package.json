@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "expo": "^52.0.17"
+    "expo": "^52.0.17",
+    "express-session": "^1.18.1"
   }
 }

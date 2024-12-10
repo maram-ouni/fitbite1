@@ -10,11 +10,11 @@ import GroceriesListScreen from "../screens/Main/GroceriesListScreen";
 import RecipesScreen from "../screens/Main/RecipesScreen";
 import IngredientsScreen from "../screens/Main/IngredientsScreen";
 
-import Addfood1 from "../screens/addfood/Addfood1";
-import Addfood2 from "../screens/addfood/Addfood2";
-import Addfood3 from "../screens/addfood/Addfood3";
-import Addfood4 from "../screens/addfood/Addfood4";
-import Addfood5 from "../screens/addfood/Addfood5";
+import Addfood1 from "../screens/addfood/addfood1";
+import Addfood2 from "../screens/addfood/addfood2";
+import Addfood3 from "../screens/addfood/addfood3";
+import Addfood4 from "../screens/addfood/addfood4";
+import Addfood5 from "../screens/addfood/addfood5";
 import ParentComponent from "../screens/addfood/ParentComponent";
 
 const Stack = createNativeStackNavigator();

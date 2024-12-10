@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import Button from '../../components/Button2';
 
 const VerifyScreen = ({ navigation }) => {
@@ -7,6 +7,7 @@ const VerifyScreen = ({ navigation }) => {
   const [timer, setTimer] = useState(180); // Timer starts at 3 minutes (180 seconds)
   const [isVerified, setIsVerified] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(null); // Track focused input
+  const [isLoading, setIsLoading] = useState(false); // Track loading state
 
   // Create refs for each input field
   const inputs = useRef([]);
@@ -36,23 +37,75 @@ const VerifyScreen = ({ navigation }) => {
     }
   };
 
-  const handleVerify = () => {
-    // Verify code logic here
+  const handleVerify = async () => {
     const verificationCode = code.join('');
-    if (verificationCode === '8876') { // Example verification code
-      setIsVerified(true);
-    } else {
-      alert('Invalid code');
+    
+    // Check if the code is complete
+    if (verificationCode.length < 4) {
+      Alert.alert('Error', 'Please enter the full verification code');
+      return;
+    }
+
+    setIsLoading(true); // Start loading
+
+    try {
+      // Call your backend API to verify the code
+      const response = await fetch('https://your-backend-url.com/verify-code', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: verificationCode }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setIsVerified(true); // Update the state if the code is correct
+        Alert.alert('Success', 'Verification successful!');
+        navigation.navigate('SignupForm');
+      } else {
+        Alert.alert('Invalid code', 'The verification code you entered is incorrect.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Something went wrong. Please try again later.');
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
-  const handleResendCode = () => {
+  const handleResendCode = async () => {
     setTimer(180); // Reset the timer
     setCode(['', '', '', '']); // Clear the input fields
     setIsVerified(false);
 
     // Focus the first input field after resend
     inputs.current[0].focus();
+
+    setIsLoading(true); // Start loading while resending code
+
+    try {
+      // Call your backend API to resend the verification code
+      const response = await fetch('https://your-backend-url.com/resend-code', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ /* Pass necessary parameters like email */ }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        Alert.alert('Success', 'Verification code has been sent to your email!');
+      } else {
+        Alert.alert('Error', 'Failed to resend verification code.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Something went wrong. Please try again later.');
+    } finally {
+      setIsLoading(false); // Stop loading
+    }
   };
 
   const handleFocus = (index) => {
@@ -88,12 +141,13 @@ const VerifyScreen = ({ navigation }) => {
       <Text style={styles.timer}>Code expires in: {Math.floor(timer / 60)}:{timer % 60}</Text>
 
       <Button 
-        title="Confirm" 
-        onPress={() => navigation.navigate('SignupForm')} 
+        title={isLoading ? 'Verifying...' : 'Confirm'} 
+        onPress={handleVerify} 
         style={styles.button} 
+        disabled={isLoading} // Disable the button while loading
       />
 
-      {!isVerified && (
+      {!isVerified && !isLoading && (
         <TouchableOpacity style={styles.resendButton} onPress={handleResendCode}>
           <Text style={styles.buttonText}>Send again</Text>
         </TouchableOpacity>
@@ -143,14 +197,6 @@ const styles = StyleSheet.create({
   timer: {
     fontSize: 16,
     color: '#555',
-    marginBottom: 20,
-  },
-  verifyButton: {
-    width: '80%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 25,
     marginBottom: 20,
   },
   resendButton: {
