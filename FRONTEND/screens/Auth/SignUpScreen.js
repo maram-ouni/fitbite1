@@ -6,7 +6,7 @@ import { signUpUser } from '../../services/apiService'; // Importer la fonction 
 
 const SignUpScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [motDePasse, setPassword] = useState('');
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [isPasswordContainsNumber, setIsPasswordContainsNumber] = useState(false);
     const [activeField, setActiveField] = useState(null); // Gère l'état actif des champs
@@ -36,9 +36,10 @@ const SignUpScreen = ({ navigation }) => {
         }
     
         const userData = {
-            email,
-            password,
+            email:email,
+            motDePasse:motDePasse,
         };
+        console.log(userData);
     
         try {
             const result = await signUpUser(userData);
@@ -99,7 +100,7 @@ const SignUpScreen = ({ navigation }) => {
                     <TextInput
                         style={styles.input}
                         placeholder="Password"
-                        value={password}
+                        value={motDePasse}
                         onChangeText={handlePasswordChange}
                         secureTextEntry={!isPasswordVisible} // Si isPasswordVisible est true, le mot de passe est visible
                         onFocus={() => setActiveField('password')} // Active l'état au focus
