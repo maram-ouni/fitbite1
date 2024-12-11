@@ -5,28 +5,30 @@ const Utilisateur = require('../models/User');
 
 // Inscription
 exports.inscrireUtilisateur = async (req, res) => {
-    const {  email, motDePasse} = req.body;
+    const email= req.body.email;
+    const motDePasse = req.body.motDePasse;
 
     try {
+        // Vérifier si l'utilisateur existe déjà
         const utilisateurExistant = await Utilisateur.findOne({ email });
         if (utilisateurExistant) {
             return res.status(400).json({ message: 'Utilisateur déjà existant.' });
         }
 
+        // Hachage du mot de passe
         const hash = await bcrypt.hash(motDePasse, 10);
-        const nouvelUtilisateur = new Utilisateur({ 
-            
-            email, 
-            motDePasse: hash, 
-            
+        const nouvelUtilisateur = new Utilisateur({
+            email,
+            motDePasse: hash,
         });
 
         await nouvelUtilisateur.save();
         res.status(201).json({ message: 'Inscription réussie.' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: 'Erreur serveur: ' + error.message });
     }
 };
+
 
 // Connexion
 exports.connecterUtilisateur = async (req, res) => {
