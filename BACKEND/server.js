@@ -15,7 +15,17 @@ const utilisateursRoutes = require('./routes/utilisateursRoutes');
 dotenv.config();
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: ['http://localhost:8081', 'exp://192.168.1.144:8081'], // Ajouter ici l'origine de votre frontend
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));  // Utiliser les options CORS
+
+
+
+
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/recettes', recettesRoutes);

@@ -16,8 +16,11 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const router = express.Router();
 
 // Routes publiques
-router.post('/inscrire', inscrireUtilisateur);
+router.post('/api/inscrire', inscrireUtilisateur);
 router.post('/connecter', connecterUtilisateur);
+
+
+
 
 // Routes protégées
 router.get('/profil', authMiddleware, getProfilUtilisateur);
