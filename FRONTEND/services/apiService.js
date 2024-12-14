@@ -32,7 +32,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api'; // Replace with your actual backend URL
+const API_URL = 'http://192.168.56.1:5000/api'; // Replace with your actual backend URL
 
 export const signUpUser = async (userData) => {
     const user = {
@@ -42,11 +42,21 @@ export const signUpUser = async (userData) => {
 
     try {
         console.log('Sign-up Data:', user);
-        const response = await axios.post(`http://192.168.56.1:5000/api/auth/inscrire`, user);
+        const response = await axios.post(`${API_URL}/auth/inscrire`, user);
         console.log('Response:', response.data);
         return response.data;
     } catch (error) {
         console.error('Sign-up Error:', error);
+        throw error.response?.data || error.message;
+    }
+};
+export const getRecipes = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/recettes`);
+        console.log('Recipes:', response.data); // Logs the recipes
+        return response.data; // Return the recipe data
+    } catch (error) {
+        console.error('Error fetching recipes:', error);
         throw error.response?.data || error.message;
     }
 };

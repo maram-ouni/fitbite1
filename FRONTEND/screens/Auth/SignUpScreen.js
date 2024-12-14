@@ -277,7 +277,7 @@ const SignUpScreen = ({ navigation }) => {
             
            
                 Alert.alert('Success', 'Account created successfully!');
-                navigation.navigate('Main');
+                navigation.navigate('FormulaireDynamique');
             
         } catch (error) {
             Alert.alert('Error', error || 'An unexpected error occurred.');

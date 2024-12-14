@@ -21,6 +21,7 @@ const UpdateScreen = ({ navigation }) => {
      const handleSubmit = () => {
     console.log({ title, description });
     alert('Information updated successfully!');
+    navigation.navigate('Main');
     setTitle('');
     setDescription('');
   };

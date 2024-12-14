@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 
 const recettesSchema = new mongoose.Schema({
-    id: { type: String, required: true },
+    categorie: { type: string, ref: 'Categorie', required: false },
     nom: { type: String, required: true },
     description: { type: String },
     calories: { type: Number },
