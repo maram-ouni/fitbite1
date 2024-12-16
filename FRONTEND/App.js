@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Navigation from './navigation/Navigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text } from 'react-native';
+import { UserProvider } from './services/Usercontext'; // Importer le fournisseur de contexte
+
 export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null); // null initially to determine if first launch
   const [loading, setLoading] = useState(true); // Loading state to handle async check
@@ -35,9 +37,10 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Navigation isFirstLaunch={isFirstLaunch} />
-
-    </NavigationContainer>
+    <UserProvider> {/* Entoure votre application avec UserProvider */}
+      <NavigationContainer>
+        <Navigation isFirstLaunch={isFirstLaunch} />
+      </NavigationContainer>
+    </UserProvider>
   );
 }

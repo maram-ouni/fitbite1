@@ -33,4 +33,37 @@ router.post('/inscrire', async (req, res) => {
   }
 });
 
+
+
+// Route pour la connexion
+router.post('/connexion', async (req, res) => {
+  const { email, motDePasse } = req.body;
+
+  // Vérifier si les champs requis sont présents
+  if (!email || !motDePasse) {
+    return res.status(400).json({ message: 'Email et mot de passe sont requis.' });
+  }
+
+  try {
+    // Rechercher l'utilisateur par email
+    const utilisateur = await User.findOne({ email });
+    if (!utilisateur) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+    }
+
+    // Comparer le mot de passe envoyé avec celui de la base de données
+    if (motDePasse !== utilisateur.motDePasse) {
+      return res.status(401).json({ message: 'Mot de passe incorrect.' });
+    }
+
+    // Répondre avec les informations de l'utilisateur
+    res.status(200).json({
+      message: 'Connexion réussie.',
+      utilisateur: { id: utilisateur._id, email: utilisateur.email },
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la connexion', error });
+  }
+});
+
 module.exports = router;
