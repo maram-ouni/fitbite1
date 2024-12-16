@@ -76,7 +76,7 @@ const Navigation = () => {
       />
 
       <Stack.Screen
-        name="RecipiesScreen"
+        name="RecipesScreen"
         component={RecipesScreen}
         options={{ headerShown: false }}
       />

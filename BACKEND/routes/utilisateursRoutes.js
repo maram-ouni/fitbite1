@@ -47,7 +47,7 @@ router.post('/inscrire', inscrireUtilisateur);
 
 /**
  * @swagger
- * /api/auth/connecter:
+ * /api/auth/connexion:
  *   post:
  *     summary: Connexion d'un utilisateur
  *     description: Permet de connecter un utilisateur avec son email et mot de passe
@@ -60,7 +60,7 @@ router.post('/inscrire', inscrireUtilisateur);
  *             properties:
  *               email:
  *                 type: string
- *                 example: "exemple@mail.com"
+ *                 example: "exemple@gmail.com"
  *               motDePasse:
  *                 type: string
  *                 example: "password123"
