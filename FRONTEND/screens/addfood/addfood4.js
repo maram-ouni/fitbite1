@@ -1,3 +1,6 @@
+
+
+
 import React, { useState } from "react";
 import {
   View,
@@ -7,10 +10,13 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
+  Alert,
 } from "react-native";
+import {  updateRecipeWithInstructions } from "../../services/apiService"; // Importez votre service API
 
-const Addfood4 = ({ navigation }) => {
+const Addfood4 = ({ navigation, route }) => {
   const [steps, setSteps] = useState(["", "", ""]);
+  const [loading, setLoading] = useState(false);
 
   const addStep = () => {
     setSteps([...steps, ""]);
@@ -22,11 +28,39 @@ const Addfood4 = ({ navigation }) => {
     setSteps(newSteps);
   };
 
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+
+      // Récupérer l'ID de la recette depuis les paramètres de navigation
+      const recipeId = route.params.recipeId; // ID de la recette passée via navigation
+      console.log("Recipe ID:", recipeId);
+
+      // Préparer les données pour la mise à jour
+      const instructions = steps.filter((step) => step.trim()); // Filtrer les étapes non vides
+      if (instructions.length === 0) {
+        Alert.alert("Erreur", "Veuillez ajouter au moins une étape.");
+        return;
+      }
+      console.log("Instructions:", instructions);
+      // Mettre à jour la recette avec les instructions
+      await updateRecipeWithInstructions(recipeId, { instructions: instructions });
+
+
+      // Naviguer vers la page suivante ou revenir à la liste des recettes
+      navigation.navigate("addfood5", { recipeId });
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour de la recette :", error);
+      Alert.alert("Erreur", error.message || "Une erreur est survenue.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Steps</Text>
-        <Text style={styles.pageIndicator}>3/3</Text>
+        <Text style={styles.headerText}>Add Recipe Steps</Text>
       </View>
 
       <ScrollView style={styles.stepsList}>
@@ -37,15 +71,14 @@ const Addfood4 = ({ navigation }) => {
             </View>
             <TextInput
               style={styles.input}
-              placeholder="Tell a little about your food"
+              placeholder="Step description"
               value={step}
               onChangeText={(text) => updateStep(text, index)}
-              multiline={true}
+              multiline
               placeholderTextColor="#999"
             />
           </View>
         ))}
-
         <TouchableOpacity style={styles.addButton} onPress={addStep}>
           <Text style={styles.addButtonText}>+ Step</Text>
         </TouchableOpacity>
@@ -60,13 +93,11 @@ const Addfood4 = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.saveButton}
-          onPress={() => {
-            // Add your save logic here
-            navigation.navigate("addfood5"); // or wherever you want to go after saving
-          }}
+          style={[styles.saveButton, loading && { opacity: 0.7 }]}
+          onPress={handleSubmit}
+          disabled={loading}
         >
-          <Text style={styles.saveButtonText}>Save</Text>
+          <Text style={styles.saveButtonText}>{loading ? "Saving..." : "Save"}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -78,18 +109,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     padding: 20,
-    marginTop: 10, // Adding a small margin at the top
+    marginTop: 20, 
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
+    marginTop: 10, 
+
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#000",
+    color:"#006D77",
   },
   pageIndicator: {
     fontSize: 16,
@@ -107,7 +140,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: "#FF9B90",
+    backgroundColor: "#E29578",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
@@ -141,7 +174,7 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: "#2D958E",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "500",
   },
   navigationButtons: {

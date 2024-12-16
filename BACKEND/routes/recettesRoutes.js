@@ -1,39 +1,15 @@
-
-
-// const express = require('express');
-// const {
-//   creerRecette,
-//   getRecettes,  // Fonction importée correctement
-//   getRecetteParId,
-
-// } = require('../controllers/recettesController');
-
-// const router = express.Router();
-
-// // Route pour créer une recette
-// router.post('/', creerRecette);
-
-// // Route pour récupérer toutes les recettes
-// router.get('/', getRecettes);  // Vérifiez que getRecettes est bien défini dans le controller
-
-// // Route pour récupérer une recette par ID
-// router.get('/:id', getRecetteParId);
-
-
-
-// module.exports = router;
+// Importations nécessaires
 const express = require('express');
 const {
   creerRecette,
   getRecettes,
   getRecetteParId,
   supprimerRecette,
+  mettreAJourRecette
 } = require('../controllers/recettesController');
-
 const router = express.Router();
 
 /**
- /**
  * @swagger
  * components:
  *   schemas:
@@ -41,20 +17,30 @@ const router = express.Router();
  *       type: object
  *       required:
  *         - nom
+ *         - tempsPreparation
  *         - instructions
  *       properties:
  *         id:
  *           type: string
  *           description: ID unique de la recette
+ *         categorie:
+ *           type: string
+ *           description: Catégorie de la recette (facultatif)
+ *         image:
+ *           type: string
+ *           description: URL de l'image de la recette (facultatif)
  *         nom:
  *           type: string
  *           description: Nom de la recette
  *         description:
  *           type: string
  *           description: Description de la recette
+ *         tempsPreparation:
+ *           type: number
+ *           description: Temps de préparation en minutes
  *         calories:
  *           type: number
- *           description: Nombre de calories
+ *           description: Nombre de calories (facultatif)
  *         ingredients:
  *           type: array
  *           items:
@@ -62,16 +48,22 @@ const router = express.Router();
  *             properties:
  *               ingredient:
  *                 type: string
- *                 format: uuid
- *                 description: ID de l'ingrédient (ObjectId)
+ *                 description: ID de l'ingrédient (référence ObjectId)
  *               quantite:
  *                 type: number
  *                 description: Quantité de l'ingrédient
  *         instructions:
- *           type: string
+ *           type: [string]
  *           description: Instructions pour préparer la recette
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Date de création de la recette
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Date de dernière mise à jour de la recette
  */
-
 
 /**
  * @swagger
@@ -137,6 +129,7 @@ router.get('/', getRecettes);
  *         description: Recette non trouvée
  */
 router.get('/:id', getRecetteParId);
+
 /**
  * @swagger
  * /api/recettes/{id}:
@@ -182,10 +175,42 @@ router.get('/:id', getRecetteParId);
  *                   type: string
  *                   example: Erreur lors de la suppression de la recette
  */
-
 router.delete('/:id', supprimerRecette);
 
+/**
+ * @swagger
+ * /api/recettes/{id}:
+ *   put:
+ *     summary: Mettre à jour une recette
+ *     tags: [Recettes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID de la recette à mettre à jour
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Recette'
+ *     responses:
+ *       200:
+ *         description: Recette mise à jour avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Recette'
+ *       404:
+ *         description: Recette non trouvée
+ *       400:
+ *         description: Données invalides
+ *       500:
+ *         description: Erreur lors de la mise à jour de la recette
+ */
+router.put('/:id', mettreAJourRecette);
+
+
 module.exports = router;
-
-
-

@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import {
   View,
@@ -6,20 +8,59 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  Alert,
 } from "react-native";
+import { addIngredient, updateRecipeWithIngredients } from "../../services/apiService"; // Import des services
+import Button from "../../components/Button"; 
 
-const Addfood3 = ({ navigation }) => {
-  const [ingredients, setIngredients] = useState(["", ""]);
+const Addfood3 = ({ navigation, route }) => {
+  const [ingredients, setIngredients] = useState([{ nom: "", quantite: "" }]);
+  const [loading, setLoading] = useState(false);
 
-  const addIngredient = () => {
-    setIngredients([...ingredients, ""]);
+  const addIngredientInput = () => {
+    setIngredients([...ingredients, { nom: "", quantite: "" }]);
   };
 
-  const updateIngredient = (text, index) => {
+  const updateIngredientInput = (field, text, index) => {
     const newIngredients = [...ingredients];
-    newIngredients[index] = text;
+    newIngredients[index][field] = text;
     setIngredients(newIngredients);
   };
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+  
+      // Ajouter chaque ingrédient au backend avec la quantité
+      const ingredientIds = [];
+      for (const ingredient of ingredients) {
+     
+        if (ingredient.nom.trim() && ingredient.quantite.trim()) {
+          const addedIngredient = await addIngredient({
+            nom: ingredient.nom,
+          });
+          ingredientIds.push({
+            ingredient: addedIngredient._id,
+            quantite: ingredient.quantite,
+          });
+        }
+      }
+  
+      // Mettre à jour la recette avec les IDs des ingrédients
+      const recipeId = route.params.recipeId; // ID de la recette passée via navigation
+      console.log("Recipe ID:", recipeId);
+
+      
+      await updateRecipeWithIngredients(recipeId, { ingredients: ingredientIds });
+  
+      navigation.navigate("addfood4", { recipeId });
+    } catch (error) {
+      Alert.alert("Erreur", error.message || "Une erreur est survenue.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,14 +75,21 @@ const Addfood3 = ({ navigation }) => {
             <TextInput
               style={styles.input}
               placeholder="Enter ingredient"
-              value={ingredient}
-              onChangeText={(text) => updateIngredient(text, index)}
+              value={ingredient.nom}
+              onChangeText={(text) => updateIngredientInput("nom", text, index)}
+              placeholderTextColor="#999"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Enter quantity"
+              value={ingredient.quantite}
+              onChangeText={(text) => updateIngredientInput("quantite", text, index)}
               placeholderTextColor="#999"
             />
           </View>
         ))}
 
-        <TouchableOpacity style={styles.addButton} onPress={addIngredient}>
+        <TouchableOpacity style={styles.addButton} onPress={addIngredientInput}>
           <Text style={styles.addButtonText}>+ Ingredient</Text>
         </TouchableOpacity>
       </View>
@@ -56,9 +104,12 @@ const Addfood3 = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.nextButton}
-          onPress={() => navigation.navigate("addfood4")}
+          onPress={handleSubmit}
+          disabled={loading}
         >
-          <Text style={styles.nextButtonText}>Next</Text>
+          <Text style={styles.nextButtonText}>
+            {loading ? "Loading..." : "Next"}
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -70,18 +121,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     padding: 20,
-    marginTop: 10, // Adding a small margin at the top
+    marginTop: 20, 
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
+    marginTop: 10,
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#000",
+    color: "#006D77",
   },
   pageIndicator: {
     fontSize: 16,
@@ -103,12 +155,17 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
   },
   addButton: {
+    backgroundColor: "#fff",
+    paddingVertical: 15,
+    borderRadius: 25,
     alignItems: "center",
-    paddingVertical: 12,
+    marginVertical: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
   },
   addButtonText: {
     color: "#2D958E",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "500",
   },
   navigationButtons: {
@@ -144,4 +201,7 @@ const styles = StyleSheet.create({
   },
 });
 
+
 export default Addfood3;
+
+

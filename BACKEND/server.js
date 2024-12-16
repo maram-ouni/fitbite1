@@ -19,7 +19,7 @@ const app = express();
 // Configurer CORS pour permettre les requêtes provenant de localhost:8081
 const corsOptions = {
   origin: ['http://localhost:8081', 'exp://192.168.1.144:8081'],
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST' , 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 

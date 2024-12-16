@@ -1,23 +1,22 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import Button from "../../components/Button"; 
 
 const Addfood5 = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
-        <Icon name="checkmark-circle" size={100} color="#38C976" />
+        <Icon name="checkmark-circle" size={100} color="#83C5BE" />
       </View>
       <Text style={styles.title}>Upload Success</Text>
       <Text style={styles.message}>
         Your recipe has been uploaded, you can see it on your profile.
       </Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Main")} // Naviguer vers "Home"
-      >
-        <Text style={styles.buttonText}>Back to Home</Text>
-      </TouchableOpacity>
+      <Button
+              title="Back to home"
+              onPress={() => navigation.navigate("Main")}
+            />
     </View>
   );
 };
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     color: "#333",
-    marginBottom: 8,
+    marginBottom: 20,
   },
   message: {
     fontSize: 16,

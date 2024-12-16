@@ -1,3 +1,6 @@
+
+
+
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -6,17 +9,29 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
+  
+
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Slider from "@react-native-community/slider";
+import { Picker } from "@react-native-picker/picker";
+import { addRecipe } from '../../services/apiService'; // Importer la méthode d'API
+import Button from "../../components/Button"; 
 
 const Addfood2 = ({ navigation }) => {
   const [formData, setFormData] = useState({
-    foodName: "",
+    nom: "",
     description: "",
-    cookingDuration: 30,
-    image: null,
+    tempsPreparation: 30,
+    image: "",
+    category: "breakfast", // Valeur par défaut
   });
+  const [focusedInput, setFocusedInput] = useState(null);
 
   // Demander la permission d'accès à la galerie
   useEffect(() => {
@@ -50,15 +65,57 @@ const Addfood2 = ({ navigation }) => {
     }
   };
 
+  // Convertir l'image en base64
+  const convertImageToBase64 = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    return new Promise((resolve) => {
+      reader.onloadend = () => {
+        resolve(reader.result);
+      };
+    });
+  };
+
+  // Soumettre la recette à l'API
+  const handleSubmit = async () => {
+    try {
+      const imageBase64 = formData.image ? await convertImageToBase64(formData.image) : null;
+      const recipeData = {
+        nom: formData.nom,
+        description: formData.description,
+        tempsPreparation: formData.tempsPreparation,
+        image: imageBase64, // Ajouter l'image en base64
+        categorie: formData.categorie, // Ajouter la catégorie
+      };
+      console.log("Recipe data:", recipeData);
+
+      const response = await addRecipe(recipeData); // Appel à l'API
+      console.log('Recipe added successfully:', response);
+      navigation.navigate("addfood3", { recipeId: response._id });
+    } catch (error) {
+      console.error('Error submitting recipe:', error);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity>
-          <Text style={styles.cancelButton}>Cancel</Text>
-        </TouchableOpacity>
-        <Text style={styles.pageNumber}>1/3</Text>
-      </View>
+    
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.container}>
+            {/* Header */}
+            <View style={styles.header}>
+              <TouchableOpacity onPress={() => navigation.navigate("RecipesScreen")}>
+                <Text style={styles.cancelButton}>Cancel</Text>
+              </TouchableOpacity>
+              <Text style={styles.pageNumber}>1/3</Text>
+            </View>
+
 
       {/* Image Picker */}
       <TouchableOpacity
@@ -78,71 +135,112 @@ const Addfood2 = ({ navigation }) => {
         )}
       </TouchableOpacity>
 
-      {/* Food Name Input */}
+            {/* Food Name Input */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Food Name</Text>
+              <TextInput
+                style={[
+                  styles.input,
+                  focusedInput === "nom" && styles.inputFocused,
+                ]}
+                placeholder="Enter food name"
+                value={formData.nom}
+                onChangeText={(text) =>
+                  setFormData((prev) => ({ ...prev, nom: text }))
+                }
+                onFocus={() => setFocusedInput("nom")}
+                onBlur={() => setFocusedInput(null)}
+              />
+            </View>
+
+
+
+      {/* Category Picker */}
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Food Name</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter food name"
-          value={formData.foodName}
-          onChangeText={(text) =>
-            setFormData((prev) => ({ ...prev, foodName: text }))
+        <Text style={styles.label}>Category</Text>
+        <Picker
+          selectedValue={formData.categorie}
+          onValueChange={(itemValue) =>
+            setFormData((prev) => ({ ...prev, categorie: itemValue }))
           }
-        />
+          style={styles.picker}
+        >
+          <Picker.Item label="Breakfast" value="Breakfast" />
+          <Picker.Item label="Lunch" value="Lunch" />
+          <Picker.Item label="Dinner" value="Dinner" />
+          <Picker.Item label="Snacks" value="Snacks" />
+        </Picker>
       </View>
 
-      {/* Description Input */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Description</Text>
-        <TextInput
-          style={[styles.input, styles.textArea]}
-          placeholder="Tell a little about your food"
-          multiline
-          numberOfLines={4}
-          value={formData.description}
-          onChangeText={(text) =>
-            setFormData((prev) => ({ ...prev, description: text }))
-          }
-        />
-      </View>
-
-      {/* Duration Slider */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Cooking Duration (in minutes)</Text>
-        <View style={styles.sliderLabels}>
-          <Text style={styles.sliderText}>&lt;10</Text>
-          <Text style={styles.sliderText}>30</Text>
-          <Text style={styles.sliderText}>&gt;60</Text>
-        </View>
-        <Slider
-          style={styles.slider}
-          minimumValue={0}
-          maximumValue={60}
-          value={formData.cookingDuration}
-          onValueChange={(value) =>
-            setFormData((prev) => ({ ...prev, cookingDuration: value }))
-          }
-          minimumTrackTintColor="#0D9488"
-          maximumTrackTintColor="#E5E7EB"
-        />
-      </View>
+            {/* Cooking Duration Input */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Cooking Duration (in minutes)</Text>
+              <TextInput
+                style={[
+                  styles.input,
+                  focusedInput === "tempsPreparation" && styles.inputFocused,
+                ]}
+                placeholder="Enter cooking duration"
+                keyboardType="numeric"
+                value={formData.tempsPreparation}
+                onChangeText={(text) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    tempsPreparation: text.replace(/[^0-9]/g, ""),
+                  }))
+                }
+                onFocus={() => setFocusedInput("tempsPreparation")}
+                onBlur={() => setFocusedInput(null)}
+              />
+            </View>
+            {/* Description Input */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Description</Text>
+              <TextInput
+                style={[
+                  styles.input,
+                  styles.textArea,
+                  focusedInput === "description" && styles.inputFocused,
+                ]}
+                placeholder="Tell a little about your food"
+                multiline
+                numberOfLines={4}
+                value={formData.description}
+                onChangeText={(text) =>
+                  setFormData((prev) => ({ ...prev, description: text }))
+                }
+                onFocus={() => setFocusedInput("description")}
+                onBlur={() => setFocusedInput(null)}
+              />
+            </View>
 
       {/* Next Button */}
       <TouchableOpacity
         style={styles.nextButton}
-        onPress={() => navigation.navigate("addfood3")}
+        // Appel de la méthode handleSubmit
       >
-        <Text style={styles.nextButtonText}>Next</Text>
+       <Button
+              title="Next"
+              onPress={handleSubmit}
+/>
       </TouchableOpacity>
     </View>
+    </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+ 
   container: {
     flex: 1,
     backgroundColor: "#fff",
     padding: 20,
+    marginTop: 20,
+  },
+  scrollContainer: {
+    flexGrow: 1,
   },
   header: {
     flexDirection: "row",
@@ -151,7 +249,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   cancelButton: {
-    color: "#FF69B4",
+    color: "#E29578",
     fontSize: 16,
   },
   pageNumber: {
@@ -189,7 +287,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    color: "#0D9488",
+    color: "#006D77",
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 8,
@@ -201,35 +299,16 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
   },
+  inputFocused: {
+    borderColor: "#006D77",
+    borderWidth: 2,
+  },
   textArea: {
     height: 100,
     textAlignVertical: "top",
   },
-  sliderLabels: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  },
-  sliderText: {
-    color: "#666",
-    fontSize: 14,
-  },
-  slider: {
-    width: "100%",
-    height: 40,
-  },
-  nextButton: {
-    backgroundColor: "#0D9488",
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: "auto",
-  },
-  nextButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
+
 });
 
 export default Addfood2;
+
