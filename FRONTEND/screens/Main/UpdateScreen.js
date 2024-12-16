@@ -263,6 +263,7 @@ const UpdateScreen = ({ navigation, route }) => {
                 // Create new formulaire if no formulaireId is passed
                 await createFormulaire(newFormData);
             }
+            navigation.navigate("Main");
 
             alert('Information updated successfully!');
             setHeight('');
