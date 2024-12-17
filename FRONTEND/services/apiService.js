@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://192.168.56.1:5000/api'; // Replace with your actual backend URL
+const API_URL = 'http://192.168.1.108:5000/api'; // Replace with your actual backend URL
 
 export const signUpUser = async (userData) => {
     const user = {
@@ -70,6 +70,18 @@ export const getIngredients = async () => {
     } catch (error) {
         console.error('Error fetching ingredients:', error);}}
 
+
+export const getIngredientsParId = async (IngredientId) => {
+  try {
+    console.log(`Fetching ingredient with ID: ${IngredientId}`); 
+    const response = await axios.get(`${API_URL}/ingredients/${IngredientId}`);
+    console.log("Ingredient data:", response.data);
+    return response.data; 
+  } catch (error) {
+    console.error("Error fetching ingredient:", error);
+    throw error; 
+  }
+};
 
 // Créer un formulaire dynamique
 export const createFormulaire = async (formData) => {
@@ -155,4 +167,14 @@ export const deleteFormulaire = async (id) => {
         throw error.response?.data || error.message;
     }
 };
-    
+
+
+export const getRecetteParId = async (recipeId) => {
+  try {
+    const response = await axios.get(`${API_URL}/recettes/${recipeId}`);
+    return response.data; 
+  } catch (error) {
+    console.error("Error fetching recipe:", error);
+    throw error; 
+  }
+};

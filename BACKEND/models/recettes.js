@@ -13,9 +13,11 @@ const recettesSchema = new mongoose.Schema({
         {
             ingredient: { type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' },
             quantite: { type: Number, required: false },
+            unite: { type: String, required: false },
         },
     ],
     instructions: [{ type: String }],
+    favorite: { type: Boolean, default: false },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Recette', recettesSchema);

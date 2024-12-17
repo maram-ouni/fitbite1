@@ -31,3 +31,16 @@ exports.supprimerIngredient = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+exports.getIngredientParId = async (req, res) => {
+  try {
+    const ingredient = await Ingredient.findById(req.params.id).select('_id nom unité');
+    console.log(ingredient)
+    if (!ingredient) {
+      return res.status(404).send({ message: 'Ingredient non trouvée' });
+    }
+    res.status(200).send(ingredient);
+  } catch (error) {
+    res.status(404).send({ message: 'Recette non trouvée' });
+  }
+};

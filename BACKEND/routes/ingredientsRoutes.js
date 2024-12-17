@@ -3,11 +3,11 @@ const {
     ajouterIngredient,
     getIngredients,
     supprimerIngredient,
+    getIngredientParId,
 } = require('../controllers/ingredientsController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
-
 router.post('/', ajouterIngredient);
 router.get('/', getIngredients);
 router.delete('/:id', supprimerIngredient);
@@ -105,5 +105,32 @@ router.delete('/:id', supprimerIngredient);
  *       500:
  *         description: Erreur serveur
  */
+
+/**
+ * @swagger
+ * /api/ingredients/{id}:
+ *   get:
+ *     summary: Récupérer un ingrédient par ID
+ *     tags: [Ingrédients]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: L'identifiant de l'ingrédient à récupérer
+ *     responses:
+ *       200:
+ *         description: Détails de l'ingrédient
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Ingredient'
+ *       404:
+ *         description: Ingrédient non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
+router.get('/:id', getIngredientParId);
 
 module.exports = router;

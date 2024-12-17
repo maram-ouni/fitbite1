@@ -33,7 +33,7 @@ const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API Medifind',
+      title: 'API Fitbite',
       version: '1.0.0',
       description: 'API pour gérer les utilisateurs, les recettes et les favoris',
     },

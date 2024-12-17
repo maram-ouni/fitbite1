@@ -26,7 +26,8 @@ exports.getRecettes = async (req, res) => {
 // Récupérer une recette par ID
 exports.getRecetteParId = async (req, res) => {
   try {
-    const recette = await Recette.findById(req.params.id);
+    const recette = await Recette.findById(req.params.id)
+    .populate('ingredients.ingredient');     
     if (!recette) {
       return res.status(404).send({ message: 'Recette non trouvée' });
     }

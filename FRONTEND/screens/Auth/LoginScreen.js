@@ -155,7 +155,7 @@ const LoginScreen = ({ navigation }) => {
         }
 
         try {
-            const response = await axios.post('http://192.168.56.1:5000/api/auth/connexion', {
+            const response = await axios.post('http://192.168.1.108:5000/api/auth/connexion', {
                 email,
                 motDePasse: password,
             });
