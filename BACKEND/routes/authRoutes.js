@@ -135,5 +135,23 @@ router.delete('/favorites', async (req, res) => {
   }
 });
 
+router.get('/favorites/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Find the user and populate the favorite recipes
+    const user = await User.findById(userId).populate('favorites');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Return the populated recipes
+    res.json(user.favorites);
+  } catch (error) {
+    console.error('Error fetching favorite recipes:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;
 

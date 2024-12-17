@@ -260,3 +260,27 @@ export const updateFavoriteStatus = async (recipeId, favoriteStatus) => {
       throw error;
     }
   };
+
+  export const getFavoriteRecipes = async (userId) => {
+    try {
+      // Ensure userId is provided
+      if (!userId) {
+        throw new Error('User ID is required');
+      }
+  
+      // Make the API call to fetch the favorite recipes
+      const response = await fetch(`${API_URL}/auth/favorites/${userId}`);
+  
+      // If the response is not OK, throw an error
+      if (!response.ok) {
+        throw new Error('Failed to fetch favorite recipes');
+      }
+  
+      // Parse and return the JSON data (the recipes)
+      const recipes = await response.json();
+      return recipes;
+    } catch (error) {
+      console.error('Error fetching favorite recipes:', error);
+      throw error; // Rethrow the error so it can be handled by the caller
+    }
+  };

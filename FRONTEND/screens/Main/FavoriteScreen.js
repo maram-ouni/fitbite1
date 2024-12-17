@@ -1,72 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import Header from './Header';
 import { Ionicons } from '@expo/vector-icons';
+import { getFavoriteRecipes } from '../../services/apiService'; // Import the API service
+import { useUser } from '../../services/Usercontext'; 
+
 
 const FavoriteRecipesScreen = ({ navigation }) => {
   const [activeFilter, setActiveFilter] = useState('Breakfast'); // Gérer l'état actif des filtres
   const [searchText, setSearchText] = useState('');
+  const { userId } = useUser(); // Get the current user's ID from context
+  const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Recettes classées par catégorie
-  const recipesByCategory = {
-    Breakfast: [
-      {
-        id: 1,
-        title: 'cake',
-        duration: '15 min.',
-        image: require('../../assets/images/cake.png'),
-      },
-      {
-        id: 2,
-        title: 'breakfast',
-        duration: '10 min.',
-        image: require('../../assets/images/breakfast.png'),
-      },
-    ],
-    Lunch: [
-      {
-        id: 3,
-        title: 'Grilled Chicken Salad',
-        duration: '20 min.',
-        image: require('../../assets/images/salad.png'),
-      },
-      {
-        id: 4,
-        title: 'pumpkin-soup',
-        duration: '25 min.',
-        image: require('../../assets/images/pumkin-soup.jpg'),
-      },
-    ],
-    Dinner: [
-      {
-        id: 5,
-        title: 'Steak and Vegetables',
-        duration: '30 min.',
-        image: require('../../assets/images/salad.png'),
-      },
-      {
-        id: 6,
-        title: 'Pumpkin Soup',
-        duration: '15 min.',
-        image: require('../../assets/images/pumkin-soup.jpg'),
-      },
-    ],
-    Snacks: [
-      {
-        id: 7,
-        title: 'cake',
-        duration: '5 min.',
-        image: require('../../assets/images/cake.png'),
-      },
-      
-    ],
-  };
+  useEffect(() => {
+    const fetchFavoriteRecipes = async () => {
+      try {
+        if (!userId) return;
 
-  // Obtenez les recettes pour le filtre actif
-  const filteredRecipes = recipesByCategory[activeFilter] || [];
+        setLoading(true);
+        const recipes = await getFavoriteRecipes(userId); // Fetch the favorite recipes from the API
+        setFavoriteRecipes(recipes); // Set the favorite recipes to state
+      } catch (err) {
+        setError('Failed to load favorite recipes.'); // Handle error
+        console.error('Error fetching favorite recipes:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchFavoriteRecipes();
+  }, [userId]);
+
+  // Filter recipes based on search text
+  const filteredRecipes = favoriteRecipes.filter(recipe => 
+    recipe.nom.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text>{error}</Text>;
+  }
   return (
     <LinearGradient
       colors={COLORS.gradients.background.colors}
@@ -94,52 +74,25 @@ const FavoriteRecipesScreen = ({ navigation }) => {
       </View>
 
       {/* Filtres */}
-      <View style={styles.filterContainer}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.scrollBox}
-        >
-          {Object.keys(recipesByCategory).map((filter) => (
-            <TouchableOpacity
-              key={filter}
-              onPress={() => setActiveFilter(filter)}
-              style={styles.filterButton}
-            >
-              {activeFilter === filter ? (
-                <LinearGradient
-                  colors={[COLORS.primary.dark, COLORS.primary.main]}
-                  style={styles.activeGradient}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                >
-                  <Text style={[styles.filterText, styles.activeText]}>{filter}</Text>
-                </LinearGradient>
-              ) : (
-                <View style={styles.inactiveButton}>
-                  <Text style={styles.filterText}>{filter}</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-
-      {/* Liste des recettes */}
+      {/* List of Favorite Recipes */}
       <ScrollView style={styles.scrollView}>
-        {filteredRecipes.map((recipe) => (
-          <TouchableOpacity
-            key={recipe.id}
-            style={styles.recipeCard}
-            onPress={() => navigation.navigate('RecipeDetails', { recipeId: recipe.id })}
-          >
-            <Image source={recipe.image} style={styles.recipeImage} />
-            <View style={styles.recipeInfo}>
-              <Text style={styles.recipeTitle}>{recipe.title}</Text>
-              <Text style={styles.recipeDuration}>{recipe.duration}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+        {filteredRecipes.length === 0 ? (
+          <Text style={styles.noFavoritesText}>You have no favorite recipes yet.</Text>
+        ) : (
+          filteredRecipes.map((recipe) => (
+            <TouchableOpacity
+              key={recipe._id}
+              style={styles.recipeCard}
+              onPress={() => navigation.navigate('RecipeDetails', { recipeId: recipe._id })}
+            >
+              <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
+              <View style={styles.recipeInfo}>
+                <Text style={styles.recipeTitle}>{recipe.nom}</Text>
+                <Text style={styles.recipeDuration}>{recipe.tempsPreparation} min.</Text>
+              </View>
+            </TouchableOpacity>
+          ))
+        )}
       </ScrollView>
     </LinearGradient>
   );
