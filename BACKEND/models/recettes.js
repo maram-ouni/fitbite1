@@ -17,7 +17,6 @@ const recettesSchema = new mongoose.Schema({
         },
     ],
     instructions: [{ type: String }],
-    favorite: { type: Boolean, default: false },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Recette', recettesSchema);

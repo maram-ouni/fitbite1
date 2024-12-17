@@ -193,3 +193,70 @@ export const updateFavoriteStatus = async (recipeId, favoriteStatus) => {
       throw error; 
     }
   };
+
+  export const addFavorite = async (recetteId, utilisateurId) => {
+    try {
+      // Vérifier si l'ID utilisateur est présent
+      if (!utilisateurId) {
+        throw new Error("L'ID utilisateur est requis pour ajouter aux favoris.");
+      }
+      const response = await axios.post(
+        `${API_URL}/auth/favorites`, // URL pour ajouter la recette aux favoris
+        { recetteId, utilisateurId } // Envoyer les deux informations nécessaires
+      );
+  
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        // Si l'erreur provient du serveur
+        console.error('Erreur lors de l\'ajout aux favoris:', error.response.data);
+        throw new Error(error.response.data.message || 'Erreur interne du serveur');
+      } else if (error.request) {
+        // Si la requête a été envoyée, mais qu'aucune réponse n'a été reçue
+        console.error('Pas de réponse du serveur:', error.request);
+        throw new Error('Aucune réponse du serveur');
+      } else {
+        // Autres erreurs
+        console.error('Erreur lors de l\'ajout aux favoris:', error.message);
+        throw error;
+      }
+    }
+  };
+
+  export const checkIfFavorite = async (recipeId, userId) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/favorites/${userId}/${recipeId}`);
+      const data = await response.json();
+      return data.isFavorite; // Retourne true ou false
+    } catch (error) {
+      console.error("Erreur lors de la vérification de l'état favori :", error);
+      return false;
+    }
+  };
+
+  export const removeFavorite = async (recipeId, userId) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/favorites`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          recetteId: recipeId,
+          utilisateurId: userId,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        return data.message;
+      } else {
+        throw new Error(data.message || 'Erreur lors de la suppression des favoris');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la suppression des favoris:', error);
+      throw error;
+    }
+  };

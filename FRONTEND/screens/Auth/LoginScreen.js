@@ -119,6 +119,8 @@ import Button from '../../components/Button'; // Bouton personnalisé
 import Button2 from '../../components/Button2'; // Deuxième bouton personnalisé
 import axios from 'axios'; // Pour les requêtes API
 import { useUser } from '../../services/Usercontext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -164,6 +166,8 @@ const LoginScreen = ({ navigation }) => {
             Alert.alert('Succès', 'Connexion réussie!');
             const userId = response.data.utilisateur.id;
             setUserId(userId);
+            console.log(userId)
+            await AsyncStorage.setItem('utilisateurId', userId);
 
             // Naviguer vers l'écran principal
             navigation.navigate('Main', { user: response.data.utilisateur });

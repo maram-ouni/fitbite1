@@ -9,7 +9,8 @@ const express = require('express');
 const { 
     inscrireUtilisateur, 
     connecterUtilisateur, 
-    getProfilUtilisateur 
+    getProfilUtilisateur,
+    addFavorite,
 } = require('../controllers/utilisateursController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -82,5 +83,30 @@ router.post('/connecter', connecterUtilisateur);
 
 // Routes protégées
 router.get('/profil', authMiddleware, getProfilUtilisateur);
+/**
+* @swagger
+* /api/utilisateur/favorites:
+*   post:
+*     summary: Ajouter une recette aux favoris de l'utilisateur
+*     tags: [Utilisateur]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             properties:
+*               recetteId:
+*                 type: string
+*                 description: ID de la recette à ajouter aux favoris
+*     responses:
+*       200:
+*         description: Recette ajoutée aux favoris avec succès
+*       404:
+*         description: Utilisateur ou recette non trouvé
+*       500:
+*         description: Erreur lors de l'ajout aux favoris
+*/
+router.post('/favorites', addFavorite);
 
 module.exports = router;

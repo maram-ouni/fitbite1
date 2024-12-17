@@ -9,9 +9,11 @@ import {
   SafeAreaView,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { getRecetteParId, getIngredientsParId, updateFavoriteStatus } from "../../services/apiService";
+import { getRecetteParId, getIngredientsParId,checkIfFavorite } from "../../services/apiService";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "../../styles/colors"; // Import des couleurs
+import { addFavorite, removeFavorite } from "../../services/apiService";
+import { useUser } from "../../services/Usercontext"; 
 
 const ParentComponent = ({ route, navigation }) => {
   const { recipeId } = route.params;
@@ -19,13 +21,13 @@ const ParentComponent = ({ route, navigation }) => {
   const [activeTab, setActiveTab] = useState("INGREDIENTS");
   const [ingredientsWithNames, setIngredientsWithNames] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
+  const { userId } = useUser();
 
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
         const data = await getRecetteParId(recipeId);
         setRecipe(data);
-        setIsFavorite(data.favorite);
         const updatedIngredients = await Promise.all(
           data.ingredients.map(async (ingredient) => {
             const ingredientDetails = await getIngredientsParId(ingredient.ingredient._id);
@@ -34,23 +36,44 @@ const ParentComponent = ({ route, navigation }) => {
         );
 
         setIngredientsWithNames(updatedIngredients);
-      } catch (error) {
-        console.error("Error fetching recipe or ingredients:", error);
+
+      if (userId) {
+        const favoriteStatus = await checkIfFavorite(recipeId, userId);
+        console.log(`yes/no ${favoriteStatus}`);
+        setIsFavorite(favoriteStatus);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching recipe or ingredients:", error);
+    }
+  };
 
     fetchRecipe();
   }, [recipeId]);
-
+console.log(userId)
+console.log (recipeId)
   const toggleFavorite = async () => {
+    if (!userId) {
+      console.error("Utilisateur non connecté.");
+      return;
+    }
+
     try {
-      const updatedRecipe = await updateFavoriteStatus(recipeId, !isFavorite);
-      setIsFavorite(!isFavorite); 
-      setRecipe(updatedRecipe);
+      if (isFavorite) {
+        // Si la recette est déjà dans les favoris, la retirer
+        await removeFavorite(recipeId, userId);
+        setIsFavorite(false);
+        console.log("Recette supprimée des favoris");
+      } else {
+        // Sinon, ajouter la recette aux favoris
+        await addFavorite(recipeId, userId);
+        setIsFavorite(true);
+        console.log("Recette ajoutée aux favoris");
+      }
     } catch (error) {
-      console.error("Error updating favorite status:", error);
+      console.error("Erreur lors de la gestion des favoris:", error);
     }
   };
+
   if (!recipe || ingredientsWithNames.length === 0) {
     return (
       <View style={styles.loadingContainer}>
