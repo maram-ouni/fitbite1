@@ -7,18 +7,21 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  TextInput,
 } from "react-native";
 import { COLORS } from "../../styles/colors";
 import { LinearGradient } from "expo-linear-gradient";
 import Button from "../../components/Button"; // Import du composant Button
 import Header from "./Header";
 import { getRecipes } from "../../services/apiService"; // Importation du service getRecipes
+import { Ionicons } from "@expo/vector-icons"; // Import Ionicons for the search icon
 
 const RecipesScreen = ({ navigation }) => {
   const [activeFilter, setActiveFilter] = useState("Breakfast");
   const [recipes, setRecipes] = useState([]); // Changer l'état en tableau pour stocker les recettes
   const [loading, setLoading] = useState(true); // État pour gérer le chargement
   const [error, setError] = useState(null); // État pour gérer les erreurs
+  const [searchText, setSearchText] = useState(""); // State for search input
 
   // Liste des filtres horizontaux
   const filters = ["Breakfast", "Lunch", "Dinner", "Snacks"];
@@ -30,8 +33,6 @@ const RecipesScreen = ({ navigation }) => {
         const data = await getRecipes(); // Appeler la fonction getRecipes depuis le service
         setRecipes(data); // Stocker les recettes dans l'état
         setLoading(false); // Terminer le chargement
-        console.log("Recipes:", recipes);
-        console.log("Categories in recipes:", recipes.map(r => r.categorie));
       } catch (error) {
         setError("Failed to fetch recipes"); // Gérer l'erreur
         setLoading(false); // Terminer le chargement
@@ -42,12 +43,11 @@ const RecipesScreen = ({ navigation }) => {
   }, []); // L'effet ne s'exécute qu'une fois, lors du montage du composant
 
   // Récupérer les recettes pour le filtre actif
- 
-
-  const selectedRecipes = recipes.filter((recipe) => recipe.categorie === activeFilter);
-  console.log("Selected recipes:", selectedRecipes);
-
-
+  const selectedRecipes = recipes
+    .filter((recipe) => recipe.categorie === activeFilter)
+    .filter((recipe) =>
+      recipe.nom.toLowerCase().includes(searchText.toLowerCase())
+    ); // Filter recipes by search text
 
   if (loading) {
     return (
@@ -74,6 +74,17 @@ const RecipesScreen = ({ navigation }) => {
       {/* Header */}
       <View style={styles.headerContainer}>
         <Header date="2 May, Monday" navigation={navigation} />
+      </View>
+
+      {/* Search Bar */}
+      <View style={styles.searchBar}>
+        <Ionicons name="search-outline" size={20} color="#aaa" />
+        <TextInput
+          style={styles.searchInput}
+          placeholder={`Search ${activeFilter.toLowerCase()} recipes...`}
+          value={searchText}
+          onChangeText={setSearchText}
+        />
       </View>
 
       {/* Filtres horizontaux */}
@@ -104,7 +115,7 @@ const RecipesScreen = ({ navigation }) => {
                 <View style={styles.inactiveButton}>
                   <Text style={styles.filterText}>{filter}</Text>
                 </View>
-              )}s
+              )}
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -127,7 +138,6 @@ const RecipesScreen = ({ navigation }) => {
             onPress={() =>
               navigation.navigate("ParentComponent", { recipeId: recipe._id })
             }
-            
           >
             <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
             <View style={styles.recipeInfo}>
@@ -196,6 +206,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   errorText: { color: "red", fontSize: 18 },
+  searchBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 25,
+    height: 40,
+    marginBottom: 15,
+    marginHorizontal: 10,
+  },
+  searchInput: {
+    marginLeft: 10,
+    flex: 1,
+    color: "#555",
+    fontSize: 15,
+  },
 });
 
 export default RecipesScreen;

@@ -277,6 +277,7 @@ export const updateFavoriteStatus = async (recipeId, favoriteStatus) => {
       }
   
       // Parse and return the JSON data (the recipes)
+      console.log(response)
       const recipes = await response.json();
       return recipes;
     } catch (error) {
