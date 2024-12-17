@@ -9,7 +9,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { getRecetteParId, getIngredientsParId } from "../../services/apiService";
+import { getRecetteParId, getIngredientsParId, updateFavoriteStatus } from "../../services/apiService";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "../../styles/colors"; // Import des couleurs
 
@@ -18,13 +18,14 @@ const ParentComponent = ({ route, navigation }) => {
   const [recipe, setRecipe] = useState(null);
   const [activeTab, setActiveTab] = useState("INGREDIENTS");
   const [ingredientsWithNames, setIngredientsWithNames] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
         const data = await getRecetteParId(recipeId);
         setRecipe(data);
-
+        setIsFavorite(data.favorite);
         const updatedIngredients = await Promise.all(
           data.ingredients.map(async (ingredient) => {
             const ingredientDetails = await getIngredientsParId(ingredient.ingredient._id);
@@ -41,6 +42,15 @@ const ParentComponent = ({ route, navigation }) => {
     fetchRecipe();
   }, [recipeId]);
 
+  const toggleFavorite = async () => {
+    try {
+      const updatedRecipe = await updateFavoriteStatus(recipeId, !isFavorite);
+      setIsFavorite(!isFavorite); 
+      setRecipe(updatedRecipe);
+    } catch (error) {
+      console.error("Error updating favorite status:", error);
+    }
+  };
   if (!recipe || ingredientsWithNames.length === 0) {
     return (
       <View style={styles.loadingContainer}>
@@ -48,7 +58,7 @@ const ParentComponent = ({ route, navigation }) => {
       </View>
     );
   }
-
+console.log(isFavorite)
   return (
     <LinearGradient
       colors={COLORS.gradients.background.colors}
@@ -103,11 +113,11 @@ const ParentComponent = ({ route, navigation }) => {
             <View style={styles.titleRow}>
               <Text style={styles.title}>{recipe.nom}</Text>
               <View style={styles.iconContainer}>
-                <TouchableOpacity>
+              <TouchableOpacity onPress={toggleFavorite}>
                   <AntDesign
-                    name="hearto"
+                    name={isFavorite ? "heart" : "hearto"}
                     size={24}
-                    color="black"
+                    color={isFavorite ? "#E29578" : "black"} 
                     style={styles.icon}
                   />
                 </TouchableOpacity>

@@ -178,3 +178,18 @@ export const getRecetteParId = async (recipeId) => {
     throw error; 
   }
 };
+
+export const updateFavoriteStatus = async (recipeId, favoriteStatus) => {
+    try {
+      const response = await axios.put(
+        `${API_URL}/recettes/${recipeId}/favorite`,
+        { favorite: favoriteStatus } 
+      );
+      console.log(response)
+      console.log(response.data)
+      return response.data;
+    } catch (error) {
+      console.error('Error updating favorite status:', error);
+      throw error; 
+    }
+  };

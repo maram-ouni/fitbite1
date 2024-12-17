@@ -5,7 +5,8 @@ const {
   getRecettes,
   getRecetteParId,
   supprimerRecette,
-  mettreAJourRecette
+  mettreAJourRecette,
+  updateFavoriteStatus,
 } = require('../controllers/recettesController');
 const router = express.Router();
 
@@ -219,6 +220,6 @@ router.delete('/:id', supprimerRecette);
  *         description: Erreur lors de la mise à jour de la recette
  */
 router.put('/:id', mettreAJourRecette);
-
+router.put('/:id/favorite', updateFavoriteStatus);
 
 module.exports = router;

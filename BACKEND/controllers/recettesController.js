@@ -68,3 +68,22 @@ exports.mettreAJourRecette = async (req, res) => {
   }
 };
 
+exports.updateFavoriteStatus = async (req, res) => {
+  try {
+    // Récupérer l'id de la recette et la nouvelle valeur de 'favorite' depuis le corps de la requête
+    const { id } = req.params;
+    const { favorite } = req.body;
+
+    // Trouver la recette par son id
+    const recette = await Recette.findById(id);
+    if (!recette) {
+      return res.status(404).send({ message: 'Recette non trouvée' });
+    }
+    recette.favorite = favorite;
+    await recette.save();
+    res.status(200).send(recette);
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du statut "favorite":', error);
+    res.status(500).send({ message: 'Erreur lors de la mise à jour du statut "favorite"' });
+  }
+};
