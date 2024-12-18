@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -33,6 +34,8 @@ const RecipesScreen = ({ navigation }) => {
         const data = await getRecipes(); // Appeler la fonction getRecipes depuis le service
         setRecipes(data); // Stocker les recettes dans l'état
         setLoading(false); // Terminer le chargement
+        console.log("Recipes:", recipes);
+        console.log("Categories in recipes:", recipes.map(r => r.categorie));
       } catch (error) {
         setError("Failed to fetch recipes"); // Gérer l'erreur
         setLoading(false); // Terminer le chargement
@@ -43,11 +46,13 @@ const RecipesScreen = ({ navigation }) => {
   }, []); // L'effet ne s'exécute qu'une fois, lors du montage du composant
 
   // Récupérer les recettes pour le filtre actif
+
   const selectedRecipes = recipes
     .filter((recipe) => recipe.categorie === activeFilter)
     .filter((recipe) =>
       recipe.nom.toLowerCase().includes(searchText.toLowerCase())
     ); // Filter recipes by search text
+
 
   if (loading) {
     return (
@@ -142,7 +147,9 @@ const RecipesScreen = ({ navigation }) => {
             <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
             <View style={styles.recipeInfo}>
               <Text style={styles.recipeTitle}>{recipe.nom}</Text>
+
               <Text style={styles.recipeDuration}>{recipe.tempsPreparation} minutes</Text>
+
             </View>
           </TouchableOpacity>
         ))}
