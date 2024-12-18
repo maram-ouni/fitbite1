@@ -6,7 +6,7 @@ import MainStack from "./MainStack";
 import OnboardingStack from "./OnboardingStack";
 import PlanningMealsScreen from "../screens/Main/PlanningMealsScreen";
 import GroceriesListScreen from "../screens/Main/GroceriesListScreen";
-
+// import ProfileScreen from '../screens/Main/ProfileScreen';
 import RecipesScreen from "../screens/Main/RecipesScreen";
 import IngredientsScreen from "../screens/Main/IngredientsScreen";
 
@@ -16,7 +16,8 @@ import Addfood3 from "../screens/addfood/addfood3";
 import Addfood4 from "../screens/addfood/addfood4";
 import Addfood5 from "../screens/addfood/addfood5";
 import ParentComponent from "../screens/addfood/ParentComponent";
-
+import UpdateScreen from "../screens/Main/UpdateScreen";
+import ProfileScreen from "../screens/Main/ProfileScreen";
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
@@ -50,6 +51,16 @@ const Navigation = () => {
   return (
     <Stack.Navigator initialRouteName={isFirstTime ? "Onboarding" : "Auth"}>
       <Stack.Screen
+        name="FormulaireDynamique"
+        component={UpdateScreen}
+        options={{ headerShown: false }}
+      />
+            <Stack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="Onboarding"
         component={OnboardingStack}
         options={{ headerShown: false }}
@@ -69,6 +80,7 @@ const Navigation = () => {
         component={PlanningMealsScreen}
         options={{ headerShown: false }}
       />
+       {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
       <Stack.Screen
         name="GroceriesList"
         component={GroceriesListScreen}

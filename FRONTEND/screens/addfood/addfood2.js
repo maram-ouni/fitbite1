@@ -158,7 +158,7 @@ const Addfood2 = ({ navigation }) => {
         <Picker
           selectedValue={formData.category}
           onValueChange={(itemValue) =>
-            setFormData((prev) => ({ ...prev, categorie: itemValue }))
+            setFormData((prev) => ({ ...prev, category: itemValue }))
           }
           style={styles.picker}
         >

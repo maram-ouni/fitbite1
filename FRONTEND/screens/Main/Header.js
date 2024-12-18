@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Platform } from 'r
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { COLORS } from '../../styles/colors';
 
-const Header = ({ date, onMorePress, navigation }) => {
+const Header = ({ date, navigation }) => {
     const today = new Date();
     const formattedDate = today.toLocaleDateString('en-US', {
         day: 'numeric',
@@ -14,6 +14,11 @@ const Header = ({ date, onMorePress, navigation }) => {
     const handleCalendarPress = () => {
         // Navigate to Planning when calendar icon is pressed
         navigation.navigate('PlanningMeals');
+    };
+
+    const handleMorePress = () => {
+        // Navigate to ProfileScreen when the "more" icon is pressed
+        navigation.navigate('ProfileScreen');
     };
 
     return (
@@ -30,7 +35,7 @@ const Header = ({ date, onMorePress, navigation }) => {
             <Text style={styles.dateText}>{formattedDate}</Text>
 
             {/* More Options Icon */}
-            <TouchableOpacity style={styles.iconWrapper} onPress={onMorePress}>
+            <TouchableOpacity style={styles.iconWrapper} onPress={handleMorePress}>
                 <Feather name="more-horizontal" size={20} color={COLORS.primary.dark} />
             </TouchableOpacity>
         </View>
