@@ -18,7 +18,6 @@ import Addfood5 from "../screens/addfood/addfood5";
 import ParentComponent from "../screens/addfood/ParentComponent";
 import UpdateScreen from "../screens/Main/UpdateScreen";
 import ProfileScreen from "../screens/Main/ProfileScreen";
-
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
@@ -56,7 +55,7 @@ const Navigation = () => {
         component={UpdateScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
+            <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
         options={{ headerShown: false }}

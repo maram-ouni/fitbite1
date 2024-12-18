@@ -71,6 +71,18 @@ export const getIngredients = async () => {
         console.error('Error fetching ingredients:', error);}}
 
 
+export const getIngredientsParId = async (IngredientId) => {
+  try {
+    console.log(`Fetching ingredient with ID: ${IngredientId}`); 
+    const response = await axios.get(`${API_URL}/ingredients/${IngredientId}`);
+    console.log("Ingredient data:", response.data);
+    return response.data; 
+  } catch (error) {
+    console.error("Error fetching ingredient:", error);
+    throw error; 
+  }
+};
+
 // Créer un formulaire dynamique
 export const createFormulaire = async (formData) => {
     try {
@@ -107,6 +119,16 @@ export const getFormulaires = async () => {
         throw error.response?.data || error.message;
     }
 };
+export const updateFormulaire = async (id, formData) => {
+    try {
+        const response = await axios.put(`${API_URL}/formulaireDynamique/${id}`, formData);
+        console.log('Formulaire Updated:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Update Form Error:', error);
+        throw error.response?.data || error.message;
+    }
+};
 
 // Mettre à jour une recette avec des ingrédients
 export const updateRecipeWithIngredients = async (recipeId, {ingredients}) => {
@@ -120,16 +142,7 @@ export const updateRecipeWithIngredients = async (recipeId, {ingredients}) => {
     } catch (error) {
         console.error('Error updating recipe:', error);}}
 // Mettre à jour un formulaire dynamique
-export const updateFormulaire = async (id, formData) => {
-    try {
-        const response = await axios.put(`${API_URL}/formulaireDynamique/${id}`, formData);
-        console.log('Formulaire Updated:', response.data);
-        return response.data;
-    } catch (error) {
-        console.error('Update Form Error:', error);
-        throw error.response?.data || error.message;
-    }
-};
+
 
 export const updateRecipeWithInstructions = async (recipeId, {instructions}) => {
     try {
@@ -155,45 +168,160 @@ export const deleteFormulaire = async (id) => {
         throw error.response?.data || error.message;
     }
 };
-
-
-
-export const getUserInfo = async (userId) => {
+export const getRecetteParId = async (recipeId) => {
     try {
-        const response = await axios.get(`${API_URL}/utilisateurs/profile/${userId}`);
-        if (response.status === 200) {
-            return response.data;  // Retourner les données de l'utilisateur si la requête réussit
-        } else {
-            throw new Error(`Erreur : ${response.status} - ${response.statusText}`);
+      const response = await axios.get(`${API_URL}/recettes/${recipeId}`);
+      return response.data; 
+    } catch (error) {
+      console.error("Error fetching recipe:", error);
+      throw error; 
+    }
+  };
+  
+  export const updateFavoriteStatus = async (recipeId, favoriteStatus) => {
+      try {
+        const response = await axios.put(
+          `${API_URL}/recettes/${recipeId}/favorite`,
+          { favorite: favoriteStatus } 
+        );
+        console.log(response)
+        console.log(response.data)
+        return response.data;
+      } catch (error) {
+        console.error('Error updating favorite status:', error);
+        throw error; 
+      }
+    };
+  
+    export const addFavorite = async (recetteId, utilisateurId) => {
+      try {
+        // Vérifier si l'ID utilisateur est présent
+        if (!utilisateurId) {
+          throw new Error("L'ID utilisateur est requis pour ajouter aux favoris.");
         }
-    } catch (error) {
-        console.error('Erreur lors de la récupération des informations de l\'utilisateur:', error);
-        // Vous pouvez également renvoyer un message d'erreur ou un objet vide selon vos besoins
-        throw new Error('Impossible de récupérer les informations de l\'utilisateur. Veuillez réessayer.');
-    }
-};
-// Modifier les informations de l'utilisateur
-export const updateUserInfo = async (userId, userData) => {
-    try {
-        // Préparer les données à envoyer pour la mise à jour
-        const updatedUser = {
-            nom: userData.nom,
-            prenom: userData.prenom,
-            age: userData.age,
-            photo: userData.photo,  // Si vous souhaitez inclure une photo
-        };
-
-        const response = await axios.put(`${API_URL}/utilisateurs/${userId}`, updatedUser, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
+        const response = await axios.post(
+          `${API_URL}/auth/favorites`, // URL pour ajouter la recette aux favoris
+          { recetteId, utilisateurId } // Envoyer les deux informations nécessaires
+        );
+    
+        console.log(response.data);
+        return response.data;
+      } catch (error) {
+        if (error.response) {
+          // Si l'erreur provient du serveur
+          console.error('Erreur lors de l\'ajout aux favoris:', error.response.data);
+          throw new Error(error.response.data.message || 'Erreur interne du serveur');
+        } else if (error.request) {
+          // Si la requête a été envoyée, mais qu'aucune réponse n'a été reçue
+          console.error('Pas de réponse du serveur:', error.request);
+          throw new Error('Aucune réponse du serveur');
+        } else {
+          // Autres erreurs
+          console.error('Erreur lors de l\'ajout aux favoris:', error.message);
+          throw error;
+        }
+      }
+    };
+  
+    export const checkIfFavorite = async (recipeId, userId) => {
+      try {
+        const response = await fetch(`${API_URL}/auth/favorites/${userId}/${recipeId}`);
+        const data = await response.json();
+        return data.isFavorite; // Retourne true ou false
+      } catch (error) {
+        console.error("Erreur lors de la vérification de l'état favori :", error);
+        return false;
+      }
+    };
+  
+    export const removeFavorite = async (recipeId, userId) => {
+      try {
+        const response = await fetch(`${API_URL}/auth/favorites`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            recetteId: recipeId,
+            utilisateurId: userId,
+          }),
         });
+    
+        const data = await response.json();
+    
+        if (response.ok) {
+          return data.message;
+        } else {
+          throw new Error(data.message || 'Erreur lors de la suppression des favoris');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la suppression des favoris:', error);
+        throw error;
+      }
+    };
+  
+    export const getFavoriteRecipes = async (userId) => {
+      try {
+        // Ensure userId is provided
+        if (!userId) {
+          throw new Error('User ID is required');
+        }
+    
+        // Make the API call to fetch the favorite recipes
+        const response = await fetch(`${API_URL}/auth/favorites/${userId}`);
+    
+        // If the response is not OK, throw an error
+        if (!response.ok) {
+          throw new Error('Failed to fetch favorite recipes');
+        }
+    
+        // Parse and return the JSON data (the recipes)
+        console.log(response)
+        const recipes = await response.json();
+        return recipes;
+      } catch (error) {
+        console.error('Error fetching favorite recipes:', error);
+        throw error; // Rethrow the error so it can be handled by the caller
+      }
+    };
 
-        console.log('Utilisateur mis à jour:', response.data);
-        return response.data;  // Retourner la réponse de l'API, qui pourrait être l'utilisateur mis à jour
-    } catch (error) {
-        console.error('Erreur lors de la mise à jour de l\'utilisateur:', error);
-        throw error.response?.data || error.message;
-    }
-};
-
+    export const getUserInfo = async (userId) => {
+        try {
+            const response = await axios.get(`${API_URL}/utilisateurs/profile/${userId}`);
+            if (response.status === 200) {
+                return response.data;  // Retourner les données de l'utilisateur si la requête réussit
+            } else {
+                throw new Error(`Erreur : ${response.status} - ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération des informations de l\'utilisateur:', error);
+            // Vous pouvez également renvoyer un message d'erreur ou un objet vide selon vos besoins
+            throw new Error('Impossible de récupérer les informations de l\'utilisateur. Veuillez réessayer.');
+        }
+    };
+    // Modifier les informations de l'utilisateur
+    export const updateUserInfo = async (userId, userData) => {
+        try {
+            // Préparer les données à envoyer pour la mise à jour
+            const updatedUser = {
+                nom: userData.nom,
+                prenom: userData.prenom,
+                age: userData.age,
+                photo: userData.photo,  // Si vous souhaitez inclure une photo
+            };
+    
+            const response = await axios.put(`${API_URL}/utilisateurs/${userId}`, updatedUser, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            console.log('Utilisateur mis à jour:', response.data);
+            return response.data;  // Retourner la réponse de l'API, qui pourrait être l'utilisateur mis à jour
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour de l\'utilisateur:', error);
+            throw error.response?.data || error.message;
+        }
+    };
+    
+    

@@ -11,14 +11,13 @@ import {
   Alert,
 } from "react-native";
 import { addIngredient, updateRecipeWithIngredients } from "../../services/apiService"; // Import des services
-import Button from "../../components/Button"; 
 
 const Addfood3 = ({ navigation, route }) => {
-  const [ingredients, setIngredients] = useState([{ nom: "", quantite: "" }]);
+  const [ingredients, setIngredients] = useState([{ nom: "", quantite: "", unite: "" },]);
   const [loading, setLoading] = useState(false);
 
   const addIngredientInput = () => {
-    setIngredients([...ingredients, { nom: "", quantite: "" }]);
+    setIngredients([...ingredients,{ nom: "", quantite: "", unite: "" }]);
   };
 
   const updateIngredientInput = (field, text, index) => {
@@ -35,13 +34,14 @@ const Addfood3 = ({ navigation, route }) => {
       const ingredientIds = [];
       for (const ingredient of ingredients) {
      
-        if (ingredient.nom.trim() && ingredient.quantite.trim()) {
+        if (ingredient.nom.trim() && ingredient.quantite.trim() && ingredient.unite.trim()) {
           const addedIngredient = await addIngredient({
             nom: ingredient.nom,
           });
           ingredientIds.push({
             ingredient: addedIngredient._id,
             quantite: ingredient.quantite,
+            unite : ingredient.unite,
           });
         }
       }
@@ -61,6 +61,9 @@ const Addfood3 = ({ navigation, route }) => {
     }
   };
   
+  console.log("ingredients:", ingredients);
+
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -84,6 +87,13 @@ const Addfood3 = ({ navigation, route }) => {
               placeholder="Enter quantity"
               value={ingredient.quantite}
               onChangeText={(text) => updateIngredientInput("quantite", text, index)}
+              placeholderTextColor="#999"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Enter unit (e.g., kg, ml, ....)"
+              value={ingredient.unite}
+              onChangeText={(text) => updateIngredientInput("unite", text, index)}
               placeholderTextColor="#999"
             />
           </View>
@@ -121,7 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     padding: 20,
-    marginTop: 20, 
+    marginTop: 20,
   },
   header: {
     flexDirection: "row",
@@ -153,6 +163,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: "#ddd",
+    marginBottom: 10,
   },
   addButton: {
     backgroundColor: "#fff",
@@ -200,7 +211,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 });
-
 
 export default Addfood3;
 
