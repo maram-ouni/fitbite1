@@ -155,4 +155,45 @@ export const deleteFormulaire = async (id) => {
         throw error.response?.data || error.message;
     }
 };
-    
+
+
+
+export const getUserInfo = async (userId) => {
+    try {
+        const response = await axios.get(`${API_URL}/utilisateurs/profile/${userId}`);
+        if (response.status === 200) {
+            return response.data;  // Retourner les données de l'utilisateur si la requête réussit
+        } else {
+            throw new Error(`Erreur : ${response.status} - ${response.statusText}`);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération des informations de l\'utilisateur:', error);
+        // Vous pouvez également renvoyer un message d'erreur ou un objet vide selon vos besoins
+        throw new Error('Impossible de récupérer les informations de l\'utilisateur. Veuillez réessayer.');
+    }
+};
+// Modifier les informations de l'utilisateur
+export const updateUserInfo = async (userId, userData) => {
+    try {
+        // Préparer les données à envoyer pour la mise à jour
+        const updatedUser = {
+            nom: userData.nom,
+            prenom: userData.prenom,
+            age: userData.age,
+            photo: userData.photo,  // Si vous souhaitez inclure une photo
+        };
+
+        const response = await axios.put(`${API_URL}/utilisateurs/${userId}`, updatedUser, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        console.log('Utilisateur mis à jour:', response.data);
+        return response.data;  // Retourner la réponse de l'API, qui pourrait être l'utilisateur mis à jour
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour de l\'utilisateur:', error);
+        throw error.response?.data || error.message;
+    }
+};
+

@@ -53,11 +53,58 @@ exports.connecterUtilisateur = async (req, res) => {
 };
 
 // Profil utilisateur
-exports.getProfilUtilisateur = async (req, res) => {
+// exports.getProfilUtilisateur = async (req, res) => {
+//     try {
+//         const utilisateur = await Utilisateur.findById(req.utilisateur.id).select('-motDePasse');
+//         res.status(200).json(utilisateur);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+exports.getUserInfo = async (req, res) => {
     try {
-        const utilisateur = await Utilisateur.findById(req.utilisateur.id).select('-motDePasse');
-        res.status(200).json(utilisateur);
+        // Récupérer l'ID de l'utilisateur depuis les paramètres de la requête (par exemple)
+        const userId = req.params.id;
+
+        // Trouver l'utilisateur dans la base de données
+        const user = await Utilisateur.findById(userId);  // Sélectionner uniquement nom, prenom, age
+
+        if (!user) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        }
+
+        // Retourner les informations de l'utilisateur
+        res.json(user);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: 'Erreur du serveur', error: error.message });
+    }
+};
+
+// Modifier les informations de l'utilisateur
+exports.modifierUtilisateur = async (req, res) => {
+    const userId = req.params.id;  // Récupérer l'ID de l'utilisateur à partir des paramètres
+    const { nom, prenom, age, photo } = req.body;  // Récupérer les nouvelles informations de l'utilisateur
+
+    try {
+        // Vérifier si l'utilisateur existe
+        const utilisateur = await Utilisateur.findById(userId);
+        if (!utilisateur) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        }
+
+        // Mettre à jour les informations de l'utilisateur
+        if (nom) utilisateur.nom = nom;
+        if (prenom) utilisateur.prenom = prenom;
+        if (age) utilisateur.age = age;
+        if (photo) utilisateur.photo = photo;  // Si une photo est fournie, on la met à jour
+
+        // Sauvegarder les modifications
+        await utilisateur.save();
+
+        // Retourner une réponse de succès
+        res.status(200).json({ message: 'Informations utilisateur mises à jour avec succès.' });
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur du serveur', error: error.message });
     }
 };

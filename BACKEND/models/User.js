@@ -8,6 +8,7 @@ const utilisateurSchema = new mongoose.Schema({
     nom: { type: String },
     prenom: { type: String },
     age: { type: Number },
+    photo: { type: String },
    
 }, { timestamps: true });
 
