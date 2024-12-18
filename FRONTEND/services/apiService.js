@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://192.168.56.1:5000/api'; // Replace with your actual backend URL
+const API_URL = 'http://192.168.1.108:5000/api'; // Replace with your actual backend URL
 
 export const signUpUser = async (userData) => {
     const user = {
@@ -70,6 +70,18 @@ export const getIngredients = async () => {
     } catch (error) {
         console.error('Error fetching ingredients:', error);}}
 
+
+export const getIngredientsParId = async (IngredientId) => {
+  try {
+    console.log(`Fetching ingredient with ID: ${IngredientId}`); 
+    const response = await axios.get(`${API_URL}/ingredients/${IngredientId}`);
+    console.log("Ingredient data:", response.data);
+    return response.data; 
+  } catch (error) {
+    console.error("Error fetching ingredient:", error);
+    throw error; 
+  }
+};
 
 // Créer un formulaire dynamique
 export const createFormulaire = async (formData) => {
@@ -156,4 +168,121 @@ export const deleteFormulaire = async (id) => {
         throw error.response?.data || error.message;
     }
 };
-    
+
+
+export const getRecetteParId = async (recipeId) => {
+  try {
+    const response = await axios.get(`${API_URL}/recettes/${recipeId}`);
+    return response.data; 
+  } catch (error) {
+    console.error("Error fetching recipe:", error);
+    throw error; 
+  }
+};
+
+export const updateFavoriteStatus = async (recipeId, favoriteStatus) => {
+    try {
+      const response = await axios.put(
+        `${API_URL}/recettes/${recipeId}/favorite`,
+        { favorite: favoriteStatus } 
+      );
+      console.log(response)
+      console.log(response.data)
+      return response.data;
+    } catch (error) {
+      console.error('Error updating favorite status:', error);
+      throw error; 
+    }
+  };
+
+  export const addFavorite = async (recetteId, utilisateurId) => {
+    try {
+      // Vérifier si l'ID utilisateur est présent
+      if (!utilisateurId) {
+        throw new Error("L'ID utilisateur est requis pour ajouter aux favoris.");
+      }
+      const response = await axios.post(
+        `${API_URL}/auth/favorites`, // URL pour ajouter la recette aux favoris
+        { recetteId, utilisateurId } // Envoyer les deux informations nécessaires
+      );
+  
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        // Si l'erreur provient du serveur
+        console.error('Erreur lors de l\'ajout aux favoris:', error.response.data);
+        throw new Error(error.response.data.message || 'Erreur interne du serveur');
+      } else if (error.request) {
+        // Si la requête a été envoyée, mais qu'aucune réponse n'a été reçue
+        console.error('Pas de réponse du serveur:', error.request);
+        throw new Error('Aucune réponse du serveur');
+      } else {
+        // Autres erreurs
+        console.error('Erreur lors de l\'ajout aux favoris:', error.message);
+        throw error;
+      }
+    }
+  };
+
+  export const checkIfFavorite = async (recipeId, userId) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/favorites/${userId}/${recipeId}`);
+      const data = await response.json();
+      return data.isFavorite; // Retourne true ou false
+    } catch (error) {
+      console.error("Erreur lors de la vérification de l'état favori :", error);
+      return false;
+    }
+  };
+
+  export const removeFavorite = async (recipeId, userId) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/favorites`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          recetteId: recipeId,
+          utilisateurId: userId,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        return data.message;
+      } else {
+        throw new Error(data.message || 'Erreur lors de la suppression des favoris');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la suppression des favoris:', error);
+      throw error;
+    }
+  };
+
+  export const getFavoriteRecipes = async (userId) => {
+    try {
+      // Ensure userId is provided
+      if (!userId) {
+        throw new Error('User ID is required');
+      }
+  
+      // Make the API call to fetch the favorite recipes
+      const response = await fetch(`${API_URL}/auth/favorites/${userId}`);
+  
+      // If the response is not OK, throw an error
+      if (!response.ok) {
+        throw new Error('Failed to fetch favorite recipes');
+      }
+  
+      // Parse and return the JSON data (the recipes)
+      console.log(response)
+      const recipes = await response.json();
+      return recipes;
+    } catch (error) {
+      console.error('Error fetching favorite recipes:', error);
+      throw error; // Rethrow the error so it can be handled by the caller
+    }
+  };

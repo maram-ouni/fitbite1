@@ -8,7 +8,7 @@ const utilisateurSchema = new mongoose.Schema({
     nom: { type: String },
     prenom: { type: String },
     age: { type: Number },
-   
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recette' }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Utilisateur', utilisateurSchema);

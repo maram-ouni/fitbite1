@@ -5,7 +5,8 @@ const {
   getRecettes,
   getRecetteParId,
   supprimerRecette,
-  mettreAJourRecette
+  mettreAJourRecette,
+  updateFavoriteStatus
 } = require('../controllers/recettesController');
 const router = express.Router();
 
@@ -49,12 +50,20 @@ const router = express.Router();
  *               ingredient:
  *                 type: string
  *                 description: ID de l'ingrédient (référence ObjectId)
- *               quantite:
+ *               unite: 
+ *                 type: string
+ *                 description: Unité de mesure de l'ingrédient (ex: g, ml, c. à soupe)          
+ * 
+ *                quantite:
  *                 type: number
  *                 description: Quantité de l'ingrédient
+ *            
  *         instructions:
  *           type: [string]
  *           description: Instructions pour préparer la recette
+ *         favorite:
+ *            type: boolean
+ *            description: Si la recette est favorite
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -211,6 +220,4 @@ router.delete('/:id', supprimerRecette);
  *         description: Erreur lors de la mise à jour de la recette
  */
 router.put('/:id', mettreAJourRecette);
-
-
 module.exports = router;
