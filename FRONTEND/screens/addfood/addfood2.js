@@ -29,7 +29,7 @@ const Addfood2 = ({ navigation }) => {
     description: "",
     tempsPreparation: 30,
     image: "",
-    category: "breakfast", // Valeur par défaut
+    category: "Breakfast", // Valeur par défaut
   });
   const [focusedInput, setFocusedInput] = useState(null);
 
@@ -87,7 +87,7 @@ const Addfood2 = ({ navigation }) => {
         description: formData.description,
         tempsPreparation: formData.tempsPreparation,
         image: imageBase64, // Ajouter l'image en base64
-        categorie: formData.categorie, // Ajouter la catégorie
+        categorie: formData.category, // Ajouter la catégorie
       };
       console.log("Recipe data:", recipeData);
 
@@ -159,7 +159,7 @@ const Addfood2 = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Category</Text>
         <Picker
-          selectedValue={formData.categorie}
+          selectedValue={formData.category}
           onValueChange={(itemValue) =>
             setFormData((prev) => ({ ...prev, categorie: itemValue }))
           }

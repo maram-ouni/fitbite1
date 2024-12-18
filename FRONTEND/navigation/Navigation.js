@@ -16,7 +16,6 @@ import Addfood3 from "../screens/addfood/addfood3";
 import Addfood4 from "../screens/addfood/addfood4";
 import Addfood5 from "../screens/addfood/addfood5";
 import ParentComponent from "../screens/addfood/ParentComponent";
-import UpdateScreen from "../screens/Main/UpdateScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -50,11 +49,6 @@ const Navigation = () => {
 
   return (
     <Stack.Navigator initialRouteName={isFirstTime ? "Onboarding" : "Auth"}>
-      <Stack.Screen
-        name="FormulaireDynamique"
-        component={UpdateScreen}
-        options={{ headerShown: false }}
-      />
       <Stack.Screen
         name="Onboarding"
         component={OnboardingStack}

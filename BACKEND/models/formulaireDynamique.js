@@ -1,16 +1,38 @@
 const mongoose = require('mongoose');
 
 const formulaireDynamiqueSchema = new mongoose.Schema({
-  
-  trimestre: Number,
-  poidsActuel: Number,
-  taille:Number,
-  recommandations: String,
-  ActivitePhysique: String,
-
+  trimestre: {
+    type: Number,
+    required: true,
+  },
+  poidsActuel: {
+    type: Number,
+    required: true,
+  },
+  taille: {
+    type: Number,
+    required: true,
+  },
+  recommandations: {
+    type: String,
+    required: false,  // Ce champ peut être optionnel
+  },
+  ActivitePhysique: {
+    type: String,
+    required: true,
+  },
+  regimeSpecial: {
+    type: String,
+    required: false,  // Ce champ peut être optionnel
+  },
+  doctorRemarks: {
+    type: String,
+    required: false,  // Ce champ peut staffer
+  },
   utilisateur: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Utilisateur'
+    ref: 'Utilisateur',
+    required: false,  // Utilisateur obligatoire pour lier le formulaire
   }
 });
 

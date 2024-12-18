@@ -107,6 +107,16 @@ export const getFormulaires = async () => {
         throw error.response?.data || error.message;
     }
 };
+export const updateFormulaire = async (id, formData) => {
+    try {
+        const response = await axios.put(`${API_URL}/formulaireDynamique/${id}`, formData);
+        console.log('Formulaire Updated:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Update Form Error:', error);
+        throw error.response?.data || error.message;
+    }
+};
 
 // Mettre à jour une recette avec des ingrédients
 export const updateRecipeWithIngredients = async (recipeId, {ingredients}) => {
@@ -120,16 +130,7 @@ export const updateRecipeWithIngredients = async (recipeId, {ingredients}) => {
     } catch (error) {
         console.error('Error updating recipe:', error);}}
 // Mettre à jour un formulaire dynamique
-export const updateFormulaire = async (id, formData) => {
-    try {
-        const response = await axios.put(`${API_URL}/formulaireDynamique/${id}`, formData);
-        console.log('Formulaire Updated:', response.data);
-        return response.data;
-    } catch (error) {
-        console.error('Update Form Error:', error);
-        throw error.response?.data || error.message;
-    }
-};
+
 
 export const updateRecipeWithInstructions = async (recipeId, {instructions}) => {
     try {
