@@ -13,6 +13,7 @@ const listeCoursesRoutes = require('./routes/listeCoursesRoutes');
 const supermarchesRoutes = require('./routes/supermarchesRoutes');
 const utilisateursRoutes = require('./routes/utilisateursRoutes');
 
+
 dotenv.config();
 const app = express();
 
@@ -22,6 +23,7 @@ const corsOptions = {
   methods: ['GET', 'POST' , 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
+
 
 app.use(cors(corsOptions)); // Appliquez la politique CORS
 

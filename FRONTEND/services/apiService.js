@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://192.168.56.1:5000/api'; // Replace with your actual backend URL
+const API_URL = 'http://192.168.59.100:5000/api'; // Replace with your actual backend URL
 
 export const signUpUser = async (userData) => {
     const user = {
@@ -323,5 +323,140 @@ export const getRecetteParId = async (recipeId) => {
             throw error.response?.data || error.message;
         }
     };
-    
-    
+    export const addToShoppingList = async (userId, name, quantite, unite) => {
+      try {
+          // Map the incoming parameters to the required API payload fields
+          const response = await axios.post(`${API_URL}/auth/shopping-list/add`, {
+              userId,
+              ingredientName: name, // Map 'name' to 'ingredientName'
+              quantity: quantite,   // Map 'quantite' to 'quantity'
+              unit: unite,          // Map 'unite' to 'unit'
+          });
+  
+          console.log("UserId:", userId);
+          console.log("IngredientName:", name);
+          console.log("Quantity:", quantite);
+          console.log("Unit:", unite);
+  
+          return response.data;
+      } catch (error) {
+          console.error("Erreur lors de l'ajout à la liste de courses:", error);
+          throw error;
+      }
+  };
+
+
+  export const getShoppingList = async (userId) => {
+    try {
+      // Vérifiez si l'ID utilisateur est fourni
+      if (!userId) {
+        throw new Error('User ID is required');
+      }
+  
+      // Effectuez l'appel API pour récupérer la liste des courses
+      const response = await fetch(`${API_URL}/auth/shopping-list/${userId}`);
+  
+      // Si la réponse n'est pas correcte, lancez une erreur
+      if (!response.ok) {
+        throw new Error('Failed to fetch shopping list');
+      }
+  
+      // Analysez et renvoyez les données JSON (les ingrédients de la liste de courses)
+      const shoppingList = await response.json();
+      return shoppingList;
+    } catch (error) {
+      console.error('Error fetching shopping list:', error);
+      throw error; // Relancez l'erreur afin qu'elle puisse être gérée par l'appelant
+    }
+  };
+
+  
+
+
+  
+  export const addIngredientToShoppingList = async (userId, ingredient) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/shopping-list/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(ingredient),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Erreur lors de l’ajout de l’ingrédient');
+      }
+  
+      const newIngredient = await response.json();
+      return newIngredient;
+    } catch (error) {
+      console.error('Erreur lors de l’ajout de l’ingrédient:', error);
+      throw error;
+    }
+  };
+
+ 
+ 
+  export const getSupermarkets = async () => {
+    try {
+      const response = await fetch(`${API_URL}/supermarches`);
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des supermarchés');
+      }
+      const supermarkets = await response.json();
+      return supermarkets;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des supermarchés:', error);
+      throw error;
+    }
+  };
+  
+
+  export const resetShoppingList = async (userId) => {
+    try {
+      // Vérifiez si l'ID utilisateur est fourni
+      if (!userId) {
+        throw new Error('User ID is required');
+      }
+  
+      // Effectuez la requête DELETE vers l'API
+      const response = await fetch(`${API_URL}/auth/shopping-list/${userId}`, {
+        method: 'DELETE',
+      });
+  
+      // Si la réponse n'est pas correcte, levez une erreur
+      if (!response.ok) {
+        throw new Error('Erreur lors de la réinitialisation de la liste des courses');
+      }
+  
+      // Analysez et renvoyez les données de la réponse
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Erreur lors de la réinitialisation de la liste des courses:', error);
+      throw error;
+    }
+  };
+
+  
+
+
+  export const deleteIngredientFromShoppingList = async (userId, itemId) => { // Remplacer ingredientId par itemId
+    try {
+      const response = await fetch(`${API_URL}/auth/shopping-list/${userId}/${itemId}`, {  // Utiliser itemId ici
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Erreur lors de la suppression de l’ingrédient');
+      }
+  
+      const updatedList = await response.json();
+      return updatedList; // Retourne la liste mise à jour
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l’ingrédient:', error);
+      throw error;
+    }
+  };
+  

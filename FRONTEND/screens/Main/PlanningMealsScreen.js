@@ -5,6 +5,7 @@ import Header from './Header';
 import Button from '../../components/Button'; // Import du composant Button
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const PlanningMealsScreen = ({ navigation }) => {
   const meals = [
@@ -43,6 +44,13 @@ const PlanningMealsScreen = ({ navigation }) => {
    <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
         <Feather name="arrow-left" size={24} color={COLORS.primary.dark} />
       </TouchableOpacity>
+      <TouchableOpacity 
+      onPress={() => navigation.navigate('GroceriesList')} 
+      style={styles.cartButton}
+    >
+      <Icon name="shopping-cart" size={20} color={COLORS.primary.dark} /> 
+      {/* Vous pouvez changer "shopping-cart" par "cart" si vous utilisez Ionicons */}
+    </TouchableOpacity>
 </View>
       {/* Meal Cards */}
       <ScrollView style={styles.mealContainer}>
@@ -55,11 +63,7 @@ const PlanningMealsScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         ))}
-        <Button 
-          title="Create shopping list" 
-          onPress={() => navigation.navigate('GroceriesList')} 
-          style={styles.button}  
-        />
+        
       </ScrollView>
     </LinearGradient>
   );
@@ -107,6 +111,8 @@ const styles = StyleSheet.create({
     paddingBottom:15,
     paddingTop:5,
     paddingLeft:10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 
   mealText: {
@@ -123,6 +129,16 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  cartButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 25, 
+    backgroundColor: COLORS.primary.light,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight:10,
+    
   },
   button: {
     marginTop: 20,

@@ -153,5 +153,160 @@ router.get('/favorites/:userId', async (req, res) => {
   }
 });
 
+
+router.post('/shopping-list/add', async (req, res) => {
+  const { userId, ingredientName, quantity, unit } = req.body;
+
+  try {
+      // Find the user by their ID
+      const utilisateur = await User.findById(userId);
+
+      if (!utilisateur) {
+          return res.status(404).json({ message: "Utilisateur non trouvé" });
+      }
+
+      // Add the ingredient to the user's shopping list
+      utilisateur.shoppingList.push({ ingredientName, quantity, unit });
+      await utilisateur.save();
+
+      // Respond with success and the updated shopping list
+      res.status(200).json({
+          message: "Ingrédient ajouté à la liste de courses",
+          shoppingList: utilisateur.shoppingList,
+      });
+  } catch (error) {
+      // Handle errors during the process
+      res.status(500).json({
+          message: "Erreur lors de l'ajout à la liste de courses",
+          error,
+      });
+  }
+});
+
+
+router.get('/shopping-list/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Recherchez l'utilisateur et récupérez sa liste de courses
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Retournez la liste de courses
+    res.json(user.shoppingList);
+  } catch (error) {
+    console.error('Error fetching shopping list:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+
+
+
+
+
+
+// Route pour ajouter un ingrédient à la liste des courses de l'utilisateur
+router.post('/shopping-list/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { ingredientName, quantity, unit } = req.body;
+
+    // Valider les champs
+    if (!ingredientName || !quantity || !unit) {
+      return res.status(400).json({ message: 'Tous les champs sont requis' });
+    }
+
+    // Trouver l'utilisateur
+    const utilisateur = await User.findById(userId);
+    if (!utilisateur) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    // Ajouter l'ingrédient à la liste des courses
+    const newIngredient = { ingredientName, quantity, unit };
+    utilisateur.shoppingList.push(newIngredient);
+
+    // Enregistrer l'utilisateur mis à jour
+    await utilisateur.save();
+
+    res.status(201).json(newIngredient);
+  } catch (error) {
+    console.error('Erreur lors de l’ajout de l’ingrédient:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+
+router.delete('/shopping-list/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    console.log('userId reçu:', userId); // Debug: vérifier si l'userId est reçu
+
+    // Rechercher l'utilisateur par son ID
+    const utilisateur = await User.findById(userId);
+
+    if (!utilisateur) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    // Vider la liste de courses de l'utilisateur
+    utilisateur.shoppingList = [];
+    await utilisateur.save();
+
+    // Répondre au client avec succès
+    res.status(200).json({ 
+      message: 'Liste des courses réinitialisée avec succès',
+      shoppingList: utilisateur.shoppingList
+    });
+  } catch (error) {
+    console.error('Erreur lors de la réinitialisation de la liste des courses:', error);
+    res.status(500).json({ message: 'Erreur serveur', error });
+  }
+});
+
+
+
+router.delete('/shopping-list/:userId/:itemId', async (req, res) => {
+  const { userId, itemId } = req.params; // Utilisez itemId à la place de ingredientId
+
+  try {
+    // Recherchez l'utilisateur
+    const utilisateur = await User.findById(userId);
+    if (!utilisateur) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    // Supprimez l'ingrédient de la liste de courses en filtrant par _id
+    utilisateur.shoppingList = utilisateur.shoppingList.filter(ingredient => ingredient._id.toString() !== itemId); // Utilisez itemId ici
+    await utilisateur.save();
+
+    res.status(200).json({
+      message: 'Ingrédient supprimé avec succès',
+      shoppingList: utilisateur.shoppingList // Retournez la liste mise à jour
+    });
+  } catch (error) {
+    console.error('Erreur lors de la suppression de l’ingrédient:', error);
+    res.status(500).json({ message: 'Erreur serveur', error });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = router;
 
