@@ -10,11 +10,14 @@ import {
 } from "react-native";
 import { Alert } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { getRecetteParId, getIngredientsParId,checkIfFavorite } from "../../services/apiService";
+import { getRecetteParId, getIngredientsParId,checkIfFavorite,  } from "../../services/apiService";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "../../styles/colors"; // Import des couleurs
 import { addFavorite, removeFavorite, addToShoppingList } from "../../services/apiService";
 import { useUser } from "../../services/Usercontext"; 
+import { getAllSupermarches } from '../../services/apiService';
+
+
 
 const ParentComponent = ({ route, navigation }) => {
   const { recipeId } = route.params;
@@ -23,6 +26,9 @@ const ParentComponent = ({ route, navigation }) => {
   const [ingredientsWithNames, setIngredientsWithNames] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const { userId } = useUser();
+  const [supermarches, setSupermarches] = useState([]);
+
+  
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -54,31 +60,52 @@ console.log(userId)
 console.log (recipeId)
 console.log(ingredientsWithNames)
 
+
+// Récupérer les supermarchés uniquement dans le contexte de la fonction addToShoppingCart
 const addToShoppingCart = async () => {
   try {
-    for (const ingredient of ingredientsWithNames) {
-      // Find the corresponding ingredient details in the recipe
-      const name = ingredient.name
-      const quantite = ingredient.quantite
-      const unite = ingredient.unite
-      console.log(name,quantite,unite)
-        await addToShoppingList(
-          userId,
-          name,
-          quantite, 
-          unite,
-        );
+    const supermarches = await getAllSupermarches();  // Récupérer la liste des supermarchés à chaque fois
+    if (supermarches.length === 0) {
+      Alert.alert('Erreur', 'Aucun supermarché trouvé.');
+      return;
     }
-    Alert.alert(
-      "Succès",
-      "Les ingrédients ont été ajoutés à votre liste de courses.",
-      [{ text: "OK" }]
-    );
-    console.log("Ingrédients ajoutés à la liste de courses");
+
+    // Choisir un supermarché aléatoire à chaque appel
+    const randomSupermarche = supermarches[Math.floor(Math.random() * supermarches.length)];
+    const { nom, adresse, image } = randomSupermarche;
+
+    // Ajouter les ingrédients à la liste de courses
+    for (const ingredient of ingredientsWithNames) {
+      const { name, quantite, unite } = ingredient;
+      await addToShoppingList(userId, name, quantite, unite, nom, image);
+    }
+
+    Alert.alert("Succès", "Les ingrédients ont été ajoutés à votre liste de courses.", [{ text: "OK" }]);
   } catch (error) {
     console.error("Erreur lors de l'ajout des ingrédients à la liste de courses:", error);
+    Alert.alert('Erreur', 'Erreur serveur lors de l\'ajout des ingrédients.');
   }
 };
+
+// Utiliser useEffect pour récupérer les supermarchés à l'initialisation du composant
+useEffect(() => {
+  const fetchSupermarches = async () => {
+    try {
+      const supermarchesData = await getAllSupermarches(); // Cette fonction doit récupérer la liste des supermarchés depuis votre backend
+      setSupermarches(supermarchesData);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des supermarchés:', error); 
+      Alert.alert('Erreur', 'Impossible de récupérer les supermarchés.');
+    }
+  };
+
+  fetchSupermarches();  // Appel immédiat pour récupérer les supermarchés au chargement
+}, []);
+
+
+
+
+
 
 
   const toggleFavorite = async () => {

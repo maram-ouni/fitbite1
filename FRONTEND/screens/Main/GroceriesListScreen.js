@@ -1,24 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, FlatList, Alert, Image, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, FlatList, Alert, Image, ScrollView,Picker } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient'; 
 import { COLORS } from '../../styles/colors';
 import Header from './Header';
 import { getShoppingList, addIngredientToShoppingList } from '../../services/apiService'; // Import de la fonction de suppression
-import { getSupermarkets } from '../../services/apiService'; // Import de la fonction pour récupérer les supermarchés
 import { useUser } from '../../services/Usercontext'; // Import du contexte utilisateur
 import Button from '../../components/Button';
 import { resetShoppingList } from '../../services/apiService';
 import { deleteIngredientFromShoppingList } from '../../services/apiService';
+import { getAllSupermarches } from '../../services/apiService';
+
+
 
 const GroceriesListScreen = ({ navigation }) => {
   const [shoppingList, setShoppingList] = useState([]); // État pour stocker la liste des courses
   const [ingredientName, setIngredientName] = useState(''); // Nom de l'ingrédient
   const [quantity, setQuantity] = useState(''); // Quantité de l'ingrédient
   const [unit, setUnit] = useState(''); // Unité (kg, l, g, etc.)
-  const [supermarkets, setSupermarkets] = useState([]); // État pour stocker les supermarchés
+  const [supermarcheNom, setSupermarcheNom] = useState('');  // Nom du supermarché
+const [supermarcheImage, setSupermarcheImage] = useState('');  // URL de l'image du supermarché
+const [supermarches, setSupermarches] = useState([]);
+const [loading, setLoading] = useState(true);
+
+
   const { userId } = useUser(); // Récupération de l'ID utilisateur via le contexte
   
+
+
+  useEffect(() => {
+    const fetchSupermarches = async () => {
+      try {
+        const supermarchesData = await getAllSupermarches(); // Cette fonction doit récupérer la liste des supermarchés depuis votre backend
+        setSupermarches(supermarchesData); // Met à jour la liste des supermarchés
+      } catch (error) {
+        console.error('Erreur lors de la récupération des supermarchés:', error);
+        Alert.alert('Erreur', 'Impossible de récupérer les supermarchés.');
+      } finally {
+        setLoading(false); // Arrêter l'état de chargement
+      }
+    };    fetchSupermarches();
+  }, []);
+
   // Fonction pour récupérer la liste des courses
   useEffect(() => {
     const fetchShoppingList = async () => {
@@ -38,54 +61,46 @@ const GroceriesListScreen = ({ navigation }) => {
     fetchShoppingList();
   }, [userId]);
 
-  // Fonction pour récupérer les supermarchés
-  useEffect(() => {
-    const fetchSupermarkets = async () => {
-      try {
-        const list = await getSupermarkets();
-        setSupermarkets(list); // Met à jour l'état avec la liste des supermarchés
-      } catch (error) {
-        console.error('Erreur lors de la récupération des supermarchés:', error);
-      }
-    };
-
-    fetchSupermarkets();
-  }, []);
+ 
 
   // Fonction pour ajouter un ingrédient à la liste
   const handleAddIngredient = async () => {
-    if (!ingredientName || !quantity || !unit) {
+    if (!ingredientName || !quantity || !unit || !supermarcheNom || !supermarcheImage) {
       Alert.alert('Erreur', 'Tous les champs sont requis.');
       return;
     }
-
+  
     const newIngredient = {
       ingredientName,
       quantity,
       unit,
+      supermarcheNom,  // Ajout du nom du supermarché
+      supermarcheImage,  // Ajout de l'image du supermarché
     };
-
+  
     try {
       const addedIngredient = await addIngredientToShoppingList(userId, newIngredient);
       setShoppingList((prevList) => [...prevList, addedIngredient]); // Met à jour la liste locale
       setIngredientName(''); // Réinitialise le champ de saisie du nom
       setQuantity(''); // Réinitialise le champ de saisie de la quantité
       setUnit(''); // Réinitialise le champ de saisie de l'unité
+      setSupermarcheNom(''); // Réinitialise le champ du nom du supermarché
+      setSupermarcheImage(''); // Réinitialise le champ de l'image du supermarché
     } catch (error) {
       console.error('Erreur lors de l’ajout de l’ingrédient:', error);
     }
   };
+  console.log(ingredientName);
+  console.log(quantity);
+  console.log(unit);
 
+  console.log(supermarcheNom);
+
+  console.log(supermarcheImage);
  
 
   // Fonction de rendu de chaque supermarché
-  const renderSupermarketItem = ({ item }) => (
-    <View style={styles.supermarketItem}>
-      {item.image && <Image source={{ uri: item.image }} style={styles.supermarketImage} />}
-      <Text style={styles.supermarketName}>{item.nom}</Text>
-      <Text style={styles.supermarketAddress}>{item.adresse}, {item.ville}</Text>
-    </View>
-  );
+  
 
   // Fonction pour revenir en arrière
   const handleGoBack = () => {
@@ -124,10 +139,22 @@ const GroceriesListScreen = ({ navigation }) => {
   
   const renderGroceryItem = ({ item }) => (
     <View style={styles.groceryItem}>
+      {/* Affichage du nom de l'ingrédient */}
       <Text style={styles.ingredientName}>{item.ingredientName}</Text>
       <Text style={styles.ingredientAmount}>
         {item.quantity} {item.unit}
       </Text>
+  
+      {/* Affichage de l'image et du nom du supermarché */}
+      {item.supermarcheNom && item.supermarcheImage && (
+        <View style={styles.supermarketInfo}>
+          <Image 
+            source={{ uri: item.supermarcheImage }} 
+            style={styles.supermarketImage} 
+          />
+          <Text style={styles.supermarketName}>{item.supermarcheNom}</Text>
+        </View>
+      )}
   
       {/* Bouton de suppression */}
       <TouchableOpacity 
@@ -138,6 +165,7 @@ const GroceriesListScreen = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
+  
 
   return (
     <LinearGradient
@@ -174,47 +202,67 @@ const GroceriesListScreen = ({ navigation }) => {
           contentContainerStyle={styles.listContainer}
         />
 
-        {/* Liste des supermarchés */}
-        <Text style={styles.subtitle}>Available Supermarkets</Text>
-        <FlatList
-          data={supermarkets}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderSupermarketItem}
-          contentContainerStyle={styles.listContainer}
-        />
-      <View style={styles.inputContainer}>
-        <View style={styles.inputRow}>
-          <TextInput
-            placeholder="Nom de l'ingrédient"
-            style={styles.input}
-            value={ingredientName}
-            onChangeText={setIngredientName}
-          />
-          <TextInput
-            placeholder="Quantité"
-            style={styles.input}
-            value={quantity}
-            onChangeText={setQuantity}
-            keyboardType="numeric"
-          />
-          <TextInput
-            placeholder="Unité (g, kg, l, etc.)"
-            style={styles.input}
-            value={unit}
-            onChangeText={setUnit}
-          />
-        </View>
-        <Button 
-          title="Ajouter" 
-          onPress={handleAddIngredient} 
-          style={styles.button}  
-        />
-      </View>
+        
+        
+<View style={styles.inputContainer}>
+<Text style={styles.title}>Add other ingredient to your list ?</Text>
+  <View style={styles.inputRow}>
+    {/* Champ pour le nom de l'ingrédient */}
+    <TextInput
+      placeholder="Ingredient name"
+      style={styles.input}
+      value={ingredientName}
+      onChangeText={setIngredientName}
+    />
+
+    {/* Champ pour la quantité */}
+    <TextInput
+      placeholder="Quantity"
+      style={styles.input}
+      value={quantity}
+      onChangeText={setQuantity}
+      keyboardType="numeric"
+    />
+
+    {/* Champ pour l'unité */}
+    <TextInput
+      placeholder="Unit (g, kg, l, etc.)"
+      style={styles.input}
+      value={unit}
+      onChangeText={setUnit}
+    />
+  
+
+  {/* Ajout du champ pour le nom du supermarché */}
+  <TextInput
+      placeholder="Super market name"
+      style={styles.input}
+      value={supermarcheNom}
+      onChangeText={setSupermarcheNom}
+    />
+    
+
+    {/* Champ pour l'image du supermarché */}
+    <TextInput
+      placeholder="Image"
+      style={styles.input}
+      value={supermarcheImage}
+      onChangeText={setSupermarcheImage}  // Assurez-vous d'ajouter une fonction pour gérer ce champ
+    />
+  </View>
+
+  <Button 
+    title="Add ingredient" 
+    onPress={handleAddIngredient} 
+    style={styles.button}  
+  />
+</View>
+
       </ScrollView>
 
       {/* Champs de saisie pour ajouter un ingrédient */}
       <Button 
-  title="Réinitialiser la liste des courses" 
+  title="Reset groceries list" 
   onPress={handleResetShoppingList} 
 />
     </LinearGradient>
@@ -278,6 +326,22 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.ui.cardBackground,
     borderRadius: 50,
     padding: 5,
+  },
+  supermarketInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  supermarketImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginRight: 10,
+  },
+  supermarketName: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: COLORS.text.dark,
   },
 });
 

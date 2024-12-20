@@ -155,33 +155,41 @@ router.get('/favorites/:userId', async (req, res) => {
 
 
 router.post('/shopping-list/add', async (req, res) => {
-  const { userId, ingredientName, quantity, unit } = req.body;
+  const { userId, ingredientName, quantity, unit, supermarcheNom, supermarcheImage } = req.body;
 
   try {
-      // Find the user by their ID
-      const utilisateur = await User.findById(userId);
+    // Trouver l'utilisateur par son ID
+    const utilisateur = await User.findById(userId);
 
-      if (!utilisateur) {
-          return res.status(404).json({ message: "Utilisateur non trouvé" });
-      }
+    if (!utilisateur) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
 
-      // Add the ingredient to the user's shopping list
-      utilisateur.shoppingList.push({ ingredientName, quantity, unit });
-      await utilisateur.save();
+    // Ajouter l'ingrédient avec les informations du supermarché à la liste de courses de l'utilisateur
+    utilisateur.shoppingList.push({
+      ingredientName,
+      quantity,
+      unit,
+      supermarcheNom, // Nom du supermarché
+      supermarcheImage // Image du supermarché
+    });
 
-      // Respond with success and the updated shopping list
-      res.status(200).json({
-          message: "Ingrédient ajouté à la liste de courses",
-          shoppingList: utilisateur.shoppingList,
-      });
+    await utilisateur.save();
+
+    // Répondre avec la liste de courses mise à jour
+    res.status(200).json({
+      message: "Ingrédient ajouté à la liste de courses",
+      shoppingList: utilisateur.shoppingList,
+    });
   } catch (error) {
-      // Handle errors during the process
-      res.status(500).json({
-          message: "Erreur lors de l'ajout à la liste de courses",
-          error,
-      });
+    console.error('Erreur lors de l’ajout à la liste de courses:', error);
+    res.status(500).json({
+      message: "Erreur lors de l'ajout à la liste de courses",
+      error,
+    });
   }
 });
+
 
 
 router.get('/shopping-list/:userId', async (req, res) => {
@@ -213,10 +221,10 @@ router.get('/shopping-list/:userId', async (req, res) => {
 router.post('/shopping-list/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
-    const { ingredientName, quantity, unit } = req.body;
+    const { ingredientName, quantity, unit, supermarcheNom, supermarcheImage } = req.body;
 
     // Valider les champs
-    if (!ingredientName || !quantity || !unit) {
+    if (!ingredientName || !quantity || !unit || !supermarcheNom || !supermarcheImage) {
       return res.status(400).json({ message: 'Tous les champs sont requis' });
     }
 
@@ -226,8 +234,8 @@ router.post('/shopping-list/:userId', async (req, res) => {
       return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
 
-    // Ajouter l'ingrédient à la liste des courses
-    const newIngredient = { ingredientName, quantity, unit };
+    // Ajouter l'ingrédient à la liste des courses, y compris les informations du supermarché
+    const newIngredient = { ingredientName, quantity, unit, supermarcheNom, supermarcheImage };
     utilisateur.shoppingList.push(newIngredient);
 
     // Enregistrer l'utilisateur mis à jour
@@ -239,6 +247,7 @@ router.post('/shopping-list/:userId', async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur' });
   }
 });
+
 
 
 router.delete('/shopping-list/:userId', async (req, res) => {
@@ -294,6 +303,40 @@ router.delete('/shopping-list/:userId/:itemId', async (req, res) => {
   }
 });
 
+
+
+
+// Route pour récupérer un supermarché par son nom
+router.get('/supermarches', async (req, res) => {
+  const { nom } = req.query;  // Récupérer le nom du supermarché à partir des paramètres de requête
+
+  try {
+    // Rechercher un supermarché dans la base de données par nom
+    const supermarche = await Supermarche.find({ nom: new RegExp(nom, 'i') }); // Recherche insensible à la casse
+
+    if (supermarche.length === 0) {
+      return res.status(404).json({ message: 'Supermarché non trouvé' });
+    }
+
+    return res.status(200).json(supermarche); // Retourner les supermarchés trouvés
+  } catch (error) {
+    console.error('Erreur lors de la récupération du supermarché:', error);
+    return res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+router.get('/supermarchess', async (req, res) => {
+  try {
+    const supermarches = await Supermarche.find(); // Récupérer tous les supermarchés
+    if (supermarches.length === 0) {
+      return res.status(404).json({ message: 'Aucun supermarché trouvé' });
+    }
+    res.status(200).json(supermarches); // Retourner la liste des supermarchés
+  } catch (error) {
+    console.error('Erreur serveur lors de la récupération des supermarchés:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
 
 
 

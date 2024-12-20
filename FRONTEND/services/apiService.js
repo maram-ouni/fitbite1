@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://192.168.59.100:5000/api'; // Replace with your actual backend URL
+const API_URL = 'http://192.168.1.139:5000/api'; // Replace with your actual backend URL
 
 export const signUpUser = async (userData) => {
     const user = {
@@ -323,28 +323,27 @@ export const getRecetteParId = async (recipeId) => {
             throw error.response?.data || error.message;
         }
     };
-    export const addToShoppingList = async (userId, name, quantite, unite) => {
+    export const addToShoppingList = async (userId, name, quantite, unite, nom, image) => {
       try {
-          // Map the incoming parameters to the required API payload fields
-          const response = await axios.post(`${API_URL}/auth/shopping-list/add`, {
-              userId,
-              ingredientName: name, // Map 'name' to 'ingredientName'
-              quantity: quantite,   // Map 'quantite' to 'quantity'
-              unit: unite,          // Map 'unite' to 'unit'
-          });
-  
-          console.log("UserId:", userId);
-          console.log("IngredientName:", name);
-          console.log("Quantity:", quantite);
-          console.log("Unit:", unite);
-  
-          return response.data;
+        // Effectuer la requête API pour ajouter l'ingrédient avec les détails du supermarché
+        const response = await axios.post(`${API_URL}/auth/shopping-list/add`, {
+          userId,
+          ingredientName: name,
+          quantity: quantite,
+          unit: unite,
+          supermarcheNom: nom, // Nom du supermarché
+          supermarcheImage: image // Image du supermarché
+        });
+    
+        // Si l'ajout est réussi, renvoyer la réponse
+        return response.data;
       } catch (error) {
-          console.error("Erreur lors de l'ajout à la liste de courses:", error);
-          throw error;
+        console.error("Erreur lors de l'ajout à la liste de courses:", error);
+        throw error;
       }
-  };
-
+    };
+    
+    
 
   export const getShoppingList = async (userId) => {
     try {
@@ -398,19 +397,7 @@ export const getRecetteParId = async (recipeId) => {
 
  
  
-  export const getSupermarkets = async () => {
-    try {
-      const response = await fetch(`${API_URL}/supermarches`);
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des supermarchés');
-      }
-      const supermarkets = await response.json();
-      return supermarkets;
-    } catch (error) {
-      console.error('Erreur lors de la récupération des supermarchés:', error);
-      throw error;
-    }
-  };
+ 
   
 
   export const resetShoppingList = async (userId) => {
@@ -460,3 +447,38 @@ export const getRecetteParId = async (recipeId) => {
     }
   };
   
+
+  export const getSupermarcheByName = async (supermarcheName) => {
+    try {
+      const response = await axios.get(`${API_URL}/supermarches`, {
+        params: { nom: supermarcheName },  // Passer le nom du supermarché comme paramètre
+      });
+  
+      // Vérification de la réponse
+      if (response.data && response.data.length > 0) {
+        return {
+          nom: response.data[0].nom,
+          adresse: response.data[0].adresse,
+          image: response.data[0].image,  // L'image est facultative
+        };
+      } else {
+        throw new Error('Supermarché non trouvé');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération du supermarché :', error);
+      throw error;
+    }
+  };
+
+  export const getAllSupermarches = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/supermarches`);
+      console.log('Supermarchés récupérés:', response.data);  // Vérifiez la réponse
+      return response.data; // Retourne la liste des supermarchés
+    } catch (error) {
+      console.error('Erreur lors de la récupération des supermarchés:', error);
+      throw new Error('Erreur serveur');  // Propager l'erreur
+    }
+  };
+
+
