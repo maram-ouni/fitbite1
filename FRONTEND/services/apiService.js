@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://192.168.1.139:5000/api'; // Replace with your actual backend URL
+const API_URL = 'http://192.168.100.117:5000/api'; // Replace with your actual backend URL
 
 export const signUpUser = async (userData) => {
     const user = {
