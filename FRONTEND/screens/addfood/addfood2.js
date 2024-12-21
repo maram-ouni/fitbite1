@@ -29,8 +29,6 @@ const Addfood2 = ({ navigation }) => {
     category: "Breakfast", // Valeur par défaut
   });
   const [focusedInput, setFocusedInput] = useState(null);
-  const [selectedTrimesters, setSelectedTrimesters] = useState([]);
-
 
   // Demander la permission d'accès à la galerie
   useEffect(() => {
@@ -42,13 +40,7 @@ const Addfood2 = ({ navigation }) => {
       }
     })();
   }, []);
-  const toggleTrimester = (trimester) => {
-    setSelectedTrimesters((prev) =>
-      prev.includes(trimester)
-        ? prev.filter((item) => item !== trimester) 
-        : [...prev, trimester] 
-    );
-  };
+
   const pickImageFromGallery = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -56,7 +48,7 @@ const Addfood2 = ({ navigation }) => {
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
-        maxFileSize: 12 * 1024 * 1024, // 12 MB limit
+        maxFileSize: 50 * 1024 * 1024, // 30MB limit
       });
 
       if (!result.canceled) {
@@ -82,7 +74,7 @@ const Addfood2 = ({ navigation }) => {
       };
     });
   };
-  console.log("Selected Trimesters:", selectedTrimesters);
+
   // Soumettre la recette à l'API
   const handleSubmit = async () => {
     try {
@@ -93,7 +85,6 @@ const Addfood2 = ({ navigation }) => {
         tempsPreparation: formData.tempsPreparation,
         image: imageBase64, // Ajouter l'image en base64
         categorie: formData.category, // Ajouter la catégorie
-        trimester: selectedTrimesters,
       };
       console.log("Recipe data:", recipeData);
 
@@ -167,7 +158,7 @@ const Addfood2 = ({ navigation }) => {
         <Picker
           selectedValue={formData.category}
           onValueChange={(itemValue) =>
-            setFormData((prev) => ({ ...prev, categorie: itemValue }))
+            setFormData((prev) => ({ ...prev, category: itemValue }))
           }
           style={styles.picker}
         >
@@ -219,31 +210,6 @@ const Addfood2 = ({ navigation }) => {
                 onBlur={() => setFocusedInput(null)}
               />
             </View>
-{/* Trimester Checkboxes */}
-<View style={styles.inputContainer}>
-  <Text style={styles.label}>Choose Applicable Trimesters</Text>
-  <View style={styles.checkboxGroup}>
-    {[1, 2, 3].map((trimester) => (
-      <TouchableOpacity
-        key={trimester}
-        style={[
-          styles.checkboxContainer,
-          selectedTrimesters.includes(trimester) && styles.checkboxSelected,
-        ]}
-        onPress={() => toggleTrimester(trimester)}
-      >
-        <Text
-          style={[
-            styles.checkboxLabel,
-            selectedTrimesters.includes(trimester) && styles.checkboxLabelSelected,
-          ]}
-        >
-          Trimester {trimester}
-        </Text>
-      </TouchableOpacity>
-    ))}
-  </View>
-</View>
 
       {/* Next Button */}
       <TouchableOpacity
@@ -338,33 +304,7 @@ const styles = StyleSheet.create({
     height: 100,
     textAlignVertical: "top",
   },
-  checkboxGroup: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 10,
-  },
-  checkboxContainer: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 5,
-    padding: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    width: 100,
-  },
-  checkboxSelected: {
-    backgroundColor: "#E29578",
-    borderColor: "#E29578",
-  },
-  checkboxLabel: {
-    color: "#666",
-    fontSize: 14,
-  },
-  checkboxLabelSelected: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  
+
 });
 
-export default Addfood2;
+export default Addfood2;
